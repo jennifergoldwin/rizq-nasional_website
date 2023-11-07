@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-list-item::before {
+  content: "";
+  display: inline-block;
+  width: 40px; /* Set the width of your custom list image */
+  height: 40px; /* Set the height of your custom list image */
+  background-image: url("/assets/icons/dot.png"); /* Replace with the URL of your image */
+  background-size: cover;
+  background-position: center;
+  margin-right: 5px; /* Add some space between the image and text */
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,11 +28,6 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: white;
+  background: #00093f;
 }
