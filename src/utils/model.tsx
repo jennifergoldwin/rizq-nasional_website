@@ -8,3 +8,9 @@ export type depositWithdrawl = {
   amount: string;
   status: string;
 };
+
+export interface User{
+  token: string ;
+  identityNumber: string;
+  fullName: string;
+}

@@ -4,11 +4,20 @@ import UserDetails from "@/components/overview/user";
 import React from "react";
 import "chart.js/auto";
 
-import { Line, Chart, Doughnut } from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 import GeoAllocation from "@/components/overview/geoAllocation";
 import AssetsAllocation from "@/components/overview/assetsAllocation";
+import { useRouter } from "next/navigation";
+import { User } from "@/utils/model";
+import Cookies from 'js-cookie';
+import { cookies } from "@/utils/constant";
+import { toast } from "react-toastify";
+
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
+
 const Page = () => {
+  const [user, setUser] = React.useState<User | null>(null);
+  const router = useRouter();
   const getGradient = (ctx: any, chartArea: any) => {
     var gradient = ctx.createLinearGradient(
       0,
@@ -40,10 +49,24 @@ const Page = () => {
       },
     ],
   };
+
+  React.useEffect(() => {
+    const token = Cookies.get(cookies.token);
+    const identityNumber = Cookies.get(cookies.identityNumber);
+    const fullName = Cookies.get(cookies.fullName);
+
+    if (token && identityNumber && fullName) {
+      setUser({ token, identityNumber, fullName });
+    }else{
+      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      setTimeout(() => router.replace("/login"), 2000);
+    }
+  }, []);
+
   return (
     <main className="min-h-screen md:pl-64 w-full">
-      <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto h-full w-full">
-        <UserDetails />
+      <div className="max-w-full mx-auto h-full w-full">
+        <UserDetails user={user} totalDeposit={0} totalInvestment={0} totalProfit={0}/>
         <div className="flex lg:flex-row flex-col w-full">
           <div className="w-full lg:w-2/5">
             <div className="bg-[#01115E] px-8 py-6 rounded-xl my-6 mx-6 flex flex-col justify-center items-center">

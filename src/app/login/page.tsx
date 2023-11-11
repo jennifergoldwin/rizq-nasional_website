@@ -8,23 +8,19 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 import Toast from '../../components/toast';
+import { cookies } from "@/utils/constant";
 
 interface LoginForm {
   identityNumber: string;
   password: string;
-}
-
-interface User{
-  token: string ;
-  identityNumber: string;
-  fullName: string;
+  termsAndConditions:string;
 }
 
 export default function Page() {
-
+  
   const { register, handleSubmit, setError, formState: { errors } } = useForm<LoginForm>();
   const [toast, setToast] = React.useState({ message: '', success: false, visible: false });
-  const [user, setUser] = React.useState<User | null>(null);
+  const [isChecked, setIsChecked] = React.useState(false); 
   const router = useRouter();
 
 
@@ -35,7 +31,15 @@ export default function Page() {
   
   const onSubmit = async (data: LoginForm) => {
     try {
-      console.log(data)
+      if (!isChecked) {
+        // If checkbox is not checked, show an error message
+        setError('termsAndConditions', {
+          type: 'manual',
+          message: 'Please agree to the terms and conditions.',
+        });
+        return;
+      }
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -49,12 +53,11 @@ export default function Page() {
       showToast(message, !error);
 
       if (!error){
-        const {token,identityNumber,fullName} = result;
+        const {token, userIdentityNumber, userName} = result;
         // Store the token in a cookie with a max age of 24 hours
-        Cookies.set('token',token, { expires: 1 });
-        Cookies.set('identityNumber',identityNumber,{ expires: 1 });
-        Cookies.set('fullName',fullName,{ expires: 1 });
-        setUser({token,identityNumber,fullName});
+        Cookies.set(cookies.token,token, { expires: 1 });
+        Cookies.set(cookies.identityNumber,userIdentityNumber,{ expires: 1 });
+        Cookies.set(cookies.fullName,userName,{ expires: 1 });
         
         // Handle successful login, e.g., redirect to another page
         router.push("/overview")
@@ -69,24 +72,21 @@ export default function Page() {
     }
   };
 
-  const handleLogout = () => {
-    Cookies.remove('token');
-    setUser(null);
-  };
+  
 
   React.useEffect(() => {
-    const token = Cookies.get('token');
-    const identityNumber = Cookies.get('identityNumber');
-    const fullName = Cookies.get('fullName');
+    const token = Cookies.get(cookies.token);
+    const identityNumber = Cookies.get(cookies.identityNumber);
+    const fullName = Cookies.get(cookies.fullName);
     if (token && identityNumber && fullName) {
-      setUser({ token, identityNumber, fullName });
+      router.push("/overview")
     }
   }, []);
 
   return (
     <>
       <nav className={` w-full z-20 fixed top-0 left-0  `}>
-        <div className="max-w-screen-2xl md:max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-transparent ">
+        <div className="max-w-full flex flex-wrap items-center justify-between mx-auto p-4 bg-transparent ">
           <Link href="/" className="flex items-center justify-center mr-6">
             <Image
               src={logo}
@@ -138,9 +138,11 @@ export default function Page() {
 
                     <div className="flex items-center mt-2 mb-4">
                       <input
+                        {...register('termsAndConditions', { required: 'Please agree to the terms and conditions.' })}
                         id="link-checkbox"
                         type="checkbox"
-                        value=""
+                        checked={isChecked}
+                        onChange={() => setIsChecked(!isChecked)}
                         className="w-5 h-5 text-blue-600 bg-transparent bg-opacity-0 border-white rounded-md focus:ring-[#4DC2E8] "
                       />
                       <label
@@ -158,6 +160,7 @@ export default function Page() {
                         .
                       </label>
                     </div>
+                    {errors.termsAndConditions && <p className="text-red-600 text-sm mb-4">{errors.termsAndConditions.message}</p>}
 
                     <button
                       type="submit"

@@ -27,7 +27,7 @@ export default function Page() {
   return (
     <>
       <main className="min-h-screen md:pl-64 w-full">
-        <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto flex justify-center items-center h-full">
+        <div className="max-w-full mx-auto flex justify-center items-center h-full">
           <div className="bg-[#01115E] flex flex-col justify-center  px-8 py-8 rounded-3xl my-6 w-full mx-6">
             <h1 className="font-bold text-2xl text-center pb-4">
               Choose Your Plan

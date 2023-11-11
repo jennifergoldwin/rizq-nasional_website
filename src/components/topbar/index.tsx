@@ -1,13 +1,38 @@
 "use client";
-import Image from "next/image";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
-import user from "../../../public/assets/icons/ic_user.png";
-import Link from "next/link";
+import UserCard from "../usercard";
+import Cookies from 'js-cookie';
+import { User } from "@/utils/model";
+import { toast } from "react-toastify";
+import { cookies } from "@/utils/constant";
 
 const TopBar = () => {
   const segment = useSelectedLayoutSegment();
-  const [showLogout, setShowLogout] = React.useState(false);
+  const [user, setUser] = React.useState<User | null>(null);
+  const router = useRouter();
+  React.useEffect(() => {
+    const token = Cookies.get(cookies.token);
+    const identityNumber = Cookies.get(cookies.identityNumber);
+    const fullName = Cookies.get(cookies.fullName);
+
+    if (token && identityNumber && fullName) {
+      setUser({ token, identityNumber, fullName });
+    }else{
+      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      setTimeout(() => router.replace("/login"), 2000);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    Cookies.remove(cookies.token);
+    Cookies.remove(cookies.identityNumber);
+    Cookies.remove(cookies.fullName);
+    setUser(null);
+    router.back();
+  };
+
+
   return (
     <div className="md:pl-64 w-full">
       <div className="flex justify-between my-6 mx-8">
@@ -20,39 +45,7 @@ const TopBar = () => {
             ? "Account"
             : "Overview"}
         </h1>
-        <div className="relative">
-          <button
-            onClick={() => setShowLogout(!showLogout)}
-            className="flex items-center gap-4"
-          >
-            <Image src={user} alt="user" width={40} />
-            <p className="text-lg">{"User's Full Name"}</p>
-            <svg
-              className="w-5.5 h-2.5 ml-2.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="#4DC2E8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <div
-            id="dropdown"
-            style={{ filter: "drop-shadow(1px 1px 5px #4DC2E8)" }}
-            className={`z-10 ${
-              showLogout ? "block" : "hidden"
-            } bg-[#00093F] divide-y divide-gray-100 rounded-lg shadow mt-4 p-4 absolute -bottom-18 w-full`}
-          >
-            <Link href="#">Logout</Link>
-          </div>
-        </div>
+        <UserCard name={user?.fullName} handleLogout={handleLogout}/>
       </div>
     </div>
   );

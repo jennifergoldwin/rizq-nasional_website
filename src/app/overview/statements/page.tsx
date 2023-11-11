@@ -7,7 +7,7 @@ export default function Page() {
   const [activeTable, setActiveTable] = React.useState(0);
   return (
     <main className="min-h-screen md:pl-64 w-full">
-      <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto w-full h-full">
+      <div className="max-w-full mx-auto w-full h-full">
         <div className="bg-[#01115E] rounded-xl py-8 ml-6 mr-8">
           <div className="grid grid-cols-2 gap-8 pb-8">
             <button
