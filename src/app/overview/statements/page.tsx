@@ -15,10 +15,9 @@ interface Statement {
  statusWithdrawal: string;
 }
 
-const fetchUserStatement = async () => {
+const fetchUserStatement = async (token:String, userIdentityNumber:String) => {
   try {
-    const userIdentityNumber = Cookies.get(cookies.identityNumber);
-    const token = Cookies.get(cookies.token);
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`, {
       method: 'GET',
       headers: {
@@ -42,13 +41,18 @@ export default function Page() {
   const [dataWithdrawal, setDataWithdrawal] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchUserStatement();
-      setData(data.result.statement);
-      setDataWithdrawal(data.result.statement.filter((item: Statement) => item.statusWithdrawal === 'true'));
-    };
-
-    fetchData();
+    const userIdentityNumber = Cookies.get(cookies.identityNumber);
+    const token = Cookies.get(cookies.token);
+    if (token && userIdentityNumber){
+      const fetchData = async () => {
+        const data = await fetchUserStatement(token,userIdentityNumber);
+        setData(data.result.statement);
+        setDataWithdrawal(data.result.statement.filter((item: Statement) => item.statusWithdrawal === 'true'));
+      };
+  
+      fetchData();
+    }
+    
   }, []);
 
   const [activeTable, setActiveTable] = React.useState(0);
@@ -101,7 +105,7 @@ export default function Page() {
                   "Status",
                 ]}
                 tbList={dataWithdrawal || []}
-                type={""}
+                type={"withdrawal"}
               />
             )}
           </div>

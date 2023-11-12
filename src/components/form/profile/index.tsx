@@ -8,6 +8,7 @@ interface ProfileDetailsProps {
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
+  const [isEdit,setIsEdit] = React.useState(false);
   return (
     <div className="mx-6 bg-[#01115E] px-8 py-6 rounded-xl my-6">
       <h1 className="font-bold text-xl pb-4">Profile Details</h1>
@@ -33,11 +34,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
             State
           </label>
           <input
-            value={data?.state}
+            disabled={!isEdit}
+            defaultValue={data?.state}
             type="text"
             id="state"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Selangor"
+            
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -45,11 +47,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
             City
           </label>
           <input
-            value={data?.city}
+            disabled={!isEdit}
+            defaultValue={data?.city}
             type="text"
             id="city"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Selayang"
+            
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -57,11 +60,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
             Address
           </label>
           <input
-            value={data?.address}
+            disabled={!isEdit}
+            defaultValue={data?.address}
             type="text"
             id="address"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="10D-18-5, Example Resident"
+            
           />
         </div>
 
@@ -70,11 +74,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
             Post Code
           </label>
           <input
-            value={data?.postCode}
+            disabled={!isEdit}
+            defaultValue={data?.postCode}
             type="text"
             id="post_code"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="12345"
+           
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -82,23 +87,26 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
             Occupation
           </label>
           <input
-            value={data?.occupation}
+            disabled={!isEdit}
+            defaultValue={data?.occupation}
             type="text"
             id="occupation"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Manager"
+            
           />
         </div>
 
         <div className="flex w-full justify-end">
-          <div className="flex">
-            <button className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
+          {isEdit?<div className="flex">
+            <button onClick={()=>setIsEdit(false)} className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
               Discard
             </button>
-            <button className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+            <button onClick={()=>setIsEdit(false)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
               Save
             </button>
-          </div>
+          </div>:<button onClick={()=>setIsEdit(!isEdit)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+              Edit
+            </button>}
         </div>
       </form>
     </div>

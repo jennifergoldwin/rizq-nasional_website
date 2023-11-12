@@ -5,7 +5,7 @@ import standard from "../../../public/assets/icons/standard.png";
 import { depositWithdrawl } from "@/utils/model";
 type Props = {
   thList: string[];
-  tbList: depositWithdrawl[];
+  tbList: any[];
   type: string;
 };
 
@@ -33,10 +33,10 @@ const Table = (props: Props) => {
                 {tbItem.date.replace(" ", "\n")}
               </th>
               <td className="px-py-4">{tbItem.code}</td>
-              {tbItem.tenure !== null && (
+              {props.type !== "withdrawal" && (
                 <td className="px-py-4">{tbItem.tenure}</td>
               )}
-              {tbItem.endDate !== null && (
+              {tbItem.endDate !== null && props.type !== "withdrawal" && (
                 <td className="p-2 whitespace-pre-line">
                   {tbItem.endDate.replace(" ", "\n")}
                 </td>

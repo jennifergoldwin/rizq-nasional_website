@@ -1,3 +1,4 @@
+"use client";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +10,27 @@ import family from "../../public/assets/images/family.png";
 import ic_reward from "../../public/assets/icons/ic_reward.png";
 import ic_withdrawl from "../../public/assets/icons/ic_withdrawl.png";
 import ic_invest from "../../public/assets/icons/ic_invest.png";
+import React from "react";
+import Cookies from "js-cookie";
+import { cookies } from "@/utils/constant";
+import { User } from "@/utils/model";
 export default function Home() {
+
+  const [user, setUser] = React.useState<User | null>(null);
+
+  React.useEffect(()=>{
+    const token = Cookies.get(cookies.token);
+    const identityNumber = Cookies.get(cookies.identityNumber);
+    const fullName = Cookies.get(cookies.fullName);
+
+    if (token && identityNumber && fullName) {
+      setUser({ token, identityNumber, fullName });
+    }else{
+      setUser(null);
+    }
+
+  },[])
+
   return (
     <>
       <Navbar />
@@ -28,7 +49,7 @@ export default function Home() {
                   Financial solutions that make every cent matter
                 </span>
                 <Link
-                  href="/register"
+                  href={user==null?"/login":"/overview"}
                   className={`w-fit flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-3 px-6  font-bold justify-center gap-2`}
                 >
                   Join Us

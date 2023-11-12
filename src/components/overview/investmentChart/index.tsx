@@ -80,10 +80,10 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
             ))}
         </select> */}
         <select
-            className="p-2 border rounded"
+            className="py-1 px-5  rounded bg-[#2D3681]"
             value={selectedYear}
             onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
-            style={{ color: 'black' }}
+            style={{ color: 'white' }}
         >
             {uniqueYears.map((year) => (
             <option key={year} value={year}>

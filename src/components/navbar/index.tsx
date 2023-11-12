@@ -25,8 +25,9 @@ const Navbar = () => {
     if (token && identityNumber && fullName) {
       setUser({ token, identityNumber, fullName });
     }else{
-      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
-      setTimeout(() => router.replace("/login"), 2000);
+      setUser(null);
+      // toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      // setTimeout(() => router.replace("/login"), 2000);
     }
   }, []);
 
@@ -35,7 +36,7 @@ const Navbar = () => {
     Cookies.remove(cookies.identityNumber);
     Cookies.remove(cookies.fullName);
     setUser(null);
-    router.replace("/login");
+    // router.replace("/login");
   };
 
   return (

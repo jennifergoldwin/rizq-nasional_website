@@ -48,10 +48,13 @@ const AssetsAllocation: React.FC<AssetsAllocationProps> = ({ data }) => {
                   <td className="px-2 py-5">{stock.stockName}</td>
                   <td className={`p-2 text-white w-[50%]`}>
                     <div className="flex items-center gap-4">
-                      <div className={`w-full bg-[${color}]/[0.4] rounded-full h-2.5`}>
+                      <div className={`w-full bg-[${color}]/[0.4] rounded-full h-2.5`}
+                      style={{backgroundColor:`${color}99`,}}
+                      >
                         <div
-                          className={`bg-[${color}] h-2.5 rounded-full`}
+                          className={` h-2.5 rounded-full`}
                           style={{
+                            backgroundColor : color,
                             width: `${(stock.totalPurchasedPrice / totalPurchasedPrice) * 100}%`,
                           }}
                         ></div>

@@ -8,7 +8,7 @@ interface BankDetailsProps {
 
 const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
   const [selectedOption, setSelectedOption] = React.useState('');
-
+  const [isEdit,setIsEdit] = React.useState(false);
   React.useEffect(() => {
     // Update selectedOption when data changes
     if (data?.bankName !== undefined) {
@@ -30,7 +30,7 @@ const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
           <select
             id="dropdown_bank_name"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            value={selectedOption}
+            value={selectedOption} disabled={!isEdit}
             onChange={handleSelect}
           >
             <option value="">Select Bank</option>
@@ -45,7 +45,7 @@ const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
             Account Number
           </label>
           <input
-            type="text"
+            type="text" disabled={!isEdit}
             id="account_number"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
             defaultValue={data?.bankAccountNumber}
@@ -58,20 +58,23 @@ const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
           <input
             type="text"
             id="holder_name"
+            disabled={!isEdit}
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
             defaultValue={data?.bankHolderName}
           />
         </div>
 
         <div className="flex w-full justify-end">
-          <div className="flex">
-            <button className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
+           {isEdit?<div className="flex">
+            <button onClick={()=>setIsEdit(false)} className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
               Discard
             </button>
-            <button className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+            <button onClick={()=>setIsEdit(false)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
               Save
             </button>
-          </div>
+            </div>:<button onClick={()=>setIsEdit(!isEdit)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+              Edit
+            </button>}
         </div>
       </form>
     </div>
