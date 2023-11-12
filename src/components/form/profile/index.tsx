@@ -1,35 +1,45 @@
 "use client";
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { ProfileData } from '../../../interface/profiles';
 
-const ProfileDetails = () => {
+interface ProfileDetailsProps {
+  data: ProfileData | null;
+}
+
+const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
+  const [isEdit,setIsEdit] = React.useState(false);
   return (
     <div className="mx-6 bg-[#01115E] px-8 py-6 rounded-xl my-6">
       <h1 className="font-bold text-xl pb-4">Profile Details</h1>
       <form>
         <div className="flex w-full items-center my-4">
           <div className="w-2/5">Full Name</div>
-          <div className="w-3/5">Full Name User</div>
+          <div className="w-3/5">{data?.fullName}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Identity Card Number</div>
-          <div className="w-3/5">12344567890</div>
+          <div className="w-3/5">{data?.identityNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Phone Number</div>
-          <div className="w-3/5">0123456789</div>
+          <div className="w-3/5">{data?.phoneNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Email Address</div>
-          <div className="w-3/5">email123@example.com</div>
+          <div className="w-3/5">{data?.email}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <label htmlFor="state" className="w-2/5">
             State
           </label>
           <input
+            disabled={!isEdit}
+            defaultValue={data?.state}
             type="text"
             id="state"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Selangor"
+            
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -37,10 +47,12 @@ const ProfileDetails = () => {
             City
           </label>
           <input
+            disabled={!isEdit}
+            defaultValue={data?.city}
             type="text"
             id="city"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Selayang"
+            
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -48,10 +60,12 @@ const ProfileDetails = () => {
             Address
           </label>
           <input
+            disabled={!isEdit}
+            defaultValue={data?.address}
             type="text"
             id="address"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="10D-18-5, Example Resident"
+            
           />
         </div>
 
@@ -60,10 +74,12 @@ const ProfileDetails = () => {
             Post Code
           </label>
           <input
+            disabled={!isEdit}
+            defaultValue={data?.postCode}
             type="text"
             id="post_code"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="12345"
+           
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -71,22 +87,26 @@ const ProfileDetails = () => {
             Occupation
           </label>
           <input
+            disabled={!isEdit}
+            defaultValue={data?.occupation}
             type="text"
             id="occupation"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Manager"
+            
           />
         </div>
 
         <div className="flex w-full justify-end">
-          <div className="flex">
-            <button className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
+          {isEdit?<div className="flex">
+            <button onClick={()=>setIsEdit(false)} className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
               Discard
             </button>
-            <button className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+            <button onClick={()=>setIsEdit(false)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
               Save
             </button>
-          </div>
+          </div>:<button onClick={()=>setIsEdit(!isEdit)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+              Edit
+            </button>}
         </div>
       </form>
     </div>

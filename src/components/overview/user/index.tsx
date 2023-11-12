@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
@@ -41,28 +41,28 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-2 py-3 rounded-lg text-center h-full">
             <span>Current Value</span>
             <Image width={70} src={graph} alt="graph icon" />
-            <span>{totalDeposit+totalProfit}</span>
+            <span>{`RM${totalDeposit+totalProfit}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Your Deposit</span>
             <Image width={70} src={graph} alt="graph icon" />
-            <span>{totalDeposit}</span>
+            <span>{`RM${totalDeposit}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Total Profits</span>
             <Image width={70} src={graph} alt="graph icon" />
-            <span>{totalProfit}</span>
+            <span>{`RM${totalProfit}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Total Rate</span>
             <Image width={70} src={graph} alt="graph icon" />
-            <span>{`%${totalProfit/totalDeposit*100}`}</span>
+            <span>{`%${(totalProfit/totalDeposit*100).toFixed(2)}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">

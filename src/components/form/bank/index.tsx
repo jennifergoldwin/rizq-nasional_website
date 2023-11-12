@@ -1,7 +1,20 @@
 "use client";
 import React from "react";
-const BankDetails = () => {
-  const [selectedOption, setSelectedOption] = React.useState("");
+import { BankData } from "@/interface/profiles";
+
+interface BankDetailsProps {
+  data: BankData | null;
+}
+
+const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
+  const [selectedOption, setSelectedOption] = React.useState('');
+  const [isEdit,setIsEdit] = React.useState(false);
+  React.useEffect(() => {
+    // Update selectedOption when data changes
+    if (data?.bankName !== undefined) {
+      setSelectedOption(data.bankName.toLowerCase());
+    }
+  }, [data]);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
@@ -17,7 +30,7 @@ const BankDetails = () => {
           <select
             id="dropdown_bank_name"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue={selectedOption}
+            value={selectedOption} disabled={!isEdit}
             onChange={handleSelect}
           >
             <option value="">Select Bank</option>
@@ -32,10 +45,10 @@ const BankDetails = () => {
             Account Number
           </label>
           <input
-            type="text"
+            type="text" disabled={!isEdit}
             id="account_number"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="1234567891"
+            defaultValue={data?.bankAccountNumber}
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -45,20 +58,23 @@ const BankDetails = () => {
           <input
             type="text"
             id="holder_name"
+            disabled={!isEdit}
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Holder Name"
+            defaultValue={data?.bankHolderName}
           />
         </div>
 
         <div className="flex w-full justify-end">
-          <div className="flex">
-            <button className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
+           {isEdit?<div className="flex">
+            <button onClick={()=>setIsEdit(false)} className="border-[#A169F2] text-[#A169F2] rounded-lg border-[2px] py-2 px-4 mr-4">
               Discard
             </button>
-            <button className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+            <button onClick={()=>setIsEdit(false)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
               Save
             </button>
-          </div>
+            </div>:<button onClick={()=>setIsEdit(!isEdit)} className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6">
+              Edit
+            </button>}
         </div>
       </form>
     </div>
