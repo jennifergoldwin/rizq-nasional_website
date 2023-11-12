@@ -6,11 +6,38 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import logo from "../../../public/assets/images/logo.png";
 import { IoClose, IoMenu } from "react-icons/io5";
+import { User } from "@/utils/model";
+import { cookies } from "@/utils/constant";
+import Cookies from "js-cookie";
+import { toast } from 'react-toastify'
+import UserCard from "../usercard";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState("false");
+  const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
+  React.useEffect(() => {
+    const token = Cookies.get(cookies.token);
+    const identityNumber = Cookies.get(cookies.identityNumber);
+    const fullName = Cookies.get(cookies.fullName);
+
+    if (token && identityNumber && fullName) {
+      setUser({ token, identityNumber, fullName });
+    }else{
+      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      setTimeout(() => router.replace("/login"), 2000);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    Cookies.remove(cookies.token);
+    Cookies.remove(cookies.identityNumber);
+    Cookies.remove(cookies.fullName);
+    setUser(null);
+    router.replace("/login");
+  };
+
   return (
     <nav className={` w-full z-[100] `}>
       <div className="max-w-screen-2xl md:max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-transparent ">
@@ -60,13 +87,17 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-          <Link
-            href="/login"
-            onClick={() => setActiveMenu(false)}
-            className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
-          >
-            Login
-          </Link>
+          {user ? (
+            <UserCard name={user.fullName} handleLogout={handleLogout} />
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setActiveMenu(false)}
+                className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
+              >
+                Login
+              </Link>
+            )}
           {/* {isLogin === "true" ? (
             <div className="flex gap-6 items-center justify-center  text-[#0D28A6]">
               <Link href="/history">

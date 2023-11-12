@@ -29,7 +29,7 @@ const TopBar = () => {
     Cookies.remove(cookies.identityNumber);
     Cookies.remove(cookies.fullName);
     setUser(null);
-    router.back();
+    router.replace("/login");
   };
 
 

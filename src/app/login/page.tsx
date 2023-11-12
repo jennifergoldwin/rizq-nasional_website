@@ -31,15 +31,7 @@ export default function Page() {
   
   const onSubmit = async (data: LoginForm) => {
     try {
-      if (!isChecked) {
-        // If checkbox is not checked, show an error message
-        setError('termsAndConditions', {
-          type: 'manual',
-          message: 'Please agree to the terms and conditions.',
-        });
-        return;
-      }
-
+      console.log(data)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -58,7 +50,6 @@ export default function Page() {
         Cookies.set(cookies.token,token, { expires: 1 });
         Cookies.set(cookies.identityNumber,userIdentityNumber,{ expires: 1 });
         Cookies.set(cookies.fullName,userName,{ expires: 1 });
-        
         // Handle successful login, e.g., redirect to another page
         router.push("/overview")
       }
@@ -71,8 +62,6 @@ export default function Page() {
       });
     }
   };
-
-  
 
   React.useEffect(() => {
     const token = Cookies.get(cookies.token);

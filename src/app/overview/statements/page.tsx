@@ -1,9 +1,56 @@
 "use client";
 import Table from "@/components/table";
 import { depositData, withdrawlData } from "@/utils/dummy";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { cookies } from "@/utils/constant";
+
+interface Statement {
+ date: string;
+ code: string;
+ plan: string;
+ interest: string;
+ amount: string;
+ status: string;
+ statusWithdrawal: string;
+}
+
+const fetchUserStatement = async () => {
+  try {
+    const userIdentityNumber = Cookies.get(cookies.identityNumber);
+    const token = Cookies.get(cookies.token);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data from the API:', error);
+    return null;
+  }
+};
 
 export default function Page() {
+  
+  const [data, setData] = useState(null);
+  const [dataWithdrawal, setDataWithdrawal] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchUserStatement();
+      setData(data.result.statement);
+      setDataWithdrawal(data.result.statement.filter((item: Statement) => item.statusWithdrawal === 'true'));
+    };
+
+    fetchData();
+  }, []);
+
   const [activeTable, setActiveTable] = React.useState(0);
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -40,7 +87,7 @@ export default function Page() {
                   "Amount",
                   "Status",
                 ]}
-                tbList={depositData}
+                tbList={data || []}
                 type={""}
               />
             ) : (
@@ -53,7 +100,7 @@ export default function Page() {
                   "Amount",
                   "Status",
                 ]}
-                tbList={withdrawlData}
+                tbList={dataWithdrawal || []}
                 type={""}
               />
             )}

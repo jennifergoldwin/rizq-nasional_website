@@ -1,31 +1,39 @@
 "use client";
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { ProfileData } from '../../../interface/profiles';
 
-const ProfileDetails = () => {
+interface ProfileDetailsProps {
+  data: ProfileData | null;
+}
+
+const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {
   return (
     <div className="mx-6 bg-[#01115E] px-8 py-6 rounded-xl my-6">
       <h1 className="font-bold text-xl pb-4">Profile Details</h1>
       <form>
         <div className="flex w-full items-center my-4">
           <div className="w-2/5">Full Name</div>
-          <div className="w-3/5">Full Name User</div>
+          <div className="w-3/5">{data?.fullName}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Identity Card Number</div>
-          <div className="w-3/5">12344567890</div>
+          <div className="w-3/5">{data?.identityNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Phone Number</div>
-          <div className="w-3/5">0123456789</div>
+          <div className="w-3/5">{data?.phoneNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Email Address</div>
-          <div className="w-3/5">email123@example.com</div>
+          <div className="w-3/5">{data?.email}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <label htmlFor="state" className="w-2/5">
             State
           </label>
           <input
+            value={data?.state}
             type="text"
             id="state"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
@@ -37,6 +45,7 @@ const ProfileDetails = () => {
             City
           </label>
           <input
+            value={data?.city}
             type="text"
             id="city"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
@@ -48,6 +57,7 @@ const ProfileDetails = () => {
             Address
           </label>
           <input
+            value={data?.address}
             type="text"
             id="address"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
@@ -60,6 +70,7 @@ const ProfileDetails = () => {
             Post Code
           </label>
           <input
+            value={data?.postCode}
             type="text"
             id="post_code"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
@@ -71,6 +82,7 @@ const ProfileDetails = () => {
             Occupation
           </label>
           <input
+            value={data?.occupation}
             type="text"
             id="occupation"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"

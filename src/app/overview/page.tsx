@@ -1,7 +1,7 @@
 "use client";
 
 import UserDetails from "@/components/overview/user";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "chart.js/auto";
 
 import {Line} from "react-chartjs-2";
@@ -9,46 +9,50 @@ import GeoAllocation from "@/components/overview/geoAllocation";
 import AssetsAllocation from "@/components/overview/assetsAllocation";
 import { useRouter } from "next/navigation";
 import { User } from "@/utils/model";
-import Cookies from 'js-cookie';
 import { cookies } from "@/utils/constant";
 import { toast } from "react-toastify";
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+import Cookies from "js-cookie";
+import { UserPortfolio } from "@/interface/portfolio";
+import InvestmentChart from "@/components/overview/inventmentChart";
+
+const fetchUserPortfolio = async () => {
+  try {
+    const userIdentityNumber = Cookies.get(cookies.identityNumber);
+    const token = Cookies.get(cookies.token);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/portfolio/${userIdentityNumber}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data from the API:', error);
+    return null;
+  }
+};
+
 
 const Page = () => {
   const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
-  const getGradient = (ctx: any, chartArea: any) => {
-    var gradient = ctx.createLinearGradient(
-      0,
-      chartArea.bottom,
-      0,
-      chartArea.top
-    );
-    gradient.addColorStop(0, "rgba(1,17,94,1)");
-    gradient.addColorStop(1, "rgba(72,104,215,0)");
+  const [userPortfolio, setUserPortfolio] = useState<UserPortfolio | null>(null);
 
-    return gradient;
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchUserPortfolio();
+      console.log(data)
+      setUserPortfolio(data.result);
+    };
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: (context: any) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-          // This case happens on initial chart load
-          if (!chartArea) return;
-          return getGradient(ctx, chartArea);
-        },
-        borderColor: "#4DC2E8", // Border color (white in this example)
-        borderWidth: 3,
-        fill: true,
-      },
-    ],
-  };
+    fetchData();
+  }, []);
+
 
   React.useEffect(() => {
     const token = Cookies.get(cookies.token);
@@ -66,7 +70,7 @@ const Page = () => {
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto h-full w-full">
-        <UserDetails user={user} totalDeposit={0} totalInvestment={0} totalProfit={0}/>
+        <UserDetails user={user} totalDeposit={userPortfolio?.portfolio.total_deposit || 0} totalInvestment={userPortfolio?.portfolio.total_investment || 0} totalProfit={userPortfolio?.portfolio.total_profit || 0}/>
         <div className="flex lg:flex-row flex-col w-full">
           <div className="w-full lg:w-2/5">
             <div className="bg-[#01115E] px-8 py-6 rounded-xl my-6 mx-6 flex flex-col justify-center items-center">
@@ -454,37 +458,11 @@ const Page = () => {
             </div>
           </div>
           <div className="w-auto lg:w-3/5 m-6">
-            <AssetsAllocation />
+            <AssetsAllocation data={userPortfolio?.stockAllocation || []} />
           </div>
         </div>
         <GeoAllocation />
-        <div className="mx-6 my-12 bg-[#01115E] px-8 py-6 rounded-xl">
-          <h1 className="text-center text-xl font-semibold pb-8 pt-4">
-            Investment Growth
-          </h1>
-          <Line
-            options={{
-              responsive: true,
-              elements: {
-                line: {
-                  tension: 0.1,
-                },
-                point: {
-                  radius: 0,
-                },
-              },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-                title: {
-                  display: false,
-                },
-              },
-            }}
-            data={data}
-          />
-        </div>
+        <InvestmentChart data={userPortfolio?.investmentGrowth || []} />
       </div>
     </main>
   );

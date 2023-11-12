@@ -1,7 +1,20 @@
 "use client";
 import React from "react";
-const BankDetails = () => {
-  const [selectedOption, setSelectedOption] = React.useState("");
+import { BankData } from "@/interface/profiles";
+
+interface BankDetailsProps {
+  data: BankData | null;
+}
+
+const BankDetails: React.FC<BankDetailsProps> = ({ data }) => {
+  const [selectedOption, setSelectedOption] = React.useState('');
+
+  React.useEffect(() => {
+    // Update selectedOption when data changes
+    if (data?.bankName !== undefined) {
+      setSelectedOption(data.bankName.toLowerCase());
+    }
+  }, [data]);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
@@ -17,7 +30,7 @@ const BankDetails = () => {
           <select
             id="dropdown_bank_name"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue={selectedOption}
+            value={selectedOption}
             onChange={handleSelect}
           >
             <option value="">Select Bank</option>
@@ -35,7 +48,7 @@ const BankDetails = () => {
             type="text"
             id="account_number"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="1234567891"
+            defaultValue={data?.bankAccountNumber}
           />
         </div>
         <div className="flex items-center my-4 w-full">
@@ -46,7 +59,7 @@ const BankDetails = () => {
             type="text"
             id="holder_name"
             className="bg-[#2D3681] text-white/[0.3]  rounded-lg py-3 px-4 w-3/5"
-            defaultValue="Holder Name"
+            defaultValue={data?.bankHolderName}
           />
         </div>
 
