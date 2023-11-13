@@ -6,7 +6,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import logo from "../../../public/assets/images/logo.png";
 import { IoClose, IoMenu } from "react-icons/io5";
-import { User } from "@/utils/model";
+import { ROLE, User } from "@/utils/model";
 import { cookies } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify'
@@ -23,7 +23,8 @@ const Navbar = () => {
     const fullName = Cookies.get(cookies.fullName);
 
     if (token && identityNumber && fullName) {
-      setUser({ token, identityNumber, fullName });
+      const role = ROLE.ROLE_USER;
+      setUser({ token, identityNumber, fullName, role });
     }else{
       setUser(null);
       // toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
@@ -73,7 +74,7 @@ const Navbar = () => {
           <ul className="flex flex-col font-normal p-2 md:p-0 mt-4 md:flex-row md:space-x-12 md:mt-0 relative">
             <li>
               <Link
-                href="/#about-us"
+                href="#introduction-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
                 About us
@@ -81,7 +82,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/#our-approach"
+                href="#why-should-invest-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
                 Our Approach

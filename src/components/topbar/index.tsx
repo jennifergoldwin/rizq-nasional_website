@@ -3,7 +3,7 @@ import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
 import UserCard from "../usercard";
 import Cookies from 'js-cookie';
-import { User } from "@/utils/model";
+import { ROLE, User } from "@/utils/model";
 import { toast } from "react-toastify";
 import { cookies } from "@/utils/constant";
 
@@ -17,7 +17,8 @@ const TopBar = () => {
     const fullName = Cookies.get(cookies.fullName);
 
     if (token && identityNumber && fullName) {
-      setUser({ token, identityNumber, fullName });
+      const role = ROLE.ROLE_USER;
+      setUser({ token, identityNumber, fullName,role });
     }else{
       toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
       setTimeout(() => router.replace("/login"), 2000);

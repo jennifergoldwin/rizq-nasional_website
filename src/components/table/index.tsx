@@ -1,8 +1,4 @@
-import Image from "next/image";
-import basic from "../../../public/assets/icons/basic.png";
-import premium from "../../../public/assets/icons/premium.png";
-import standard from "../../../public/assets/icons/standard.png";
-import { depositWithdrawl } from "@/utils/model";
+
 type Props = {
   thList: string[];
   tbList: any[];

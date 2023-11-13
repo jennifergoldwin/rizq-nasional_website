@@ -13,7 +13,7 @@ import ic_invest from "../../public/assets/icons/ic_invest.png";
 import React from "react";
 import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
-import { User } from "@/utils/model";
+import { ROLE, User } from "@/utils/model";
 export default function Home() {
 
   const [user, setUser] = React.useState<User | null>(null);
@@ -24,7 +24,8 @@ export default function Home() {
     const fullName = Cookies.get(cookies.fullName);
 
     if (token && identityNumber && fullName) {
-      setUser({ token, identityNumber, fullName });
+      const role = ROLE.ROLE_USER;
+      setUser({ token, identityNumber, fullName,role });
     }else{
       setUser(null);
     }

@@ -18,10 +18,10 @@ const UserCard: React.FC<UserCardProps> = ({ name, handleLogout }) => {
             onClick={() => setShowLogout(!showLogout)}
             className="flex items-center gap-4"
           >
-            <Image src={user} alt="user" width={40} />
+            <Image src={user} alt="user" width={30} />
             <p className="text-lg">{name}</p>
             <svg
-              className="w-5.5 h-2.5 ml-2.5"
+              className="w-3.5 h-2.5 ml-2.5"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

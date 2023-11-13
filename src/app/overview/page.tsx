@@ -6,7 +6,7 @@ import "chart.js/auto";
 import GeoAllocation from "@/components/overview/geoAllocation";
 import AssetsAllocation from "@/components/overview/assetsAllocation";
 import { useRouter } from "next/navigation";
-import { User } from "@/utils/model";
+import { ROLE, User } from "@/utils/model";
 import { cookies } from "@/utils/constant";
 import { toast } from "react-toastify";
 
@@ -49,7 +49,8 @@ const Page = () => {
     const fullName = Cookies.get(cookies.fullName);
 
     if (token && identityNumber && fullName) {
-      setUser({ token, identityNumber, fullName });
+      const role = ROLE.ROLE_USER;
+      setUser({ token, identityNumber, fullName,role });
 
       const fetchData = async () => {
         const data = await fetchUserPortfolio();

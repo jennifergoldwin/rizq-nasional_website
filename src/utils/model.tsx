@@ -13,4 +13,32 @@ export interface User{
   token: string ;
   identityNumber: string;
   fullName: string;
+  role: ROLE
+}
+
+export interface Admin{
+  fullName: string;
+  username: string;
+  password: string;
+}
+
+export interface UserInfoForAdmin{
+  identityNumber:string;
+  fullName:string;
+  email:string;
+  phoneNumber:string;
+  totalDeposit:number;
+  createdBy: string;
+}
+
+export enum ROLE{
+  ROLE_USER,
+  ROLE_MASTER_ADMIN,
+  ROLE_ADMIN
+}
+
+export interface Stocks{
+  stockId:string;
+  stockName:string;
+  stockPrice:number;
 }
