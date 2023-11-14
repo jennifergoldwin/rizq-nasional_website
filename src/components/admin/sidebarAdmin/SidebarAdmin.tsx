@@ -7,13 +7,23 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 import logo from "../../../../public/assets/images/logo.png";
+import Cookies from 'js-cookie';
 import {RiRefund2Line,RiPieChart2Fill,RiAdminFill} from 'react-icons/ri'
+import { cookiesAdmin, roleType } from "@/utils/constant";
+import { ROLE } from "@/utils/model";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 const SidebarAdmin = () => {
   const [showSidebar, setShowSidebar] = React.useState(false);
   const segment = useSelectedLayoutSegment();
+  const [role,setRole] = React.useState("");
+
+
+  React.useEffect(()=>{
+    const role = Cookies.get(cookiesAdmin.role) || ""
+    setRole(role);
+  },[role])
 
   const sidebarOptions = [
     {
@@ -23,21 +33,26 @@ const SidebarAdmin = () => {
       iconSelected: "/assets/icons/ic_profile_blue.png",
       current: !segment ? true : false,
     },
-    {
-      name: "Admins",
-      href: "/accounts/admin",
-      icon: "/assets/icons/ic_profile.png",
-      iconSelected: "/assets/icons/ic_profile_blue.png",
-      current: `/${segment}` === "/admin" ? true : false,
-    },
-    {
+    
+    role === "ROLE_MASTER_ADMIN"
+      ? {
+          name: "Admins",
+          href: "/accounts/admin",
+          icon: "/assets/icons/ic_profile.png",
+          iconSelected: "/assets/icons/ic_profile_blue.png",
+          current: `/${segment}` === "/admin" ? true : false,
+        }
+      : null,
+      {
         name: "Stocks",
         href: "/accounts/stocks",
         icon: "/assets/icons/ic_investment.png",
         iconSelected: "/assets/icons/ic_investment_blue.png",
         current: `/${segment}` === "/stocks" ? true : false,
-    },
-  ];
+      },
+  ].filter(Boolean);
+  
+  
 
   return (
     <>
@@ -83,25 +98,25 @@ const SidebarAdmin = () => {
           </div>
           <ul className="space-y-2 font-medium">
             {sidebarOptions.map((option) => (
-              <li key={option.name}>
-                <Link
-                  href={option.href}
-                  className={classNames(
-                    option.current ? "text-[#4DC2E8]" : "text-white"
-                  )}
-                >
-                  <div className="flex items-center text-lg">
-                    <img
-                      src={classNames(
-                        option.current ? option.iconSelected : option.icon
-                      )}
-                      alt=""
-                      className="w-[35px] h-[35px] m-4"
-                    />
-                    {option.name}
-                  </div>
-                </Link>
-              </li>
+              option!== null ? <li key={option.name}>
+              <Link
+                href={option.href}
+                className={classNames(
+                  option.current ? "text-[#4DC2E8]" : "text-white"
+                )}
+              >
+                <div className="flex items-center text-lg">
+                  <img
+                    src={classNames(
+                      option.current ? option.iconSelected : option.icon
+                    )}
+                    alt=""
+                    className="w-[35px] h-[35px] m-4"
+                  />
+                  {option.name}
+                </div>
+              </Link>
+            </li> : <div/>
             ))}
           </ul>
         </div>

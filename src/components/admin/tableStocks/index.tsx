@@ -27,10 +27,10 @@ type Props = {
                   scope="row"
                   className="p-2 font-medium  whitespace-pre-line "
                 >
-                  {tbItem.stockId}
+                  {tbItem.id}
                 </th>
                 <td className="px-py-4">{tbItem.stockName}</td> 
-                <td className="px-py-4">{`RM${tbItem.stockPrice}`}</td>
+                <td className="px-py-4">{`RM${tbItem.currPrice}`}</td>
                 <td className="px-py-4 flex justify-center">
                     <button onClick={()=>props.handleModal(tbItem)} className={`flex text-white bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}>
                         Update Price

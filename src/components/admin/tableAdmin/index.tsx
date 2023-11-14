@@ -1,11 +1,15 @@
+"use client";
 import { Admin, Stocks } from "@/utils/model";
-
+import React from "react";
 type Props = {
     thList: string[];
     tbList: Admin[];
   };
   
   const TableAdmin = (props: Props) => {
+    React.useEffect(()=>{
+      console.log(props.tbList)
+    })
     return (
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -29,7 +33,7 @@ type Props = {
                   {tbItem.fullName}
                 </th>
                 <td className="px-py-4">{tbItem.username}</td> 
-                <td className="px-py-4">{tbItem.password}</td>
+
               </tr>
             ))}
           </tbody>

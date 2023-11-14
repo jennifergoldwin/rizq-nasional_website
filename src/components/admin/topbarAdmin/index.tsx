@@ -4,32 +4,31 @@ import React from "react";
 import Cookies from 'js-cookie';
 import { User } from "@/utils/model";
 import { toast } from "react-toastify";
-import { cookies } from "@/utils/constant";
+import { cookiesAdmin } from "@/utils/constant";
 import UserCard from "@/components/usercard";
 
 const TopBarAdmin = () => {
   const segment = useSelectedLayoutSegment();
-  const [user, setUser] = React.useState<User | null>(null);
+  const [nameAdmin, setNameAdmin] = React.useState<string>("");
   const router = useRouter();
-//   React.useEffect(() => {
-//     const token = Cookies.get(cookies.token);
-//     const identityNumber = Cookies.get(cookies.identityNumber);
-//     const fullName = Cookies.get(cookies.fullName);
+  React.useEffect(() => {
+    const fullName = Cookies.get(cookiesAdmin.fullName) || "";
 
-//     if (token && identityNumber && fullName) {
-//       setUser({ token, identityNumber, fullName });
-//     }else{
-//       toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
-//       setTimeout(() => router.replace("/login"), 2000);
-//     }
-//   }, []);
+    if (fullName!=="") {
+      setNameAdmin(fullName);
+    }else{
+      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      setTimeout(() => router.replace("/login-admin"), 2000);
+    }
+  }, []);
 
   const handleLogout = () => {
-    Cookies.remove(cookies.token);
-    Cookies.remove(cookies.identityNumber);
-    Cookies.remove(cookies.fullName);
-    setUser(null);
-    router.replace("/login");
+    Cookies.remove(cookiesAdmin.token);
+    Cookies.remove(cookiesAdmin.username);
+    Cookies.remove(cookiesAdmin.fullName);
+    Cookies.remove(cookiesAdmin.role);
+    setNameAdmin("");
+    router.replace("/login-admin");
   };
 
 
@@ -43,7 +42,7 @@ const TopBarAdmin = () => {
             ? "Stocks"
             : "Accounts"}
         </h1>
-        <UserCard name={"Admin"} handleLogout={handleLogout}/>
+        <UserCard name={nameAdmin} handleLogout={handleLogout}/>
       </div>
     </div>
   );

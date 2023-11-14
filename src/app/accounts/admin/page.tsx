@@ -3,9 +3,89 @@ import TableAdmin from "@/components/admin/tableAdmin";
 import TableDashboard from "@/components/admin/tableDashboard";
 import { Admin } from "@/utils/model";
 import React from "react";
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
+import { cookiesAdmin } from "@/utils/constant";
+import { useRouter } from "next/navigation";
+interface AddAdminForm {
+    fullName: string;
+    username: string;
+    password:string;
+}
 
 const Page = () =>{
     const [showAddAdminModal, setshowAddAdminModal] = React.useState(false);
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<AddAdminForm>();
+    const router = useRouter();
+    const [adminList,setAdminList] = React.useState<Admin[]>([]);
+    
+    React.useEffect(() => {
+        const username = Cookies.get(cookiesAdmin.username) || "";
+        const token = Cookies.get(cookiesAdmin.token) || "";
+        if (username!=="" && token!="") {
+         fetchAdmin(username,token)
+        }else{
+          setTimeout(() => router.replace("/login-admin"), 2000);
+        }
+      }, []);
+
+      const fetchAdmin = async (username: string,token: string) => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/listadmin/${username}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+          });
+    
+          const {error,message,result} = await response.json();
+          console.log(error);
+
+          if (!error){
+            setAdminList((prevAdminList) => [ ...result]);
+          }
+        //   showToast(message, !error); 
+        } catch (error: any) {
+         
+        }
+    };
+    const onSubmit = async (data: AddAdminForm) => {
+        try {
+          const us = Cookies.get(cookiesAdmin.username) || "";
+          if (us===""){
+            return;
+          }
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/register-admin`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fullName : data.fullName,
+                username : data.username,
+                password : data.password,
+                role : "ROLE_ADMIN",
+                createdby :  us,
+            }),
+          });
+    
+          const {error,message,result} = await response.json();
+          console.log(result);
+
+          if (!error){
+            setshowAddAdminModal(!showAddAdminModal)
+            setAdminList((prevAdminList) => [ ...result]);
+          }
+        //   showToast(message, !error); 
+        } catch (error: any) {
+          setError('password', {
+            type: 'manual',
+            message: error.message,
+          });
+        }
+    };
+
 
     return(
         <main className="min-h-screen md:pl-64 w-full">
@@ -20,9 +100,8 @@ const Page = () =>{
                     thList={[
                     "Full Name",
                     "Username",
-                    "Password",
                     ]}
-                    tbList={[{fullName: "Girna",username:"gina123",password:"12345"}]}
+                    tbList={adminList}
                    
               />
             </div>
@@ -41,19 +120,22 @@ const Page = () =>{
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <form  className="p-4 md:p-5">
+                        <form onSubmit={handleSubmit(onSubmit)}  className="p-4 md:p-5">
                             <div className="grid gap-4 mb-4 grid-cols-2">
                                 <div className="col-span-2">
                                     <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
-                                    <input type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Full Name" required/>
+                                    <input  {...register('fullName', { required: 'Full name is required' })}  type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Full Name" required/>
+                                    {errors.fullName && <p className="text-red-600 text-sm">{errors.fullName.message}</p>}
                                 </div>
                                 <div className="col-span-2 sm:col-span-1">
                                     <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                                    <input type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Username" required/>
+                                    <input  {...register('username', { required: 'Username is required' })}  type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Username" required/>
+                                    {errors.username && <p className="text-red-600 text-sm">{errors.username.message}</p>}
                                 </div>
                                 <div className="col-span-2 sm:col-span-1">
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input type="password" name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Password" required/>
+                                    <input  {...register('password', { required: 'Password is required' })}  type="password" name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Password" required/>
+                                    {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
                                 </div>
             
                             </div>

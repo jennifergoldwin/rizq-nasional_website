@@ -9,7 +9,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 import Toast from '../../components/toast';
-import { cookies } from "@/utils/constant";
+import { cookies, cookiesAdmin } from "@/utils/constant";
 
 interface LoginForm {
   username: string;
@@ -31,48 +31,49 @@ export default function Page() {
   };
   
   const onSubmit = async (data: LoginForm) => {
-    // try {
-    //   console.log(data)
-    //   const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login-admin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    //   const {error,message,result} = await response.json();
+      const {error,message,result} = await response.json();
 
-    //   showToast(message, !error);
+      showToast(message, !error);
 
-    //   if (!error){
-    //     const {token, userIdentityNumber, userName} = result;
-    //     // Store the token in a cookie with a max age of 24 hours
-    //     Cookies.set(cookies.token,token, { expires: 1 });
-    //     Cookies.set(cookies.identityNumber,userIdentityNumber,{ expires: 1 });
-    //     Cookies.set(cookies.fullName,userName,{ expires: 1 });
-    //     // Handle successful login, e.g., redirect to another page
-    //     router.push("/overview")
-    //   }
+      if (!error){
+        const {token, username, fullName, role} = result;
+        console.log(role)
+        // Store the token in a cookie with a max age of 24 hours
+        Cookies.set(cookiesAdmin.token,token, { expires: 1 });
+        Cookies.set(cookiesAdmin.username,username,{ expires: 1 });
+        Cookies.set(cookiesAdmin.fullName,fullName,{ expires: 1 });
+        Cookies.set(cookiesAdmin.role,role,{ expires: 1 });
+        // Handle successful login, e.g., redirect to another page
+        router.push("/accounts")
+      }
      
       
-    // } catch (error: any) {
-    //   setError('password', {
-    //     type: 'manual',
-    //     message: error.message,
-    //   });
-    // }
-    router.push("/accounts")
+    } catch (error: any) {
+      setError('password', {
+        type: 'manual',
+        message: error.message,
+      });
+    }
+    // router.push("/accounts")
   };
 
-//   React.useEffect(() => {
-//     const token = Cookies.get(cookies.token);
-//     const identityNumber = Cookies.get(cookies.identityNumber);
-//     const fullName = Cookies.get(cookies.fullName);
-//     if (token && identityNumber && fullName) {
-//       router.push("/overview")
-//     }
-//   }, []);
+  React.useEffect(() => {
+    const token = Cookies.get(cookiesAdmin.token);
+    const username = Cookies.get(cookiesAdmin.username);
+    const fullName = Cookies.get(cookiesAdmin.fullName);
+    if (token && username && fullName) {
+      router.push("/accounts")
+    }
+  }, []);
 
   return (
     <>
@@ -82,6 +83,13 @@ export default function Page() {
           id="login-page"
           className="bg-[url(/assets/images/background_login.png)]  bg-center bg-cover bg-no-repeat"
         >
+          {toast.visible && (
+            <Toast
+              message={toast.message}
+              success={toast.success}
+             
+            />
+          )}
           
           <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto min-h-screen flex">
             <div className="w-full flex items-center justify-center">

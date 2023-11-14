@@ -19,7 +19,6 @@ export interface User{
 export interface Admin{
   fullName: string;
   username: string;
-  password: string;
 }
 
 export interface UserInfoForAdmin{
@@ -38,7 +37,7 @@ export enum ROLE{
 }
 
 export interface Stocks{
-  stockId:string;
+  id:string;
   stockName:string;
-  stockPrice:number;
+  currPrice:number;
 }
