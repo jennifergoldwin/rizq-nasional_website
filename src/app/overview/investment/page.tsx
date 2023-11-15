@@ -1,5 +1,10 @@
+"use client";
 import PlanCard from "@/components/plancard";
-
+import { Plan } from "@/utils/model";
+import React from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { cookiesAdmin } from "@/utils/constant";
 export default function Page() {
   const data = [
     {
@@ -24,6 +29,37 @@ export default function Page() {
       price: 1000,
     },
   ];
+  const [planList, setPlanList] = React.useState<Plan[]>([]);
+  const router = useRouter();
+  React.useEffect(() => {
+    const username = Cookies.get(cookiesAdmin.username) || "";
+    const token = Cookies.get(cookiesAdmin.token) || "";
+    const adminRole = Cookies.get(cookiesAdmin.role) || "";
+    if (username !== "" && token != "" && adminRole != "") {
+      fetchPlan(token);
+    } else {
+      setTimeout(() => router.replace("/login-admin"), 2000);
+    }
+  }, []);
+
+  const fetchPlan = async (token: string) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/plan`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const { error, message, result } = await response.json();
+      console.log(result);
+      if (!error) {
+        setPlanList((prev) => [...result]);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
   return (
     <>
       <main className="min-h-screen md:pl-64 w-full">
@@ -41,8 +77,8 @@ export default function Page() {
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 py-4 grid-cols-1 justify-items-center items-center">
-              {data.map((item) => (
-                <PlanCard data={item} key={item.type} />
+              {planList.map((item) => (
+                <PlanCard data={item} key={item.id} />
               ))}
             </div>
             <p className="text-white/[0.5] italic">

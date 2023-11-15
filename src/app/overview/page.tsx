@@ -19,29 +19,32 @@ const fetchUserPortfolio = async () => {
   try {
     const userIdentityNumber = Cookies.get(cookies.identityNumber);
     const token = Cookies.get(cookies.token);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/portfolio/${userIdentityNumber}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASEURL}/portfolio/${userIdentityNumber}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
 
     return data;
   } catch (error) {
-    console.error('Error fetching data from the API:', error);
+    console.error("Error fetching data from the API:", error);
     return null;
   }
 };
 
-
 const Page = () => {
   const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
-  const [userPortfolio, setUserPortfolio] = useState<UserPortfolio | null>(null);
-
+  const [userPortfolio, setUserPortfolio] = useState<UserPortfolio | null>(
+    null
+  );
 
   React.useEffect(() => {
     const token = Cookies.get(cookies.token);
@@ -50,18 +53,21 @@ const Page = () => {
 
     if (token && identityNumber && fullName) {
       const role = ROLE.ROLE_USER;
-      setUser({ token, identityNumber, fullName,role });
+      setUser({ token, identityNumber, fullName, role });
 
       const fetchData = async () => {
         const data = await fetchUserPortfolio();
-        console.log(data)
+        console.log(data.result);
         setUserPortfolio(data.result);
       };
-  
+
       fetchData();
-      
-    }else{
-      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+    } else {
+      toast("Error occured, please login", {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: "error",
+      });
       setTimeout(() => router.replace("/login"), 2000);
     }
   }, []);
@@ -69,7 +75,12 @@ const Page = () => {
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto h-full w-full">
-        <UserDetails user={user} totalDeposit={userPortfolio?.portfolio.total_deposit || 0} totalInvestment={userPortfolio?.portfolio.total_investment || 0} totalProfit={userPortfolio?.portfolio.total_profit || 0}/>
+        <UserDetails
+          user={user}
+          totalDeposit={userPortfolio?.portfolio.total_deposit || 0}
+          totalInvestment={userPortfolio?.portfolio.total_investment || 0}
+          totalProfit={userPortfolio?.portfolio.total_profit || 0}
+        />
         <div className="flex lg:flex-row flex-col w-full">
           <div className="w-full lg:w-2/5">
             <div className="bg-[#01115E] px-8 py-6 rounded-xl my-6 mx-6 flex flex-col justify-center items-center">
@@ -261,7 +272,10 @@ const Page = () => {
                   </filter>
                 </defs>
               </svg> */}
-              <DoughnutChart totalDeposit={userPortfolio?.portfolio.total_deposit || 0} totalProfit={userPortfolio?.portfolio.total_profit || 0}/>
+              <DoughnutChart
+                totalDeposit={userPortfolio?.portfolio.total_deposit || 0}
+                totalProfit={userPortfolio?.portfolio.total_profit || 0}
+              />
               <div className="flex  py-4">
                 <div className="flex items-center">
                   <svg

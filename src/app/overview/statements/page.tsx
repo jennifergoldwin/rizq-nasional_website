@@ -4,55 +4,54 @@ import { depositData, withdrawlData } from "@/utils/dummy";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
+import { Statement } from "@/utils/model";
 
-interface Statement {
- date: string;
- code: string;
- plan: string;
- interest: string;
- amount: string;
- status: string;
- statusWithdrawal: string;
-}
-
-const fetchUserStatement = async (token:String, userIdentityNumber:String) => {
+const fetchUserStatement = async (
+  token: String,
+  userIdentityNumber: String
+) => {
   try {
-    
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
-
+    console.log(data.result);
     return data;
   } catch (error) {
-    console.error('Error fetching data from the API:', error);
+    console.error("Error fetching data from the API:", error);
     return null;
   }
 };
 
 export default function Page() {
-  
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Statement>();
   const [dataWithdrawal, setDataWithdrawal] = useState(null);
 
   useEffect(() => {
     const userIdentityNumber = Cookies.get(cookies.identityNumber);
     const token = Cookies.get(cookies.token);
-    if (token && userIdentityNumber){
+
+    if (token && userIdentityNumber) {
       const fetchData = async () => {
-        const data = await fetchUserStatement(token,userIdentityNumber);
-        setData(data.result.statement);
-        setDataWithdrawal(data.result.statement.filter((item: Statement) => item.statusWithdrawal === 'true'));
+        const data = await fetchUserStatement(token, userIdentityNumber);
+        setData(data.result);
+        setDataWithdrawal(
+          data.result.filter(
+            (item: Statement) => item.statusWithdrawal === "true"
+          )
+        );
       };
-  
+
       fetchData();
     }
-    
   }, []);
 
   const [activeTable, setActiveTable] = React.useState(0);

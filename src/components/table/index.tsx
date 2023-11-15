@@ -1,7 +1,8 @@
+import { Statement } from "@/utils/model";
 
 type Props = {
   thList: string[];
-  tbList: any[];
+  tbList: any;
   type: string;
 };
 
@@ -19,7 +20,7 @@ const Table = (props: Props) => {
           </tr>
         </thead>
         <tbody>
-          {props.tbList.map((tbItem, idx) => (
+          {props.tbList.map((tbItem: any, idx: number) => (
             <tr key={idx} className="text-center">
               <th
                 key={idx}
@@ -28,7 +29,7 @@ const Table = (props: Props) => {
               >
                 {tbItem.date.replace(" ", "\n")}
               </th>
-              <td className="px-py-4">{tbItem.code}</td>
+              <td className="px-py-4">{tbItem.id}</td>
               {props.type !== "withdrawal" && (
                 <td className="px-py-4">{tbItem.tenure}</td>
               )}
@@ -37,10 +38,10 @@ const Table = (props: Props) => {
                   {tbItem.endDate.replace(" ", "\n")}
                 </td>
               )}
-              <td className="px-py-4">{tbItem.plan}</td>
-              <td className="px-py-4">{tbItem.interest}</td>
+              <td className="px-py-4">{tbItem.planType}</td>
+              <td className="px-py-4">{`${tbItem.interest * 100}%`}</td>
               <td className="px-py-4">{tbItem.amount}</td>
-              <td className="px-py-4">{tbItem.status}</td>
+              <td className="px-py-4">{tbItem.statusPlan}</td>
             </tr>
           ))}
         </tbody>

@@ -2,24 +2,25 @@ import Image from "next/image";
 import basic from "../../../public/assets/icons/basic.png";
 import premium from "../../../public/assets/icons/premium.png";
 import standard from "../../../public/assets/icons/standard.png";
+import { Plan } from "@/utils/model";
 type Props = {
-  data: any;
+  data: Plan;
 };
 const PlanCard = (props: Props) => {
   return (
     <div className="bg-[#2D3681] py-8 px-6 my-4 flex justify-center flex-col items-center rounded-3xl w-full">
       <Image
         src={
-          props.data.type === "Basic"
+          props.data.planType === "Basic"
             ? basic
-            : props.data.type === "Premium"
+            : props.data.planType === "Premium"
             ? premium
             : standard
         }
-        alt={props.data.type}
+        alt={props.data.planType}
       />
-      <h1 className="font-bold text-xl my-4">{props.data.type}</h1>
-      <p className="text-white/[0.5] mb-4">{`${props.data.period} Days Holding Period`}</p>
+      <h1 className="font-bold text-xl my-4">{props.data.planType}</h1>
+      <p className="text-white/[0.5] mb-4">{`${props.data.tenure} Days Holding Period`}</p>
 
       <div>
         <div className="flex items-center">
@@ -82,7 +83,7 @@ const PlanCard = (props: Props) => {
               </filter>
             </defs>
           </svg>
-          <p>{`Returns ${props.data.returns}`}</p>
+          <p>{`Returns ${props.data.interest * 100}%`}</p>
         </div>
         <div className="flex items-center">
           <svg
