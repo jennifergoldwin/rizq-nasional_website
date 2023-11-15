@@ -5,6 +5,7 @@ type Props = {
     tbList: UserInfoForAdmin[];
     handleDeposit:any;
     handleWithdrawl:any;
+    hideAction: boolean;
   };
   
   const TableDashboard = (props: Props) => {
@@ -33,14 +34,14 @@ type Props = {
                 <td className="px-py-4">{tbItem.fullName}</td> 
                 <td className="px-py-4">{tbItem.email}</td>
                 <td className="px-py-4">{tbItem.phoneNumber}</td>
-                <td className="px-py-4">{tbItem.totalDeposit}</td>
-                <td className="px-py-4">{tbItem.createdBy}</td>
-                <td className="px-py-4">
+                <td className="px-py-4">{`RM${tbItem.totalDeposit}`}</td>
+                <td className="px-py-4">{tbItem.createdby}</td>
+                <td className={`px-py-4 ${props.hideAction?'hidden':""}`}>
                     <div className="flex gap-2">
                         <button onClick={()=>props.handleDeposit(tbItem)} className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center `}>
                             Deposit
                         </button>
-                        <button onClick={()=>props.handleWithdrawl(tbItem)} className={`flex text-white bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}>
+                        <button onClick={()=>props.handleWithdrawl(tbItem)} className={`${tbItem.totalDeposit<1?'hidden':'flex'} text-white bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}>
                             Withdrawl
                         </button>
                     </div>

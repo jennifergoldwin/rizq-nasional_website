@@ -27,7 +27,7 @@ export interface UserInfoForAdmin{
   email:string;
   phoneNumber:string;
   totalDeposit:number;
-  createdBy: string;
+  createdby: string;
 }
 
 export enum ROLE{

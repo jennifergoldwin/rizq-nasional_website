@@ -1,12 +1,61 @@
 "use client";
 import TableDashboard from "@/components/admin/tableDashboard";
 import { UserInfoForAdmin } from "@/utils/model";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { useForm } from "react-hook-form";
+import Cookies from 'js-cookie';
+import { cookiesAdmin, roleType } from "@/utils/constant";
 
+interface AddUserForm {
+    fullName : string;
+    email : string;
+    phoneNumber : string;
+    identityNumber: string;
+    password: string;
+}
 const Page = () =>{
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<AddUserForm>();
     const [showAddUserModal, setShowAddUserModal] = React.useState(false);
     const [showDepositModal, setShowDepositModal] = React.useState(false);
     const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
+    const [userList,setUserList] = React.useState<UserInfoForAdmin[]>([]);
+    const [role, setRole] = React.useState("");
+    const router = useRouter();
+    React.useEffect(() => {
+        const username = Cookies.get(cookiesAdmin.username) || "";
+        const token = Cookies.get(cookiesAdmin.token) || "";
+        const adminRole = Cookies.get(cookiesAdmin.role) || "";
+        if (username!=="" && token!="" && adminRole != "") {
+         fetchUser(username,token)
+         setRole(adminRole);
+        }else{
+          setTimeout(() => router.replace("/login-admin"), 2000);
+        }
+    }, []);
+
+    const fetchUser = async (username: string,token: string) => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/listuser/${username}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+          });
+    
+          const {error,message,result} = await response.json();
+          console.log(result);
+
+          if (!error){
+            setUserList((prev) => [ ...result]);
+          }
+        //   showToast(message, !error); 
+        } catch (error: any) {
+         
+        }
+    };
+
     const handleDepositModal = (value: UserInfoForAdmin) => {
         setShowDepositModal(!showDepositModal);
         console.log(value)
@@ -15,10 +64,57 @@ const Page = () =>{
         setShowWithdrawlModal(!showWithdrawModal);
         console.log(value)
     };
+
+    const onSubmit = async (data: AddUserForm) => {
+        try {
+            const us = Cookies.get(cookiesAdmin.username) || "";
+            if (us === "") return;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fullName : data.fullName,
+                    email : data.email,
+                    identityNumber : data.identityNumber,
+                    password : data.password,
+                    phoneNumber : data.phoneNumber,
+                    state: "",
+                    city : "",
+                    address : "",
+                    postCode : "",
+                    occupation : "",
+                    bankName : "",
+                    bankAccountNumber : "",
+                    bankHolderName : "",
+                    role : "ROLE_USER",
+                    createdby: us
+                }),
+            });
+    
+            const {error,message,result} = await response.json();
+    
+            console.log(result)
+            // showToast(message, !error);
+    
+            if (!error){
+                setShowAddUserModal(!showAddUserModal);   
+                setUserList((prev) => [ ...result]);
+            }
+         
+        } catch (error: any) {
+        //     setError('password', {
+        //     type: 'manual',
+        //     message: error.message,
+        //   });
+        }
+        // router.push("/accounts")
+      };
     return(
         <main className="min-h-screen md:pl-64 w-full">
             <div className="max-w-full mx-auto h-full w-full">
-                <div className="flex justify-end mx-12">
+                <div className={`${role===roleType.masterAdmin?'hidden':'flex'} justify-end mx-12`}>
                     <button onClick={()=>setShowAddUserModal(!showAddUserModal)} 
                         className={`flex text-white text-xs bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center mb-4 `}>
                         Add User
@@ -32,9 +128,10 @@ const Page = () =>{
                     "Phone Number",
                     "Total Deposit",
                     "Created by",
-                    "Action"
+                    role===roleType.masterAdmin?'':"Action"
                     ]}
-                    tbList={[{identityNumber: "12345678",fullName:"Jessica",email:"jessica@gmail.com",phoneNumber:"+6072727272",totalDeposit:0,createdBy:"admin 123"}]}
+                    tbList={userList}
+                    hideAction={role===roleType.masterAdmin?true:false}
                     handleDeposit={handleDepositModal}
                     handleWithdrawl={handleWithdrawlModal}
               />
@@ -54,23 +151,37 @@ const Page = () =>{
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <form  className="p-4 md:p-5">
+                        <form onSubmit={handleSubmit(onSubmit)}  className="p-4 md:p-5">
                             <div className="grid gap-4 mb-4 grid-cols-2">
                                 <div className="col-span-2">
                                     <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
-                                    <input type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Full Name" required/>
+                                    <input 
+                                     {...register('fullName', { required: 'Full name is required' })} 
+                                     type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Full Name" required/>
                                 </div>
                                 <div className="col-span-2 sm:col-span-1">
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                    <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Email" required/>
+                                    <input 
+                                     {...register('email', { required: 'Email is required' })} 
+                                    type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Email" required/>
                                 </div>
                                 <div className="col-span-2 sm:col-span-1">
                                     <label htmlFor="phoneNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                                    <input type="text" name="phoneNumber" id="phoneNumber" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Phone Number" required/>
+                                    <input 
+                                     {...register('phoneNumber', { required: 'Phone number is required' })} 
+                                    type="text" name="phoneNumber" id="phoneNumber" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Phone Number" required/>
                                 </div>
                                 <div className="col-span-2">
-                                    <label htmlFor="icNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Identity Card Number</label>
-                                    <input type="text" name="icNumber" id="icNumber" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Identity Card Number" required/>
+                                    <label htmlFor="identityNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Identity Card Number</label>
+                                    <input 
+                                     {...register('identityNumber', { required: 'IC number is required' })} 
+                                    type="text" name="identityNumber" id="identityNumber" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Identity Card Number" required/>
+                                </div>
+                                <div className="col-span-2">
+                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                    <input 
+                                     {...register('password', { required: 'Password is required' })} 
+                                    type="password" name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Password" required/>
                                 </div>
                             </div>
                             <button type="submit" className="text-white inline-flex items-center bg-[#5A64C3] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#5A64C3] dark:focus:ring-blue-800">

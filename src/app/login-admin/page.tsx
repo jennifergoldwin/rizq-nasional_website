@@ -42,6 +42,7 @@ export default function Page() {
 
       const {error,message,result} = await response.json();
 
+      console.log(message)
       showToast(message, !error);
 
       if (!error){
