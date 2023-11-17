@@ -63,9 +63,14 @@ const DepositModal = (props: Props) => {
     amount: string,
     currPrice: number
   ) => {
-    const numericAmount = parseFloat(amount);
-    const newTotalDeposit = totalDeposit + numericAmount * currPrice;
-    setTotalDeposit(newTotalDeposit);
+    if (amount===""){
+      setTotalDeposit(0);
+    }else{
+      const numericAmount = parseFloat(amount);
+      const newTotalDeposit = totalDeposit + numericAmount * currPrice;
+      setTotalDeposit(newTotalDeposit);
+    }
+    
   };
 
   return (
