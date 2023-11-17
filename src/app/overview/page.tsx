@@ -30,7 +30,7 @@ const fetchUserPortfolio = async () => {
       }
     );
     const data = await response.json();
-
+    console.log(data.message)
     return data;
   } catch (error) {
 

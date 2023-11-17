@@ -17,8 +17,7 @@ export default function Page() {
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
     const fullName = Cookies.get(cookies.fullName);
-    console.log(`id :${token}`)
-
+  
     if (token && identityNumber && fullName) {
       fetchUserData(token,identityNumber)
     }
@@ -45,8 +44,6 @@ export default function Page() {
       });
 
       const {error,message,result} = await response.json();
-
-      console.log(result);
 
       if (!error){
         setData(result);

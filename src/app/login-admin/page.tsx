@@ -63,7 +63,7 @@ export default function Page() {
       .catch((error) => {
         setError("password", {
           type: "manual",
-          message: error.message,
+          message: "Invalid password",
         });
       });
   };

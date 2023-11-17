@@ -4,7 +4,7 @@ import { Plan } from "@/utils/model";
 import React from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { cookiesAdmin } from "@/utils/constant";
+import { cookies, cookiesAdmin } from "@/utils/constant";
 export default function Page() {
   const data = [
     {
@@ -32,13 +32,14 @@ export default function Page() {
   const [planList, setPlanList] = React.useState<Plan[]>([]);
   const router = useRouter();
   React.useEffect(() => {
-    const username = Cookies.get(cookiesAdmin.username) || "";
-    const token = Cookies.get(cookiesAdmin.token) || "";
-    const adminRole = Cookies.get(cookiesAdmin.role) || "";
-    if (username !== "" && token != "" && adminRole != "") {
+    
+    const token = Cookies.get(cookies.token) || "";
+   
+    // const adminRole = Cookies.get(cookiesAdmin.role) || "";
+    if (token != "") {
       fetchPlan(token);
     } else {
-      setTimeout(() => router.replace("/login-admin"), 2000);
+      setTimeout(() => router.replace("/login"), 2000);
     }
   }, []);
 
@@ -53,7 +54,7 @@ export default function Page() {
       });
 
       const { error, message, result } = await response.json();
-      console.log(result);
+  
       if (!error) {
         setPlanList((prev) => [...result]);
       }
