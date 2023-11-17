@@ -27,11 +27,10 @@ const fetchUserPortfolio = async () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        credentials: "include",
       }
     );
     const data = await response.json();
-
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching data from the API:", error);

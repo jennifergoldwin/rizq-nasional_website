@@ -27,6 +27,7 @@ const WithdrawlModal = (props: Props) => {
     React.useState<Statement>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    props.setShowWithdrawlModal(!props.showWithdrawModal);
     props.handleWithdrawlModal(selectedInvestment);
   };
 

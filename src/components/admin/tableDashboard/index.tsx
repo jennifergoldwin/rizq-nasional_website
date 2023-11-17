@@ -44,7 +44,7 @@ const TableDashboard = (props: Props) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          
         }
       );
       const { error, message, result } = await response.json();
