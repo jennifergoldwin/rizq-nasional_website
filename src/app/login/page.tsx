@@ -31,7 +31,6 @@ export default function Page() {
   
   const onSubmit = async (data: LoginForm) => {
     try {
-      console.log(data)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login`, {
         method: 'POST',
         headers: {

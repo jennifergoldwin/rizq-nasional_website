@@ -28,8 +28,6 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
       <Swiper
         spaceBetween={20}
         slidesPerView={3}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
         breakpoints={{
           1024: {
             slidesPerView: 5,

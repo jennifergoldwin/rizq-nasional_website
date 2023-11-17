@@ -38,8 +38,6 @@ const Page = () => {
   }, []);
 
   const fetchStock = async (token: string) => {
-    console.log(token);
-
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASEURL}/all-stocks`,
@@ -53,8 +51,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(result);
-
+   
       if (!error) {
         setStockList((prevList) => [...result]);
       }
@@ -84,8 +81,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(result);
-
+  
       if (!error) {
         setShowPriceModal(!showPriceModal);
         setStockList((prevList) => [...result]);
@@ -111,8 +107,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(result);
-
+  
       if (!error) {
         setShowAddStockModal(!showAddStockModal);
         setStockList((prevList) => [...result]);

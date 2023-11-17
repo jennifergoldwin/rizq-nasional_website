@@ -23,7 +23,6 @@ const TableDashboard = (props: Props) => {
   const [investList, setInvestList] = React.useState<Statement[]>([]);
   React.useEffect(() => {
     if (selectedUser) {
-      console.log(selectedUser);
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token != "") {
         fetchUserStatement(token, selectedUser.identityNumber);
@@ -48,12 +47,10 @@ const TableDashboard = (props: Props) => {
         }
       );
       const { error, message, result } = await response.json();
-      console.log(result);
       if (!error) {
         setInvestList(result);
       }
     } catch (error) {
-      console.error("Error fetching data from the API:", error);
     }
   };
   return (

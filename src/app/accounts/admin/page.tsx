@@ -40,7 +40,7 @@ const Page = () =>{
           });
     
           const {error,message,result} = await response.json();
-          console.log(error);
+    
 
           if (!error){
             setAdminList((prevAdminList) => [ ...result]);
@@ -71,7 +71,7 @@ const Page = () =>{
           });
     
           const {error,message,result} = await response.json();
-          console.log(result);
+          
 
           if (!error){
             setshowAddAdminModal(!showAddAdminModal)

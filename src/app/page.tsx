@@ -47,7 +47,7 @@ export default function Home() {
                   Investing Made Effortless
                 </h1>
                 <span className="pb-8 text-xl">
-                  Financial solutions that make every cent matter
+                The Global Leader in online trading with AI robots
                 </span>
                 <Link
                   href={user==null?"/login":"/overview"}
@@ -88,7 +88,7 @@ export default function Home() {
               />
               <div className=" w-full lg:h-auto lg:w-2/5 flex justify-center lg:justify-end items-center md:px-8 px-4">
                 <p className="text-4xl lg:text-3xl font-bold italic lg:py-0 pb-16">
-                  “Peleburan Anda,
+                  “Pelaburan Anda,
                   <br />
                   Keutamaan Kami”
                 </p>
@@ -106,7 +106,7 @@ export default function Home() {
                 Investing globally
               </h1>
               <p className="text-xl ">
-                While the GIC Portfolio’s asset allocation is constructed to
+                While the Rizq Nasional Portfolio’s asset allocation is constructed to
                 achieve an appropriate long-term balance of risk and return, the
                 geographical distribution of the portfolio is fluid and depends
                 primarily on market capacity, economic cycles and investment

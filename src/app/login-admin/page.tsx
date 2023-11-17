@@ -42,12 +42,10 @@ export default function Page() {
 
       const {error,message,result} = await response.json();
 
-      console.log(message)
       showToast(message, !error);
 
       if (!error){
         const {token, username, fullName, role} = result;
-        console.log(role)
         // Store the token in a cookie with a max age of 24 hours
         Cookies.set(cookiesAdmin.token,token, { expires: 1 });
         Cookies.set(cookiesAdmin.username,username,{ expires: 1 });

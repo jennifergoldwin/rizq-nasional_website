@@ -22,10 +22,10 @@ const fetchUserStatement = async (
       }
     );
     const data = await response.json();
-    console.log(data.result);
+  
     return data;
   } catch (error) {
-    console.error("Error fetching data from the API:", error);
+   
     return null;
   }
 };
