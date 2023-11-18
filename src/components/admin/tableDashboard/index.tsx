@@ -9,8 +9,8 @@ import { cookiesAdmin } from "@/utils/constant";
 type Props = {
   thList: string[];
   tbList: UserInfoForAdmin[];
-  planList: Plan[];
-  stockList: Stocks[];
+  // planList: Plan[];
+  // stockList: Stocks[];
   handleDeposit: any;
   handleWithdrawl: any;
   hideAction: boolean;
@@ -110,8 +110,6 @@ const TableDashboard = (props: Props) => {
       </table>
 
       <DepositModal
-        planList={props.planList}
-        stockList={props.stockList}
         showDepositModal={showDepositModal}
         setShowDepositModal={setShowDepositModal}
         handleDepositModal={props.handleDeposit}

@@ -46,7 +46,7 @@ const TopBar = () => {
             ? "Account"
             : "Overview"}
         </h1>
-        <UserCard name={user?.fullName} handleLogout={handleLogout}/>
+        <UserCard hideOverviewPage={false} name={user?.fullName} handleLogout={handleLogout}/>
       </div>
     </div>
   );

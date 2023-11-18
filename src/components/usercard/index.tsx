@@ -2,13 +2,15 @@
 import Image from "next/image";
 import React from 'react';
 import user from "../../../public/assets/icons/ic_user.png";
+import Link from "next/link";
 
 interface UserCardProps {
   name: string | undefined;
+  hideOverviewPage: boolean;
   handleLogout : () => void
 }
 
-const UserCard: React.FC<UserCardProps> = ({ name, handleLogout }) => {
+const UserCard: React.FC<UserCardProps> = ({ name, handleLogout, hideOverviewPage = true }) => {
     const [showLogout, setShowLogout] = React.useState(false);
 
     
@@ -41,9 +43,13 @@ const UserCard: React.FC<UserCardProps> = ({ name, handleLogout }) => {
             style={{ filter: "drop-shadow(1px 1px 5px #4DC2E8)" }}
             className={`z-10 ${
               showLogout ? "block" : "hidden"
-            } bg-[#00093F] divide-y divide-gray-100 rounded-lg shadow mt-4 p-4 absolute -bottom-18 w-full`}
+            } bg-[#00093F] rounded-lg shadow mt-4 p-4 absolute -bottom-18 w-full`}
           >
-            <button className="w-full" onClick={handleLogout}>Logout</button>
+            <div className={`${!hideOverviewPage?'hidden':"mb-2"}`}>
+              <Link className={`w-full text-start `} href="/overview">Overview</Link>
+            </div>
+            
+            <button className="w-full text-start " onClick={handleLogout}>Logout</button>
           </div>
         </div>
     )

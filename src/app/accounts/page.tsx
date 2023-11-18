@@ -23,10 +23,42 @@ const Page = () => {
   } = useForm<AddUserForm>();
   const [showAddUserModal, setShowAddUserModal] = React.useState(false);
   const [userList, setUserList] = React.useState<UserInfoForAdmin[]>([]);
-  const [planList, setPlanList] = React.useState<Plan[]>([]);
-  const [stockList, setStockList] = React.useState<Stocks[]>([]);
+  // const [planList, setPlanList] = React.useState<Plan[]>([]);
+  // const [stockList, setStockList] = React.useState<Stocks[]>([]);
   const [role, setRole] = React.useState("");
   const router = useRouter();
+
+  const [selectedOption, setSelectedOption] = React.useState<string>("");
+  const [searchKeyword, setSearchKeyword] = React.useState<string>("");
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(event.target.value);
+  };
+
+  const filterUserList = () => {
+    return userList.filter((user) => {
+      switch (selectedOption) {
+        case 'identityNumber':
+          return user.identityNumber.includes(searchKeyword);
+        case 'email':
+          return user.email.includes(searchKeyword);
+        case 'fullName':
+          return user.fullName.includes(searchKeyword);
+        case 'phoneNumber':
+          return user.phoneNumber.includes(searchKeyword);
+        case 'createdby':
+          return user.createdby.includes(searchKeyword);
+        default:
+          return true; // No filter if no option is selected
+      }
+    });
+  };
+
+  const filteredUserList = filterUserList();
 
   React.useEffect(() => {
     const username = Cookies.get(cookiesAdmin.username) || "";
@@ -34,54 +66,54 @@ const Page = () => {
     const adminRole = Cookies.get(cookiesAdmin.role) || "";
     if (username !== "" && token != "" && adminRole != "") {
       fetchUser(username, token);
-      fetchPlan(token);
-      fetchStock(token);
+      // fetchPlan(token);
+      // fetchStock(token);
       setRole(adminRole);
     } else {
       setTimeout(() => router.replace("/login-admin"), 2000);
     }
   }, []);
 
-  const fetchStock = async (token: string) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/all-stocks`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  // const fetchStock = async (token: string) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BASEURL}/all-stocks`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
 
-      const { error, message, result } = await response.json();
+  //     const { error, message, result } = await response.json();
 
-      if (!error) {
-        setStockList((prevList) => [...result]);
-      }
-      //   showToast(message, !error);
-    } catch (error: any) {}
-  };
+  //     if (!error) {
+  //       setStockList((prevList) => [...result]);
+  //     }
+  //     //   showToast(message, !error);
+  //   } catch (error: any) {}
+  // };
 
-  const fetchPlan = async (token: string) => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/plan`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  // const fetchPlan = async (token: string) => {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/plan`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      const { error, message, result } = await response.json();
+  //     const { error, message, result } = await response.json();
 
-      if (!error) {
-        setPlanList((prev) => [...result]);
-      }
-      //   showToast(message, !error);
-    } catch (error: any) {}
-  };
+  //     if (!error) {
+  //       setPlanList((prev) => [...result]);
+  //     }
+  //     //   showToast(message, !error);
+  //   } catch (error: any) {}
+  // };
 
   const fetchUser = async (username: string, token: string) => {
     try {
@@ -130,12 +162,7 @@ const Page = () => {
       if (!error) {
         fetchUser(username, token);
       }
-    } catch (error: any) {
-      //     setError('password', {
-      //     type: 'manual',
-      //     message: error.message,
-      //   });
-    }
+    } catch (error: any) {}
   };
 
   const withdrawl = async (data: Statement) => {
@@ -158,18 +185,12 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
-
       // showToast(message, !error);
 
       if (!error) {
         fetchUser(username, token);
       }
-    } catch (error: any) {
-      //     setError('password', {
-      //     type: 'manual',
-      //     message: error.message,
-      //   });
-    }
+    } catch (error: any) {}
   };
 
   const onSubmit = async (data: AddUserForm) => {
@@ -218,20 +239,36 @@ const Page = () => {
     deposit(value);
   };
   const handleWithdrawlModal = (value: any) => {
-    // setShowWithdrawlModal(!showWithdrawModal);
     withdrawl(value);
   };
+
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto h-full w-full">
         <div
           className={`${
             role === roleType.masterAdmin ? "hidden" : "flex"
-          } justify-end mx-12`}
+          } justify-between items-center mx-8 py-8`}
         >
+          <div className="flex gap-4">
+            <select className="text-sm bg-[#2D3681] rounded px-2 py-2" value={selectedOption} onChange={handleOptionChange}>
+                <option value="" disabled>Filter</option>
+                <option value="identityNumber">Identity Number</option>
+                <option value="email">Email</option>
+                <option value="fullName">Full Name</option>
+                <option value="phoneNumber">Phone Number</option>
+                <option value="createdby">Created By</option>
+            </select>
+            
+            <input className="bg-[#2D3681] rounded px-2 py-2 text-sm"
+                type="text"
+                value={searchKeyword} placeholder="Your keyword.."
+                onChange={handleKeywordChange}
+            />
+          </div>
           <button
             onClick={() => setShowAddUserModal(!showAddUserModal)}
-            className={`flex text-white text-xs bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center mb-4 `}
+            className={`flex text-white text-xs bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center  `}
           >
             Add User
           </button>
@@ -246,9 +283,7 @@ const Page = () => {
             "Created by",
             role === roleType.masterAdmin ? "" : "Action",
           ]}
-          tbList={userList}
-          planList={planList}
-          stockList={stockList}
+          tbList={filteredUserList}
           hideAction={role === roleType.masterAdmin ? true : false}
           handleDeposit={handleDepositModal}
           handleWithdrawl={handleWithdrawlModal}
@@ -284,9 +319,9 @@ const Page = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>
@@ -400,9 +435,9 @@ const Page = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 Add new user

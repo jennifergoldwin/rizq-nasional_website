@@ -1,77 +1,61 @@
 "use client";
 import { Plan, Stocks, UserInfoForAdmin } from "@/utils/model";
 import React from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler, Controller, set } from "react-hook-form";
 
 type Props = {
   showDepositModal: boolean;
   setShowDepositModal: any;
   handleDepositModal: any;
-  planList: Plan[];
-  stockList: Stocks[];
+  // planList: Plan[];
+  // stockList: Stocks[];
   selectedUser: UserInfoForAdmin | undefined;
 };
 type FormValues = {
-  depoDate: string;
-  plan: string;
-  amount: string;
-  [stockId: string]: string;
+  dateDeposit: string;
+  totalDeposit: string;
+  totalProfit: string;
   // Add other fields as needed
 };
 const DepositModal = (props: Props) => {
   const {
     handleSubmit,
     control,
-    register,
-    setValue,
+    watch,setValue,
     formState: { errors },
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (props.selectedUser) {
-      const stockData = Object.keys(data)
-        .filter(
-          (key) =>
-            typeof data[key] === "string" &&
-            key !== "depoDate" &&
-            key !== "plan" &&
-            key !== "amount"
-        )
-        .map((stockId) => ({
-          stockId: stockId,
-          value: data[stockId],
-        }));
       const bodyInv = {
         userIdentityNumber: props.selectedUser.identityNumber,
-        date: data.depoDate,
+        dateDeposit: data.dateDeposit,
         dateWithdrawl: null,
-        planId: data.plan,
-        amount: totalDeposit,
-        statusPlan: "Done",
+        totalDeposit: data.totalDeposit,
+        totalProfit: data.totalProfit,
+        statusDeposit: "Done",
         statusWithdrawl: "false",
-        assetsAllocation: stockData,
       };
+      setValue("dateDeposit","")
+      setValue("totalDeposit","")
+      setValue("totalProfit","")
       props.setShowDepositModal(!props.showDepositModal);
       props.handleDepositModal(bodyInv);
     }
   };
 
-  const [totalDeposit, setTotalDeposit] = React.useState<number>(0);
-
-  const updateTotalDeposit = (
-    stockId: string,
-    amount: string,
-    currPrice: number
-  ) => {
-    if (amount===""){
-      setTotalDeposit(0);
+  const [totalValue, setTotalValue] = React.useState<number>(0);
+  
+  React.useEffect(()=>{
+    const amountDepo = parseFloat(watch('totalDeposit'));
+    const amountProfit = parseFloat(watch('totalProfit'));
+    if (!isNaN(amountProfit) && !isNaN(amountDepo)){
+      setTotalValue(amountDepo+amountProfit)
     }else{
-      const numericAmount = parseFloat(amount);
-      const newTotalDeposit = totalDeposit + numericAmount * currPrice;
-      setTotalDeposit(newTotalDeposit);
+      setTotalValue(0)
     }
-    
-  };
+  },[watch('totalDeposit'), watch('totalProfit')])
+  
 
   return (
     <div
@@ -103,9 +87,9 @@ const DepositModal = (props: Props) => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                 />
               </svg>
@@ -115,23 +99,23 @@ const DepositModal = (props: Props) => {
           <form onSubmit={handleSubmit(onSubmit)} className="p-4 md:p-5">
             <div className="grid gap-4 mb-4 grid-cols-2">
               <Controller
-                name="depoDate"
+                name="dateDeposit"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
                   <>
                     <div className="col-span-2">
                       <label
-                        htmlFor="depoDate"
+                        htmlFor="dateDeposit"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Date
                       </label>
                       <input
                         type="date"
-                        id="depoDate"
+                        id="dateDeposit"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Full Name"
+                        placeholder="Deposit Date"
                         required
                         {...field}
                       />
@@ -140,116 +124,79 @@ const DepositModal = (props: Props) => {
                 )}
               />
               <Controller
-                name="plan"
+                name="totalDeposit"
                 control={control}
                 defaultValue=""
-                render={({ field }) => (
+                render={({ field }) => {
+                  return (
                   <>
-                    <div className="col-span-2 sm:col-span-1">
+                    <div className="sm:col-span-1 col-span-2">
                       <label
-                        htmlFor="plan"
+                        htmlFor="totalDeposit"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Plan
+                        Total Deposit
                       </label>
-                      <select
+                      <input
+                        type="number"
+                        id="totalDeposit"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Total Deposit"
                         required
-                        id="plan"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         {...field}
-                      >
-                        <option disabled value="">
-                          Select Plan
-                        </option>
-                        {props.planList.map((item: Plan) => (
-                          <option key={item.id} value={item.id}>
-                            {item.planType}
-                          </option>
-                        ))}
-                      </select>
+                      />
                     </div>
                   </>
-                )}
+                  )
+                }}
               />
-
-              {/* <Controller
-                name={"amount"}
+              <Controller
+                name="totalProfit"
                 control={control}
                 defaultValue=""
-                render={({ field }) => (
-                  <>
-                    
+                render={({ field }) => {
+                  return (
+                    <>
+                    <div className="sm:col-span-1 col-span-2">
+                      <label
+                        htmlFor="totalProfit"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Total Profit
+                      </label>
+                      <input
+                        type="number"
+                        id="totalProfit"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Total Profit"
+                        required
+                        {...field}
+                      />
+                    </div>
                   </>
-                )}
-              /> */}
-
-              <div className="col-span-2 sm:col-span-1">
+                  )
+                }}
+              />
+              
+              <div className="col-span-2">
                 <label
-                  htmlFor="amount"
+                  htmlFor="totalValue"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Total Deposit
+                  Total Value
                 </label>
                 <input
                   type="number"
-                  value={totalDeposit.toFixed(2)}
-                  id="amount"
+                  value={totalValue.toFixed(2)}
+                  id="totalValue"
                   readOnly // Make it read-only to prevent direct user input
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   required
                 />
               </div>
-
-              {props.stockList.length === 0 ? (
-                <h3 className="text-sm grid font-semibold text-red-500 dark:text-red-500">
-                  No stock, add stock first
-                </h3>
-              ) : (
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                  Assets allocation
-                </h3>
-              )}
-
-              {props.stockList.map((item: Stocks) => (
-                <div className="col-span-2" key={item.id}>
-                  <label
-                    htmlFor={`stock-${item.id}`}
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {`${item.stockName} (Price RM${item.currPrice})`}
-                  </label>
-                  <Controller
-                    name={item.id}
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => {
-                      const { onChange, ...rest } = field;
-                      return (
-                        <input
-                          type="number"
-                          {...rest}
-                          id={`stock-${item.id}`}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                          placeholder="Value"
-                          onChange={(e) => {
-                            onChange(e);
-                            updateTotalDeposit(
-                              item.id,
-                              e.target.value,
-                              item.currPrice
-                            );
-                          }}
-                          required
-                        />
-                      );
-                    }}
-                  />
-                </div>
-              ))}
             </div>
             <button
               type="submit"
-              disabled={props.stockList.length === 0 ? true : false}
               className="text-white inline-flex items-center bg-[#5A64C3] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#5A64C3] dark:focus:ring-blue-800"
             >
               Add deposit

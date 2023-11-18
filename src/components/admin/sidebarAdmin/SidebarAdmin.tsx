@@ -88,7 +88,7 @@ const SidebarAdmin = () => {
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-[#01115E] ">
           <div className="flex justify-between items-center pl-2.5 mb-5">
-            <Image src={logo} alt="" width={100} />
+            <Image src={logo} priority alt="" width={100} />
             <button onClick={() => setShowSidebar(!showSidebar)}>
               <IoMdClose size={30} className="md:hidden" />
             </button>

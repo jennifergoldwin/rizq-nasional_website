@@ -42,7 +42,7 @@ const TopBarAdmin = () => {
             ? "Stocks"
             : "Accounts"}
         </h1>
-        <UserCard name={nameAdmin} handleLogout={handleLogout}/>
+        <UserCard hideOverviewPage={true} name={nameAdmin} handleLogout={handleLogout}/>
       </div>
     </div>
   );

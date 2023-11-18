@@ -151,9 +151,7 @@ const PlanCard = (props: Props) => {
           RM<span className="text-3xl font-semibold">{props.data.price}</span>
         </p>
       </div>
-      <button className="text-white bg-[#5A64C3] border-white border-[2px] rounded-lg py-2 px-6 mt-6">
-        Invest
-      </button>
+      
     </div>
   );
 };
