@@ -26,7 +26,6 @@ const EditStatementModal = (props: Props) => {
       } = useForm<EditStatementForm>();
 
   const onSubmit: SubmitHandler<EditStatementForm> = async (data) => {
-    console.log(data);
     if (props.selectedStatement){
       const bodySt = {
         id: props.selectedStatement.id,
@@ -214,7 +213,7 @@ const EditStatementModal = (props: Props) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              Add new statement
+              Edit statement
             </button>
           </form>
         </div>

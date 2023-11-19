@@ -97,7 +97,7 @@ const Page = () => {
   const onSubmit = async (data: AddPlanForm) => {
     
     data.interest = (parseFloat(data.interest)/100).toString()
-    console.log(data)
+  
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token === "") return;

@@ -141,7 +141,6 @@ export default function Page() {
       if (!error) {
         // setShowPriceModal(!showPriceModal);
         setStatementList((prevList) => [...result]);
-        console.log(result);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
@@ -176,7 +175,10 @@ export default function Page() {
         <Table
           handleEditStatement={handleEditStatement}
           thList={["Name","IC Number","Date", "Product", "Leverage", "Profit / Loss", "Action"]}
-          tbList={statementList || []}
+          tbList={searchKeyword!==""? statementList.filter((st) => {
+            return st.userName.toLowerCase().startsWith(searchKeyword.toLowerCase());
+          })
+          :statementList || []}
           type={"admin"}
         />
       </div>

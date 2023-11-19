@@ -1,20 +1,20 @@
 import { assetsAllocation } from "@/utils/dummy";
 import {Doughnut} from "react-chartjs-2";
-interface StockAllocation {
-  stockId: string;
-  stockName: string;
-  totalPurchasedPrice: number;
-}
+// interface StockAllocation {
+//   stockId: string;
+//   stockName: string;
+//   totalPurchasedPrice: number;
+// }
 
-interface AssetsAllocationProps {
-  data: StockAllocation[]; // Expecting an array of StockAllocation
-}
+// interface AssetsAllocationProps {
+//   data: StockAllocation[]; // Expecting an array of StockAllocation
+// }
 
 const stockColors = ['#4DC2E8', '#53CF60', '#AF80F4', '#FE8C75'];
 
-const AssetsAllocation: React.FC<AssetsAllocationProps> = ({ data }) => {
+const AssetsAllocation = () => {
 
-  const totalPurchasedPrice = data.reduce((total, stock) => total + stock.totalPurchasedPrice, 0);
+  // const totalPurchasedPrice = data.reduce((total, stock) => total + stock.totalPurchasedPrice, 0);
 
   return (
     <div className=" bg-[#01115E] px-8 py-6 rounded-xl h-full">

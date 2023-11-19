@@ -30,7 +30,6 @@ const fetchUserPortfolio = async () => {
       }
     );
     const data = await response.json();
-    console.log(data.message)
     return data;
   } catch (error) {
 
@@ -283,7 +282,7 @@ const Page = () => {
             </div>
           </div>
           <div className="w-auto lg:w-3/5 ml-6 lg:ml-0 mr-6 mt-6 mb-6 ">
-            <AssetsAllocation data={userPortfolio?.stockAllocation || []} />
+            <AssetsAllocation />
           </div>
         </div>
         <GeoAllocation />

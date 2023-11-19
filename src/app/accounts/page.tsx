@@ -129,7 +129,6 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(message)
       if (!error) {
         setUserList((prev) => [...result]);
       }
@@ -186,6 +185,7 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
+      
       // showToast(message, !error);
 
       if (!error) {
