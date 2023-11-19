@@ -9,7 +9,7 @@ import { IoClose, IoMenu } from "react-icons/io5";
 import { ROLE, User } from "@/utils/model";
 import { cookies } from "@/utils/constant";
 import Cookies from "js-cookie";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import UserCard from "../usercard";
 
 const Navbar = () => {
@@ -25,7 +25,7 @@ const Navbar = () => {
     if (token && identityNumber && fullName) {
       const role = ROLE.ROLE_USER;
       setUser({ token, identityNumber, fullName, role });
-    }else{
+    } else {
       setUser(null);
       // toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
       // setTimeout(() => router.replace("/login"), 2000);
@@ -90,16 +90,20 @@ const Navbar = () => {
             </li>
           </ul>
           {user ? (
-            <UserCard name={user.fullName} handleLogout={handleLogout} />
-            ) : (
-              <Link
-                href="/login"
-                onClick={() => setActiveMenu(false)}
-                className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
-              >
-                Login
-              </Link>
-            )}
+            <UserCard
+              hideOverviewPage
+              name={user.fullName}
+              handleLogout={handleLogout}
+            />
+          ) : (
+            <Link
+              href="/login"
+              onClick={() => setActiveMenu(false)}
+              className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
+            >
+              Login
+            </Link>
+          )}
           {/* {isLogin === "true" ? (
             <div className="flex gap-6 items-center justify-center  text-[#0D28A6]">
               <Link href="/history">
