@@ -38,11 +38,11 @@ const TopBarAdmin = () => {
         <h1 className="text-2xl font-bold">
           {`/${segment}` === "/admin"
             ? "Admin"
-            : `/${segment}` === "/stocks"
-            ? "Stocks"
+            : `/${segment}` === "/Plan"
+            ? "Plan"
             : "Accounts"}
         </h1>
-        <UserCard hideOverviewPage={true} name={nameAdmin} handleLogout={handleLogout}/>
+        <UserCard hideOverviewPage={false} name={nameAdmin} handleLogout={handleLogout}/>
       </div>
     </div>
   );

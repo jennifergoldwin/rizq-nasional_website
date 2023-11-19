@@ -1,6 +1,6 @@
 "use client";
 import TableDashboard from "@/components/admin/tableDashboard";
-import { Plan, Statement, Stocks, UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan,  UserInfoForAdmin } from "@/utils/model";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -129,7 +129,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-
+      console.log(message)
       if (!error) {
         setUserList((prev) => [...result]);
       }
@@ -138,6 +138,7 @@ const Page = () => {
   };
 
   const deposit = async (data: any) => {
+    console.log(data)
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
@@ -165,7 +166,7 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const withdrawl = async (data: Statement) => {
+  const withdrawl = async (data: Investment) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
@@ -225,14 +226,21 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-
+      
       // showToast(message, !error);
-
+      
       if (!error) {
         setShowAddUserModal(!showAddUserModal);
         setUserList((prev) => [...prev, result]);
+      }else{
+        setError('identityNumber', {
+          type: 'manual',
+          message: message,
+        });
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+      
+    }
   };
 
   const handleDepositModal = (value: any) => {
@@ -403,6 +411,11 @@ const Page = () => {
                     placeholder="Identity Card Number"
                     required
                   />
+                  {errors.identityNumber && (
+                    <p className="text-red-600 text-sm">
+                      {errors.identityNumber.message}
+                    </p>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <label

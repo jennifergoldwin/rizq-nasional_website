@@ -1,7 +1,7 @@
 "use client";
 import DepositModal from "@/components/modal/deposit";
 import WithdrawlModal from "@/components/modal/withdrawl";
-import { Plan, Statement, Stocks, UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan,  UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import Cookies from "js-cookie";
 import { cookiesAdmin } from "@/utils/constant";
@@ -20,23 +20,23 @@ const TableDashboard = (props: Props) => {
   const [showDepositModal, setShowDepositModal] = React.useState(false);
   const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
-  const [investList, setInvestList] = React.useState<Statement[]>([]);
+  const [investList, setInvestList] = React.useState<Investment[]>([]);
   React.useEffect(() => {
     if (selectedUser) {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token != "") {
-        fetchUserStatement(token, selectedUser.identityNumber);
+        fetchUserInvestment(token, selectedUser.identityNumber);
       }
     }
   }, [selectedUser]);
 
-  const fetchUserStatement = async (
+  const fetchUserInvestment = async (
     token: String,
     userIdentityNumber: String
   ) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/investment/${userIdentityNumber}`,
         {
           method: "GET",
           headers: {
@@ -67,7 +67,7 @@ const TableDashboard = (props: Props) => {
         </thead>
         <tbody>
           {props.tbList.map((tbItem, idx) => (
-            <tr key={idx} className="text-center">
+            <tr key={idx} className="text-center border-b-[1px] border-gray-600">
               <th
                 key={idx}
                 scope="row"
@@ -78,7 +78,7 @@ const TableDashboard = (props: Props) => {
               <td className="px-py-4">{tbItem.fullName}</td>
               <td className="px-py-4">{tbItem.email}</td>
               <td className="px-py-4">{tbItem.phoneNumber}</td>
-              <td className="px-py-4">{`RM${tbItem.totalDeposit}`}</td>
+              <td className="px-py-4">{`RM${tbItem.totalDeposit!==undefined?tbItem.totalDeposit:"0.0"}`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 ${props.hideAction ? "hidden" : ""}`}>
                 <div className="flex gap-2">
@@ -87,7 +87,7 @@ const TableDashboard = (props: Props) => {
                       setSelectedUser(tbItem);
                       setShowDepositModal(!showDepositModal);
                     }}
-                    className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center `}
+                    className={`flex my-2 text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center `}
                   >
                     Deposit
                   </button>
@@ -97,8 +97,8 @@ const TableDashboard = (props: Props) => {
                       setShowWithdrawlModal(!showWithdrawModal);
                     }}
                     className={`${
-                      tbItem.totalDeposit < 1 ? "hidden" : "flex"
-                    } text-white bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                      tbItem.totalDeposit < 1 || tbItem.totalDeposit===undefined ? "hidden" : "flex"
+                    } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Withdrawl
                   </button>

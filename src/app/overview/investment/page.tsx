@@ -45,7 +45,7 @@ export default function Page() {
 
   const fetchPlan = async (token: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/plan`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/all-plan`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

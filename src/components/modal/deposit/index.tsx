@@ -1,5 +1,5 @@
 "use client";
-import { Plan, Stocks, UserInfoForAdmin } from "@/utils/model";
+import { Plan,  UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import { useForm, SubmitHandler, Controller, set } from "react-hook-form";
 
@@ -28,13 +28,14 @@ const DepositModal = (props: Props) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (props.selectedUser) {
       const bodyInv = {
+        id: "",
         userIdentityNumber: props.selectedUser.identityNumber,
         dateDeposit: data.dateDeposit,
-        dateWithdrawl: null,
+        dateWithdrawal: null,
         totalDeposit: data.totalDeposit,
         totalProfit: data.totalProfit,
         statusDeposit: "Done",
-        statusWithdrawl: "false",
+        statusWithdrawal: "false",
       };
       setValue("dateDeposit","")
       setValue("totalDeposit","")

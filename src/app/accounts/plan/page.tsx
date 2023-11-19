@@ -1,46 +1,49 @@
 "use client";
 import TableDashboard from "@/components/admin/tableDashboard";
 import TableStocks from "@/components/admin/tableStocks";
-import { Stocks } from "@/utils/model";
+// import { Stocks } from "@/utils/model";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { cookiesAdmin } from "@/utils/constant";
+import { Plan } from "@/utils/model";
 
-interface AddStockForm {
+interface AddPlanForm {
   id: string;
-  stockName: string;
-  currPrice: string;
+  planType: string;
+  interest: string;
+  tenure: string;
+  price: string;
 }
 
 const Page = () => {
-  const [showPriceModal, setShowPriceModal] = React.useState(false);
-  const [showAddStockModal, setShowAddStockModal] = React.useState(false);
-  const [updateStock, setUpdateStock] = React.useState<Stocks>();
+  // const [showPriceModal, setShowPriceModal] = React.useState(false);
+  const [showAddPlanModal, setShowAddPlanModal] = React.useState(false);
+  // const [updateStock, setUpdateStock] = React.useState<Stocks>();
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<AddStockForm>();
+  } = useForm<AddPlanForm>();
 
   const router = useRouter();
-  const [stockList, setStockList] = React.useState<Stocks[]>([]);
+  const [planList, setPlanList] = React.useState<Plan[]>([]);
 
   React.useEffect(() => {
     const token = Cookies.get(cookiesAdmin.token) || "";
     if (token !== "") {
-      fetchStock(token);
+      fetchPlan(token);
     } else {
       setTimeout(() => router.replace("/login-admin"), 2000);
     }
   }, []);
 
-  const fetchStock = async (token: string) => {
+  const fetchPlan = async (token: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/all-stocks`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/all-plan`,
         {
           method: "GET",
           headers: {
@@ -53,23 +56,24 @@ const Page = () => {
       const { error, message, result } = await response.json();
    
       if (!error) {
-        setStockList((prevList) => [...result]);
+        setPlanList((prevList) => [...result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
   };
 
-  const handlePriceModal = (value: Stocks) => {
-    setUpdateStock(value);
-    setShowPriceModal(!showPriceModal);
+  const handleDelete = (value: Plan) => {
+    onDeletePlan(value);
+    // setUpdateStock(value);
+    // setShowPriceModal(!showPriceModal);
   };
 
-  const onUpdatePrice = async (data: Stocks) => {
+  const onDeletePlan = async (data: Plan) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token === "") return;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/update-stock`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/delete-plan`,
         {
           method: "PUT",
           headers: {
@@ -83,19 +87,19 @@ const Page = () => {
       const { error, message, result } = await response.json();
   
       if (!error) {
-        setShowPriceModal(!showPriceModal);
-        setStockList((prevList) => [...result]);
+        // setShowPriceModal(!showPriceModal);
+        setPlanList((prevList) => [...result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
   };
 
-  const onSubmit = async (data: AddStockForm) => {
+  const onSubmit = async (data: AddPlanForm) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token === "") return;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/add-stock`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/add-plan`,
         {
           method: "POST",
           headers: {
@@ -109,8 +113,8 @@ const Page = () => {
       const { error, message, result } = await response.json();
   
       if (!error) {
-        setShowAddStockModal(!showAddStockModal);
-        setStockList((prevList) => [...result]);
+        setShowAddPlanModal(!setShowAddPlanModal);
+        setPlanList((prevList) => [...prevList,result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
@@ -121,20 +125,20 @@ const Page = () => {
       <div className="max-w-full mx-auto h-full w-full">
         <div className="flex justify-end mx-12">
           <button
-            onClick={() => setShowAddStockModal(!showAddStockModal)}
+            onClick={() => setShowAddPlanModal(!showAddPlanModal)}
             className={`flex text-white text-xs bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center mb-4 `}
           >
-            Add Stocks
+            Add Plan
           </button>
         </div>
         <TableStocks
-          thList={["Stock Id", "Stock Name", "Stock Price", "Action"]}
-          tbList={stockList}
-          handleModal={handlePriceModal}
+          thList={["Plan Id", "Plan Type", "Tenure", "Interest" ,"Price"]}
+          tbList={planList}
+          handleDelete={handleDelete}
         />
       </div>
 
-      <div
+      {/* <div
         id="update-price-modal"
         tabIndex={-1}
         aria-hidden="true"
@@ -206,14 +210,14 @@ const Page = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div
         id="add-stocks-modal"
         tabIndex={-1}
         aria-hidden="true"
         className={`${
-          showAddStockModal ? "flex" : "hidden"
+          showAddPlanModal ? "flex" : "hidden"
         } overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
@@ -223,7 +227,7 @@ const Page = () => {
                 Create New Stock
               </h3>
               <button
-                onClick={() => setShowAddStockModal(!showAddStockModal)}
+                onClick={() => setShowAddPlanModal(!showAddPlanModal)}
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="crud-modal"
@@ -253,7 +257,7 @@ const Page = () => {
                     htmlFor="stockId"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Stock Id
+                    Plan Id
                   </label>
                   <input
                     {...register("id", { required: "Stock id is required" })}
@@ -270,28 +274,78 @@ const Page = () => {
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                   <label
-                    htmlFor="stockName"
+                    htmlFor="planType"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Stock Name
+                    Plan Type
                   </label>
                   <input
-                    {...register("stockName", {
+                    {...register("planType", {
                       required: "Stock name is required",
                     })}
                     type="text"
-                    name="stockName"
-                    id="stockName"
+                    name="planType"
+                    id="planType"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Stock Name"
+                    placeholder="Plan Type"
                     required
                   />
-                  {errors.stockName && (
+                  {errors.planType && (
                     <p className="text-red-600 text-sm">
-                      {errors.stockName.message}
+                      {errors.planType.message}
                     </p>
                   )}
                 </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label
+                    htmlFor="tenure"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Tenure
+                  </label>
+                  <input
+                    {...register("tenure", {
+                      required: "Stock price is required",
+                    })}
+                    type="number"
+                    name="tenure"
+                    id="tenure"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Tenure"
+                    required
+                  />
+                  {errors.tenure && (
+                    <p className="text-red-600 text-sm">
+                      {errors.tenure.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label
+                    htmlFor="interest"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Interest
+                  </label>
+                  <input
+                    {...register("interest", {
+                      required: "Stock price is required",
+                    })}
+                    type="number"
+                    name="interest"
+                    id="interest"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Interest"
+                    required
+                  />
+                  {errors.interest && (
+                    <p className="text-red-600 text-sm">
+                      {errors.interest.message}
+                    </p>
+                  )}
+                </div>
+
                 <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="price"
@@ -300,19 +354,19 @@ const Page = () => {
                     Price
                   </label>
                   <input
-                    {...register("currPrice", {
+                    {...register("price", {
                       required: "Stock price is required",
                     })}
                     type="number"
-                    name="currPrice"
-                    id="currPrice"
+                    name="price"
+                    id="price"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Price"
                     required
                   />
-                  {errors.currPrice && (
+                  {errors.price && (
                     <p className="text-red-600 text-sm">
-                      {errors.currPrice.message}
+                      {errors.price.message}
                     </p>
                   )}
                 </div>
@@ -333,7 +387,7 @@ const Page = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Add new stock
+                Add new plan
               </button>
             </form>
           </div>

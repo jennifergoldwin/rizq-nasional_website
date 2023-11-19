@@ -37,12 +37,16 @@ export default function Page() {
   };
 
   const onSubmit = async (data: LoginForm) => {
+    console.log(data)
     await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login-admin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        username: data.username,
+        password: data.password
+      }),
     })
       .then((response) => response.json())
       .then((data) => {

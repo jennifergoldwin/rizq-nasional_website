@@ -43,11 +43,11 @@ const SidebarAdmin = () => {
         }
       : null,
     {
-      name: "Stocks",
-      href: "/accounts/stocks",
+      name: "Plan",
+      href: "/accounts/plan",
       icon: "/assets/icons/ic_investment.png",
       iconSelected: "/assets/icons/ic_investment_blue.png",
-      current: `/${segment}` === "/stocks" ? true : false,
+      current: `/${segment}` === "/plan" ? true : false,
     },
   ].filter(Boolean);
 

@@ -19,8 +19,8 @@ const PlanCard = (props: Props) => {
         }
         alt={props.data.planType}
       />
-      <h1 className="font-bold text-xl my-4">{props.data.planType}</h1>
-      <p className="text-white/[0.5] mb-4">{`${props.data.tenure} Days Holding Period`}</p>
+      <h1 className="font-bold text-xl my-4 text-center">{props.data.planType}</h1>
+      <p className="text-white/[0.5] mb-4 text-center">{`${props.data.tenure} Days Holding Period`}</p>
 
       <div>
         <div className="flex items-center">

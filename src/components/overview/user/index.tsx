@@ -60,7 +60,7 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Total Rate</span>
             <Image width={70} src={graph} alt="graph icon" />
-            <span>{`%${(totalProfit/totalDeposit*100).toFixed(2)}`}</span>
+            <span>{`%${isNaN(parseFloat((totalProfit/totalDeposit*100).toFixed(2)))?"0":(totalProfit/totalDeposit*100).toFixed(2)}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">

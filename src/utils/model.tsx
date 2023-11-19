@@ -36,11 +36,11 @@ export enum ROLE {
   ROLE_ADMIN,
 }
 
-export interface Stocks {
-  id: string;
-  stockName: string;
-  currPrice: number;
-}
+// export interface Stocks {
+//   id: string;
+//   stockName: string;
+//   currPrice: number;
+// }
 
 export interface Plan {
   id: string;
@@ -50,15 +50,27 @@ export interface Plan {
   price: number;
 }
 
-export interface Statement {
-  amount: string;
-  date: string;
-  dateWithdrawl: string;
-  endDate: string;
+// export interface Statement {
+//   amount: string;
+//   date: string;
+//   dateWithdrawl: string;
+//   endDate: string;
+//   id: string;
+//   interest: string;
+//   planType: string;
+//   statusPlan: string;
+//   statusWithdrawal: string;
+//   tenure: string;
+// }
+
+
+export interface Investment {
   id: string;
-  interest: string;
-  planType: string;
-  statusPlan: string;
+  userIdentityNumber: string;
+  dateDeposit: string;
+  dateWithdrawal: string;
+  totalDeposit: string;
+  totalProfit: string;
+  statusDeposit: string;
   statusWithdrawal: string;
-  tenure: string;
 }

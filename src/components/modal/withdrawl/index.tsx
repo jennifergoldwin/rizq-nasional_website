@@ -1,5 +1,5 @@
 "use client";
-import { Statement, UserInfoForAdmin } from "@/utils/model";
+import { Investment,  UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
@@ -7,7 +7,7 @@ type Props = {
   showWithdrawModal: boolean;
   setShowWithdrawlModal: any;
   handleWithdrawlModal: any;
-  investList: Statement[];
+  investList: Investment[];
 };
 
 type FormValues = {
@@ -24,7 +24,7 @@ const WithdrawlModal = (props: Props) => {
   } = useForm<FormValues>();
 
   const [selectedInvestment, setSelectedInvestment] =
-    React.useState<Statement>();
+    React.useState<Investment>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     props.setShowWithdrawlModal(!props.showWithdrawModal);
@@ -106,10 +106,10 @@ const WithdrawlModal = (props: Props) => {
                         </option>
                         {props.investList
                           .filter(
-                            (item: Statement) =>
+                            (item: Investment) =>
                               item.statusWithdrawal === "false"
                           )
-                          .map((item: Statement) => (
+                          .map((item: Investment) => (
                             <option key={item.id} value={item.id}>
                               {item.id}
                             </option>
@@ -158,26 +158,26 @@ const WithdrawlModal = (props: Props) => {
                 )}
               /> */}
 
-              <div className="col-span-2 sm:col-span-1">
+              <div className="col-span-2">
                 <label
-                  htmlFor="startDate"
+                  htmlFor="dateDeposit"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Start Date
+                  Deposit Date
                 </label>
                 <input
                   type="date"
-                  name="startDate"
-                  id="startDate"
+                  name="dateDeposit"
+                  id="dateDeposit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Amount"
+                  placeholder="Deposit Date"
                   required
                   readOnly
-                  value={selectedInvestment ? selectedInvestment.date : ""}
+                  value={selectedInvestment ? selectedInvestment.dateDeposit : ""}
                 />
               </div>
 
-              <div className="col-span-2 sm:col-span-1">
+              {/* <div className="col-span-2 sm:col-span-1">
                 <label
                   htmlFor="endDate"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -194,23 +194,40 @@ const WithdrawlModal = (props: Props) => {
                   readOnly
                   value={selectedInvestment ? selectedInvestment.endDate : ""}
                 />
-              </div>
+              </div> */}
 
-              <div className="col-span-2">
+              <div className="col-span-2 sm:col-span-1">
                 <label
-                  htmlFor="amount"
+                  htmlFor="totalDeposit"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Amount
+                  Total Deposit
                 </label>
                 <input
                   type="number"
-                  name="amount"
-                  id="amount"
+                  name="totalDeposit"
+                  id="totalDeposit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   required
                   readOnly
-                  value={selectedInvestment ? selectedInvestment.amount : 0}
+                  value={selectedInvestment ? selectedInvestment.totalDeposit : 0}
+                />
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label
+                  htmlFor="totalProfit"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Total Profit
+                </label>
+                <input
+                  type="number"
+                  name="totalProfit"
+                  id="totalProfit"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  required
+                  readOnly
+                  value={selectedInvestment ? selectedInvestment.totalProfit : 0}
                 />
               </div>
             </div>
