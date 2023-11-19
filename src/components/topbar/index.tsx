@@ -40,7 +40,7 @@ const TopBar = () => {
         <h1 className="text-2xl font-bold">
           {`/${segment}` === "/investment"
             ? "Investment"
-            : `/${segment}` === "/statements"
+            : `/${segment}` === "/statement"
             ? "Statements"
             : `/${segment}` === "/account"
             ? "Account"

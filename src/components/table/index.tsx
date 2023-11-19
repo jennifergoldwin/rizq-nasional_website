@@ -2,7 +2,7 @@ import { Statement } from "@/utils/model";
 
 type Props = {
   thList: string[];
-  tbList: any;
+  tbList: Statement[];
   type: string;
 };
 
@@ -20,28 +20,30 @@ const Table = (props: Props) => {
           </tr>
         </thead>
         <tbody>
-          {props.tbList.map((tbItem: any, idx: number) => (
+          {props.tbList.map((tbItem: Statement, idx: number) => (
             <tr key={idx} className="text-center">
+              {props.type === "admin" && (
+                <td className="px-py-4">{tbItem.userName}</td>
+              )}
+              {props.type === "admin" && (
+                <td className="px-py-4">{tbItem.userIdentityNumber}</td>
+              )}
+              {/* {tbItem.endDate !== null && props.type !== "withdrawal" && (
+                <td className="p-2 whitespace-pre-line">
+                  {tbItem.endDate.replace(" ", "\n")}
+                </td>
+              )} */}
               <th
                 key={idx}
                 scope="row"
                 className="p-2 font-medium  whitespace-pre-line "
               >
-                {tbItem.date.replace(" ", "\n")}
+                {tbItem.date}
               </th>
-              <td className="px-py-4">{tbItem.id}</td>
-              {props.type !== "withdrawal" && (
-                <td className="px-py-4">{tbItem.tenure}</td>
-              )}
-              {tbItem.endDate !== null && props.type !== "withdrawal" && (
-                <td className="p-2 whitespace-pre-line">
-                  {tbItem.endDate.replace(" ", "\n")}
-                </td>
-              )}
-              <td className="px-py-4">{tbItem.planType}</td>
-              <td className="px-py-4">{`${tbItem.interest * 100}%`}</td>
-              <td className="px-py-4">{tbItem.amount}</td>
-              <td className="px-py-4">{tbItem.statusPlan}</td>
+              <td className="px-py-4">{tbItem.product}</td>
+              
+              <td className="px-py-4">{tbItem.leverage}</td>
+              <td className="px-py-4">{tbItem.profitLoss}</td>
             </tr>
           ))}
         </tbody>

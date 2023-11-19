@@ -50,18 +50,15 @@ export interface Plan {
   price: number;
 }
 
-// export interface Statement {
-//   amount: string;
-//   date: string;
-//   dateWithdrawl: string;
-//   endDate: string;
-//   id: string;
-//   interest: string;
-//   planType: string;
-//   statusPlan: string;
-//   statusWithdrawal: string;
-//   tenure: string;
-// }
+export interface Statement {
+  id: string;
+  userName: string;
+  userIdentityNumber: string;
+  date: string;
+  product: string;
+  leverage: string;
+  profitLoss: string;
+}
 
 
 export interface Investment {

@@ -39,7 +39,7 @@ const TopBarAdmin = () => {
           {`/${segment}` === "/admin"
             ? "Admin"
             : `/${segment}` === "/Plan"
-            ? "Plan"
+            ? "Plan" : `/${segment}` === "/statement" ? "Statement"
             : "Accounts"}
         </h1>
         <UserCard hideOverviewPage={false} name={nameAdmin} handleLogout={handleLogout}/>

@@ -4,11 +4,11 @@ interface Portfolio {
     total_profit: number;
   }
   
-  interface StockPurchased {
-    stockId: string;
-    stockName: string;
-    totalPurchasedPrice: number;
-  }
+  // interface StockPurchased {
+  //   stockId: string;
+  //   stockName: string;
+  //   totalPurchasedPrice: number;
+  // }
   
   interface InvestmentGrowth {
     month: string;
@@ -17,6 +17,6 @@ interface Portfolio {
   
   export interface UserPortfolio {
     portfolio: Portfolio;
-    stockAllocation: StockPurchased[];
+    // stockAllocation: StockPurchased[];
     investmentGrowth: InvestmentGrowth[];
   }

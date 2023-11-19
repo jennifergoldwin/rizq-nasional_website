@@ -31,11 +31,11 @@ const Sidebar = () => {
       current: `/${segment}` === "/investment" ? true : false,
     },
     {
-      name: "Statements",
-      href: "/overview/statements",
+      name: "Statement",
+      href: "/overview/statement",
       icon: "/assets/icons/ic_statements.png",
       iconSelected: "/assets/icons/ic_statements_blue.png",
-      current: `/${segment}` === "/statements" ? true : false,
+      current: `/${segment}` === "/statement" ? true : false,
     },
     {
       name: "Account",

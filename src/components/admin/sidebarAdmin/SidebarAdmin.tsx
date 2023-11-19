@@ -49,6 +49,15 @@ const SidebarAdmin = () => {
       iconSelected: "/assets/icons/ic_investment_blue.png",
       current: `/${segment}` === "/plan" ? true : false,
     },
+    role !== "ROLE_MASTER_ADMIN"
+      ? {
+          name: "Statement",
+          href: "/accounts/statement",
+          icon: "/assets/icons/ic_statements.png",
+          iconSelected: "/assets/icons/ic_statements_blue.png",
+          current: `/${segment}` === "/statement" ? true : false,
+        }
+      : null,
   ].filter(Boolean);
 
   return (

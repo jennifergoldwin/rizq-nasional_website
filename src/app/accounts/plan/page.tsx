@@ -75,7 +75,7 @@ const Page = () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASEURL}/delete-plan`,
         {
-          method: "PUT",
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -95,6 +95,9 @@ const Page = () => {
   };
 
   const onSubmit = async (data: AddPlanForm) => {
+    
+    data.interest = (parseFloat(data.interest)/100).toString()
+    console.log(data)
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token === "") return;
@@ -326,7 +329,7 @@ const Page = () => {
                     htmlFor="interest"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Interest
+                    Interest (in % ex: 60 )
                   </label>
                   <input
                     {...register("interest", {

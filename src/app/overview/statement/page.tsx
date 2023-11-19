@@ -1,6 +1,5 @@
 "use client";
 import Table from "@/components/table";
-import { depositData, withdrawlData } from "@/utils/dummy";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
@@ -12,7 +11,7 @@ const fetchUserStatement = async (
 ) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASEURL}/statement/${userIdentityNumber}`,
+      `${process.env.NEXT_PUBLIC_BASEURL}/statement-user/${userIdentityNumber}`,
       {
         method: "GET",
         headers: {
@@ -31,8 +30,7 @@ const fetchUserStatement = async (
 };
 
 export default function Page() {
-  const [data, setData] = useState<Statement>();
-  const [dataWithdrawal, setDataWithdrawal] = useState(null);
+  const [statementList, setStatementList] = useState<Statement[]>([]);
 
   useEffect(() => {
     const userIdentityNumber = Cookies.get(cookies.identityNumber);
@@ -41,24 +39,23 @@ export default function Page() {
     if (token && userIdentityNumber) {
       const fetchData = async () => {
         const data = await fetchUserStatement(token, userIdentityNumber);
-        setData(data.result);
-        setDataWithdrawal(
-          data.result.filter(
-            (item: Statement) => item.statusWithdrawal === "true"
-          )
-        );
+        setStatementList(data.result);
+        // setDataWithdrawal(
+        //   data.result.filter(
+        //     (item: Statement) => item.statusWithdrawal === "true"
+        //   )
+        // );
       };
 
       fetchData();
     }
   }, []);
 
-  const [activeTable, setActiveTable] = React.useState(0);
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto w-full h-full">
         <div className="bg-[#01115E] rounded-xl py-8 ml-6 mr-8">
-          <div className="grid grid-cols-2 gap-8 pb-8">
+          {/* <div className="grid grid-cols-2 gap-8 pb-8">
             <button
               className={`${
                 activeTable === 0 ? "text-[#4DC2E8]" : "text-white"
@@ -75,19 +72,25 @@ export default function Page() {
             >
               Investment Withdrawal
             </button>
-          </div>
+          </div> */}
           <div className="ml-4 mr-8">
-            {activeTable === 0 ? (
+            <Table
+              thList={[
+                "Date",
+                "Product",
+                "Leverage",
+                "Profit / Loss",
+              ]}
+              tbList={statementList || []}
+              type={""}
+            />
+            {/* {activeTable === 0 ? (
               <Table
                 thList={[
                   "Date",
-                  "Code",
-                  "Tenure (day)",
-                  "End Date",
-                  "Plan",
-                  "Interest",
-                  "Amount",
-                  "Status",
+                  "Product",
+                  "Leverage",
+                  "Profit / Loss",
                 ]}
                 tbList={data || []}
                 type={""}
@@ -105,7 +108,7 @@ export default function Page() {
                 tbList={dataWithdrawal || []}
                 type={"withdrawal"}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>
