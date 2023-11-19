@@ -5,7 +5,7 @@ import { Statement, UserInfoForAdmin } from "@/utils/model";
 import { cookiesAdmin } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
-import Select from "react-select";
+import SelectUser from "@/components/admin/select";
 
 interface AddStatementForm {
   date: string;
@@ -65,14 +65,16 @@ export default function Page() {
 
   const onSubmit = async (data: AddStatementForm) => {
     try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
       const us = Cookies.get(cookiesAdmin.username) || "";
-      if (us === "") return;
+      if (us === "" || token === "") return;
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -89,7 +91,6 @@ export default function Page() {
       const { error, message, result } = await response.json();
 
       // showToast(message, !error);
-
       if (!error) {
         setShowAddStatementModal(!showAddStatementModal);
         setStatementList((prev) => [...prev, result]);
@@ -111,9 +112,36 @@ export default function Page() {
       );
 
       const { error, message, result } = await response.json();
-      console.log(message);
+      
       if (!error) {
         setUserList((prev) => [...result]);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
+
+  const updateStatement = async (data: Statement) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      if (token === "") return;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-statement`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+  
+      if (!error) {
+        // setShowPriceModal(!showPriceModal);
+        setStatementList((prevList) => [...result]);
+        console.log(result);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
@@ -122,6 +150,10 @@ export default function Page() {
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
   };
+
+  const handleEditStatement = (value: Statement) => {
+    updateStatement(value);
+  }
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -142,7 +174,8 @@ export default function Page() {
           </button>
         </div>
         <Table
-          thList={["Date", "Product", "Leverage", "Profit / Loss"]}
+          handleEditStatement={handleEditStatement}
+          thList={["Name","IC Number","Date", "Product", "Leverage", "Profit / Loss", "Action"]}
           tbList={statementList || []}
           type={"admin"}
         />
@@ -195,28 +228,7 @@ export default function Page() {
                   >
                     Name
                   </label>
-                  <Select
-                    className="text-black"
-                    options={userList.map((user) => ({
-                      value: user.identityNumber,
-                      label: user.fullName,
-                    }))}
-                    isSearchable required
-                    placeholder="Search for a user..."
-                    onChange={(selectedOption) => {
-                      // Handle selected option
-                      if (selectedOption){
-                        setSelectedUser(selectedOption.value)
-                      }
-                    }}
-                    filterOption={(option, rawInput) => {
-                      const inputValue = rawInput.trim().toLowerCase();
-                      const userLabel = option.label.toLowerCase();
-
-                      // Check if the user's name starts with the input value
-                      return userLabel.startsWith(inputValue);
-                    }}
-                  />
+                  <SelectUser setSelectedUser={setSelectedUser} userList={userList}/>
                   {/* <input
                     {...register("fullName", {
                       required: "Full name is required",
@@ -331,6 +343,8 @@ export default function Page() {
           </div>
         </div>
       </div>
+
+      
     </main>
   );
 }

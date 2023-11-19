@@ -54,7 +54,7 @@ export default function Page() {
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto w-full h-full">
-        <div className="bg-[#01115E] rounded-xl py-8 ml-6 mr-8">
+        <div className="bg-[#01115E] rounded-xl py-4 ml-6 mr-8">
           {/* <div className="grid grid-cols-2 gap-8 pb-8">
             <button
               className={`${
@@ -74,16 +74,17 @@ export default function Page() {
             </button>
           </div> */}
           <div className="ml-4 mr-8">
-            <Table
-              thList={[
-                "Date",
-                "Product",
-                "Leverage",
-                "Profit / Loss",
-              ]}
-              tbList={statementList || []}
-              type={""}
-            />
+            {statementList.length===0?<div className="text-center">No Data</div>:
+            <Table handleEditStatement={null}
+            thList={[
+              "Date",
+              "Product",
+              "Leverage",
+              "Profit / Loss",
+            ]}
+            tbList={statementList || []}
+            type={""}
+          />}
             {/* {activeTable === 0 ? (
               <Table
                 thList={[
