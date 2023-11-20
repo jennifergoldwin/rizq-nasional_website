@@ -43,6 +43,9 @@ const BankDetails: React.FC<BankDetailsProps> = ({ profile, handleUpdate }) => {
       u.bankName = selectedOption
       u.bankAccountNumber = data.bankAccountNumber
       u.bankHolderName = data.bankHolderName
+
+      handleUpdate(u);
+      setIsEdit(false);
     }
   };
   return (

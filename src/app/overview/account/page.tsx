@@ -125,7 +125,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen md:pl-64 w-full">
-      <ProfileDetails data={data} handleUpdate={handleUpdateProfile}/>
+      <ProfileDetails profile={data} handleUpdate={handleUpdateProfile}/>
       <BankDetails profile={data} handleUpdate={handleUpdateBank}/>
     </div>
   );
