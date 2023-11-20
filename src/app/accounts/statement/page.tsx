@@ -65,6 +65,7 @@ export default function Page() {
 
   const onSubmit = async (data: AddStatementForm) => {
     try {
+      console.log(data)
       const token = Cookies.get(cookiesAdmin.token) || "";
       const us = Cookies.get(cookiesAdmin.username) || "";
       if (us === "" || token === "") return;
@@ -80,7 +81,7 @@ export default function Page() {
           body: JSON.stringify({
             id: "",
             userIdentityNumber: selectedUser,
-            date: data.date,
+            date: data.date.replace("T"," "),
             product: data.product,
             leverage: data.leverage,
             profitLoss: data.profitLoss,
@@ -89,7 +90,7 @@ export default function Page() {
       );
 
       const { error, message, result } = await response.json();
-
+      console.log(result)
       // showToast(message, !error);
       if (!error) {
         setShowAddStatementModal(!showAddStatementModal);
@@ -252,9 +253,9 @@ export default function Page() {
                   </label>
                   <input
                     {...register("date", { required: "Date is required" })}
-                    type="date"
+                    type="datetime-local"
                     name="date"
-                    id="date"
+                    id="date" 
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Date"
                     required
