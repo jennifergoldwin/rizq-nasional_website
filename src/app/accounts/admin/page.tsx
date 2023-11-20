@@ -100,6 +100,7 @@ const Page = () =>{
                     thList={[
                     "Full Name",
                     "Username",
+                    "Action"
                     ]}
                     tbList={adminList}
                    

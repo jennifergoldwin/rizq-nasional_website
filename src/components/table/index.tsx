@@ -2,6 +2,7 @@
 import { Statement } from "@/utils/model";
 import React from 'react'
 import EditStatementModal from "../modal/editStatement";
+
 type Props = {
   thList: string[];
   tbList: Statement[];
@@ -43,7 +44,7 @@ const Table = (props: Props) => {
                 scope="row"
                 className="p-2 font-medium  whitespace-pre-line "
               >
-                {tbItem.date}
+                {new Date(tbItem.date).toLocaleString('sv-SE',{year: 'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
               </th>
               <td className="px-py-4">{tbItem.product}</td>
               
