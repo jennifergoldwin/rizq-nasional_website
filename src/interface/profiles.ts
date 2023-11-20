@@ -8,10 +8,11 @@ export interface ProfileData {
     address: string;
     postCode: string;
     occupation: string;
-  }
-
-export interface BankData {
     bankName: string;
     bankAccountNumber: string;
     bankHolderName: string;
-}
+  }
+
+// export interface BankData {
+   
+// }

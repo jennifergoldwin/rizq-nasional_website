@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { ProfileData } from '../../../interface/profiles';
 
 interface ProfileDetailsProps {
-  data: ProfileData | null;
+  data: ProfileData | undefined;
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ data }) => {

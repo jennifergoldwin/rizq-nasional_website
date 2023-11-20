@@ -137,7 +137,7 @@ const Page = () => {
   };
 
   const deposit = async (data: any) => {
-    console.log(data)
+
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
@@ -157,6 +157,35 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
+      // showToast(message, !error);
+
+      if (!error) {
+        fetchUser(username, token);
+      }
+    } catch (error: any) {}
+  };
+
+  const updateDeposit = async (data: Investment) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token === "" || username === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-deposit`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      
       // showToast(message, !error);
 
       if (!error) {
@@ -249,6 +278,9 @@ const Page = () => {
   const handleWithdrawlModal = (value: any) => {
     withdrawl(value);
   };
+  const handleUpdateDepoModal = (value: any) =>{
+    updateDeposit(value);
+  }
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -294,6 +326,7 @@ const Page = () => {
           tbList={filteredUserList}
           hideAction={role === roleType.masterAdmin ? true : false}
           handleDeposit={handleDepositModal}
+          handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
         />
       </div>

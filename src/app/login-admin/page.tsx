@@ -1,8 +1,4 @@
 "use client";
-import Link from "next/link";
-import logo from "../../../public/assets/images/logo.png";
-import bg from "../../../public/assets/images/background_login.png";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import React from "react";
 import Cookies from "js-cookie";
@@ -37,7 +33,7 @@ export default function Page() {
   };
 
   const onSubmit = async (data: LoginForm) => {
-    console.log(data)
+
     await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login-admin`, {
       method: "POST",
       headers: {
@@ -50,8 +46,7 @@ export default function Page() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("here it is 2");
-        console.log(data);
+  
         // Store the token in a cookie with a max age of 24 hours
         Cookies.set(cookiesAdmin.token, data.result.token, { expires: 1 });
         Cookies.set(cookiesAdmin.username, data.result.username, {
@@ -139,7 +134,7 @@ export default function Page() {
                     />
                     <label
                       htmlFor="link-checkbox"
-                      className="ml-2 text-sm text-white font-medium text-gray-900 dark:text-gray-300"
+                      className="ml-2 text-sm text-white font-medium  dark:text-gray-300"
                     >
                       I agree with Rizq-Nasional{" "}
                       <a href="#" className="text-[#4DC2E8] underline">

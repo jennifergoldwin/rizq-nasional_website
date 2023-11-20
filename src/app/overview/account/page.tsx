@@ -7,9 +7,11 @@ import Cookies from 'js-cookie';
 import { cookies } from "@/utils/constant";
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation";
+import { User } from "@/utils/model";
+import { ProfileData } from "@/interface/profiles";
 
 export default function Page() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<ProfileData>();
 
   const router = useRouter();
 
@@ -55,10 +57,76 @@ export default function Page() {
     }
   };
 
+  const updateBank = async (data: User) => {
+    try {
+      const token = Cookies.get(cookies.token) || "";
+      const ic = Cookies.get(cookies.identityNumber) || "";
+      if (token === "" || ic === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-bank`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      
+      // showToast(message, !error);
+
+      if (!error) {
+        fetchUserData(token, ic);
+      }
+    } catch (error: any) {}
+  };
+
+  const updateProfile = async (data: User) => {
+    try {
+      const token = Cookies.get(cookies.token) || "";
+      const ic = Cookies.get(cookies.identityNumber) || "";
+      if (token === "" || ic === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-profile`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      
+      // showToast(message, !error);
+
+      if (!error) {
+        fetchUserData(token, ic);
+      }
+    } catch (error: any) {}
+  };
+
+  const handleUpdateBank = (value : any) => {
+    updateBank(value)
+  }
+
+  const handleUpdateProfile = (value : any) => {
+    updateProfile(value)
+  }
+
   return (
     <div className="min-h-screen md:pl-64 w-full">
-      <ProfileDetails data={data}/>
-      <BankDetails data={data} />
+      <ProfileDetails data={data} handleUpdate={handleUpdateProfile}/>
+      <BankDetails profile={data} handleUpdate={handleUpdateBank}/>
     </div>
   );
 }

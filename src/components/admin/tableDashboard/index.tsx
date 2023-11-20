@@ -1,10 +1,11 @@
 "use client";
 import DepositModal from "@/components/modal/deposit";
 import WithdrawlModal from "@/components/modal/withdrawl";
-import { Investment, Plan,  UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan, UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import Cookies from "js-cookie";
 import { cookiesAdmin } from "@/utils/constant";
+import UpdateDepositModal from "@/components/modal/updateDeposit";
 
 type Props = {
   thList: string[];
@@ -13,12 +14,15 @@ type Props = {
   // stockList: Stocks[];
   handleDeposit: any;
   handleWithdrawl: any;
+  handleUpdateDeposit: any;
   hideAction: boolean;
 };
 
 const TableDashboard = (props: Props) => {
   const [showDepositModal, setShowDepositModal] = React.useState(false);
   const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
+  const [showUpdateDepositModal, setShowUpdateDepositModal] =
+    React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
   React.useEffect(() => {
@@ -43,15 +47,13 @@ const TableDashboard = (props: Props) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          
         }
       );
       const { error, message, result } = await response.json();
       if (!error) {
         setInvestList(result);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
   return (
     <div className="relative overflow-x-auto">
@@ -67,7 +69,10 @@ const TableDashboard = (props: Props) => {
         </thead>
         <tbody>
           {props.tbList.map((tbItem, idx) => (
-            <tr key={idx} className="text-center border-b-[1px] border-gray-600">
+            <tr
+              key={idx}
+              className="text-center border-b-[1px] border-gray-600"
+            >
               <th
                 key={idx}
                 scope="row"
@@ -78,7 +83,9 @@ const TableDashboard = (props: Props) => {
               <td className="px-py-4">{tbItem.fullName}</td>
               <td className="px-py-4">{tbItem.email}</td>
               <td className="px-py-4">{tbItem.phoneNumber}</td>
-              <td className="px-py-4">{`RM${tbItem.totalDeposit!==undefined?tbItem.totalDeposit:"0.0"}`}</td>
+              <td className="px-py-4">{`RM${
+                tbItem.totalDeposit !== undefined ? tbItem.totalDeposit : "0.0"
+              }`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 ${props.hideAction ? "hidden" : ""}`}>
                 <div className="flex gap-2">
@@ -97,10 +104,27 @@ const TableDashboard = (props: Props) => {
                       setShowWithdrawlModal(!showWithdrawModal);
                     }}
                     className={`${
-                      tbItem.totalDeposit < 1 || tbItem.totalDeposit===undefined ? "hidden" : "flex"
+                      tbItem.totalDeposit < 1 ||
+                      tbItem.totalDeposit === undefined
+                        ? "hidden"
+                        : "flex"
                     } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Withdrawl
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedUser(tbItem);
+                      setShowUpdateDepositModal(!showUpdateDepositModal);
+                    }}
+                    className={`${
+                      tbItem.totalDeposit < 1 ||
+                      tbItem.totalDeposit === undefined
+                        ? "hidden"
+                        : "flex"
+                    } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  >
+                    Edit
                   </button>
                 </div>
               </td>
@@ -121,6 +145,13 @@ const TableDashboard = (props: Props) => {
         handleWithdrawlModal={props.handleWithdrawl}
         showWithdrawModal={showWithdrawModal}
         setShowWithdrawlModal={setShowWithdrawlModal}
+      />
+
+      <UpdateDepositModal
+        investList={investList}
+        handleUpdateDepositModal={props.handleUpdateDeposit}
+        showUpdateDepositModal={showUpdateDepositModal}
+        setShowUpdateDepositModal={setShowUpdateDepositModal}
       />
     </div>
   );
