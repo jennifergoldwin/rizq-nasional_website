@@ -122,7 +122,7 @@ const TableDashboard = (props: Props) => {
                       tbItem.totalDeposit === undefined
                         ? "hidden"
                         : "flex"
-                    } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    } text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit
                   </button>
