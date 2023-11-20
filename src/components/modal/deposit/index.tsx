@@ -1,5 +1,5 @@
 "use client";
-import { Plan,  UserInfoForAdmin } from "@/utils/model";
+import { Plan, UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import { useForm, SubmitHandler, Controller, set } from "react-hook-form";
 
@@ -21,7 +21,8 @@ const DepositModal = (props: Props) => {
   const {
     handleSubmit,
     control,
-    watch,setValue,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>();
 
@@ -37,26 +38,25 @@ const DepositModal = (props: Props) => {
         statusDeposit: "Done",
         statusWithdrawal: "false",
       };
-      setValue("dateDeposit","")
-      setValue("totalDeposit","")
-      setValue("totalProfit","")
+      setValue("dateDeposit", "");
+      setValue("totalDeposit", "");
+      setValue("totalProfit", "");
       props.setShowDepositModal(!props.showDepositModal);
       props.handleDepositModal(bodyInv);
     }
   };
 
   const [totalValue, setTotalValue] = React.useState<number>(0);
-  
-  React.useEffect(()=>{
-    const amountDepo = parseFloat(watch('totalDeposit'));
-    const amountProfit = parseFloat(watch('totalProfit'));
-    if (!isNaN(amountProfit) && !isNaN(amountDepo)){
-      setTotalValue(amountDepo+amountProfit)
-    }else{
-      setTotalValue(0)
+
+  React.useEffect(() => {
+    const amountDepo = parseFloat(watch("totalDeposit"));
+    const amountProfit = parseFloat(watch("totalProfit"));
+    if (!isNaN(amountProfit) && !isNaN(amountDepo)) {
+      setTotalValue(amountDepo + amountProfit);
+    } else {
+      setTotalValue(0);
     }
-  },[watch('totalDeposit'), watch('totalProfit')])
-  
+  }, [watch("totalDeposit"), watch("totalProfit")]);
 
   return (
     <div
@@ -107,14 +107,14 @@ const DepositModal = (props: Props) => {
                   <>
                     <div className="col-span-2">
                       <label
-                        htmlFor="dateDeposit"
+                        htmlFor="dateDepositDepo"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Date
                       </label>
                       <input
                         type="date"
-                        id="dateDeposit"
+                        id="dateDepositDepo"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Deposit Date"
                         required
@@ -130,25 +130,25 @@ const DepositModal = (props: Props) => {
                 defaultValue=""
                 render={({ field }) => {
                   return (
-                  <>
-                    <div className="sm:col-span-1 col-span-2">
-                      <label
-                        htmlFor="totalDeposit"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Total Deposit
-                      </label>
-                      <input
-                        type="number"
-                        id="totalDeposit"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Total Deposit"
-                        required
-                        {...field}
-                      />
-                    </div>
-                  </>
-                  )
+                    <>
+                      <div className="sm:col-span-1 col-span-2">
+                        <label
+                          htmlFor="totalDepositDepo"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Total Deposit
+                        </label>
+                        <input
+                          type="number"
+                          id="totalDepositDepo"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Total Deposit"
+                          required
+                          {...field}
+                        />
+                      </div>
+                    </>
+                  );
                 }}
               />
               <Controller
@@ -158,30 +158,30 @@ const DepositModal = (props: Props) => {
                 render={({ field }) => {
                   return (
                     <>
-                    <div className="sm:col-span-1 col-span-2">
-                      <label
-                        htmlFor="totalProfit"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Total Profit
-                      </label>
-                      <input
-                        type="number"
-                        id="totalProfit"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Total Profit"
-                        required
-                        {...field}
-                      />
-                    </div>
-                  </>
-                  )
+                      <div className="sm:col-span-1 col-span-2">
+                        <label
+                          htmlFor="totalProfitDepo"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Total Profit
+                        </label>
+                        <input
+                          type="number"
+                          id="totalProfitDepo"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Total Profit"
+                          required
+                          {...field}
+                        />
+                      </div>
+                    </>
+                  );
                 }}
               />
-              
+
               <div className="col-span-2">
                 <label
-                  htmlFor="totalValue"
+                  htmlFor="totalValueDepo"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Total Value
@@ -189,7 +189,7 @@ const DepositModal = (props: Props) => {
                 <input
                   type="number"
                   value={totalValue.toFixed(2)}
-                  id="totalValue"
+                  id="totalValueDepo"
                   readOnly // Make it read-only to prevent direct user input
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   required

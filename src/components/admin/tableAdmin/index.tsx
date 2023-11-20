@@ -4,6 +4,8 @@ import React from "react";
 type Props = {
   thList: string[];
   tbList: Admin[];
+  handleDelete: any;
+  handleUpdate: any;
 };
 
 const TableAdmin = (props: Props) => {
@@ -32,13 +34,16 @@ const TableAdmin = (props: Props) => {
               <td className="px-py-4">{tbItem.username}</td>
               <td className="px-py-4">
                 <div className="flex gap-2 items-center justify-center">
-                <button    
+                  <button
+                    onClick={() => props.handleUpdate(tbItem)}
                     className={` text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit
                   </button>
                   <button
-                    className={` text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}>
+                    onClick={() => props.handleDelete(tbItem)}
+                    className={` text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  >
                     Delete
                   </button>
                 </div>

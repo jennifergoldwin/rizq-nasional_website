@@ -54,7 +54,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-   
+
       if (!error) {
         setPlanList((prevList) => [...result]);
       }
@@ -85,7 +85,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-  
+
       if (!error) {
         // setShowPriceModal(!showPriceModal);
         setPlanList((prevList) => [...result]);
@@ -95,9 +95,8 @@ const Page = () => {
   };
 
   const onSubmit = async (data: AddPlanForm) => {
-    
-    data.interest = (parseFloat(data.interest)/100).toString()
-  
+    data.interest = (parseFloat(data.interest) / 100).toString();
+
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       if (token === "") return;
@@ -114,10 +113,10 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-  
+
       if (!error) {
         setShowAddPlanModal(!setShowAddPlanModal);
-        setPlanList((prevList) => [...prevList,result]);
+        setPlanList((prevList) => [...prevList, result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
@@ -135,7 +134,7 @@ const Page = () => {
           </button>
         </div>
         <TableStocks
-          thList={["Plan Id", "Plan Type", "Tenure", "Interest" ,"Price"]}
+          thList={["Plan Id", "Plan Type", "Tenure", "Interest", "Price"]}
           tbList={planList}
           handleDelete={handleDelete}
         />

@@ -17,8 +17,12 @@ export interface User {
 }
 
 export interface Admin {
+  int: string;
   fullName: string;
   username: string;
+  password: string;
+  role: string;
+  createdby: string;
 }
 
 export interface UserInfoForAdmin {
@@ -59,7 +63,6 @@ export interface Statement {
   leverage: string;
   profitLoss: string;
 }
-
 
 export interface Investment {
   id: string;

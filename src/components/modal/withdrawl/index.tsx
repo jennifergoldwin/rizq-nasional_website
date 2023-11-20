@@ -1,5 +1,5 @@
 "use client";
-import { Investment,  UserInfoForAdmin } from "@/utils/model";
+import { Investment, UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
@@ -90,14 +90,14 @@ const WithdrawlModal = (props: Props) => {
                   <>
                     <div className="col-span-2">
                       <label
-                        htmlFor="invesmentId"
+                        htmlFor="invesmentIdW"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Investment
                       </label>
                       <select
                         required
-                        id="invesmentId"
+                        id="invesmentIdW"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         {...field}
                       >
@@ -160,7 +160,7 @@ const WithdrawlModal = (props: Props) => {
 
               <div className="col-span-2">
                 <label
-                  htmlFor="dateDeposit"
+                  htmlFor="dateDepositW"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Deposit Date
@@ -168,12 +168,14 @@ const WithdrawlModal = (props: Props) => {
                 <input
                   type="date"
                   name="dateDeposit"
-                  id="dateDeposit"
+                  id="dateDepositW"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Deposit Date"
                   required
                   readOnly
-                  value={selectedInvestment ? selectedInvestment.dateDeposit : ""}
+                  value={
+                    selectedInvestment ? selectedInvestment.dateDeposit : ""
+                  }
                 />
               </div>
 
@@ -198,7 +200,7 @@ const WithdrawlModal = (props: Props) => {
 
               <div className="col-span-2 sm:col-span-1">
                 <label
-                  htmlFor="totalDeposit"
+                  htmlFor="totalDepositW"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Total Deposit
@@ -206,16 +208,18 @@ const WithdrawlModal = (props: Props) => {
                 <input
                   type="number"
                   name="totalDeposit"
-                  id="totalDeposit"
+                  id="totalDepositW"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   required
                   readOnly
-                  value={selectedInvestment ? selectedInvestment.totalDeposit : 0}
+                  value={
+                    selectedInvestment ? selectedInvestment.totalDeposit : 0
+                  }
                 />
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label
-                  htmlFor="totalProfit"
+                  htmlFor="totalProfitW"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Total Profit
@@ -223,11 +227,13 @@ const WithdrawlModal = (props: Props) => {
                 <input
                   type="number"
                   name="totalProfit"
-                  id="totalProfit"
+                  id="totalProfitW"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   required
                   readOnly
-                  value={selectedInvestment ? selectedInvestment.totalProfit : 0}
+                  value={
+                    selectedInvestment ? selectedInvestment.totalProfit : 0
+                  }
                 />
               </div>
             </div>
