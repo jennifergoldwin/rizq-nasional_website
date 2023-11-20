@@ -288,9 +288,10 @@ const Page = () => {
         <div
           className={`${
             role === roleType.masterAdmin ? "hidden" : "flex"
-          } justify-between items-center mx-8 py-8`}
+          } justify-between items-end lg:items-center lg:flex-row
+           flex-col mx-2 lg:mx-8 py-4`}
         >
-          <div className="flex gap-4">
+          <div className="flex gap-4 py-4">
             <select className="text-sm bg-[#2D3681] rounded px-2 py-2" value={selectedOption} onChange={handleOptionChange}>
                 <option value="" disabled>Filter</option>
                 <option value="identityNumber">Identity Number</option>

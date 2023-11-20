@@ -19,7 +19,7 @@ export default function Page() {
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
     const fullName = Cookies.get(cookies.fullName);
-  
+    
     if (token && identityNumber && fullName) {
       fetchUserData(token,identityNumber)
     }
@@ -64,7 +64,7 @@ export default function Page() {
       if (token === "" || ic === "") return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/update-bank`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/auth/update-bank`,
         {
           method: "PUT",
           headers: {
@@ -93,7 +93,7 @@ export default function Page() {
       if (token === "" || ic === "") return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/update-profile`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/auth/update-profile`,
         {
           method: "PUT",
           headers: {

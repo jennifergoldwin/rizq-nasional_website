@@ -27,12 +27,16 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
 
       <Swiper
         spaceBetween={20}
-        slidesPerView={3}
+        slidesPerView={2}
         breakpoints={{
           1024: {
             slidesPerView: 5,
             spaceBetween: 20,
           },
+          425:{
+            slidesPerView: 3,
+            spaceBetween: 20,
+          }
         }}
       >
         <SwiperSlide className="!h-auto">

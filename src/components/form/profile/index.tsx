@@ -37,7 +37,6 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile,handleUpdate })
       u.occupation = data.occupation;
       u.postCode = data.postCode;
       handleUpdate(u);
-      console.log(u)
       setIsEdit(!isEdit)
     }
   };
@@ -58,19 +57,19 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile,handleUpdate })
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full items-center my-4">
           <div className="w-2/5">Full Name</div>
-          <div className="w-3/5">{profile?.fullName}</div>
+          <div className="w-3/5 text-center">{profile?.fullName}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Identity Card Number</div>
-          <div className="w-3/5">{profile?.identityNumber}</div>
+          <div className="w-3/5 text-center">{profile?.identityNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Phone Number</div>
-          <div className="w-3/5">{profile?.phoneNumber}</div>
+          <div className="w-3/5 text-center">{profile?.phoneNumber}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <div className="w-2/5">Email Address</div>
-          <div className="w-3/5">{profile?.email}</div>
+          <div className="w-3/5 text-center">{profile?.email}</div>
         </div>
         <div className="flex items-center my-4 w-full">
           <label htmlFor="state" className="w-2/5">
