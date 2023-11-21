@@ -26,7 +26,7 @@ const Table = (props: Props) => {
         </thead>
         <tbody>
           {props.tbList.map((tbItem: Statement, idx: number) => (
-            <tr key={idx} className="text-center">
+            <tr key={idx} className="text-center border-b-[1px] border-gray-500">
               {props.type === "admin" && (
                 <td className="px-py-4">{tbItem.userName}</td>
               )}

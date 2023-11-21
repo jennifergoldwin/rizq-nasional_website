@@ -1,12 +1,14 @@
 "use client";
-import { Plan,  UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan,  UserInfoForAdmin } from "@/utils/model";
 import React from "react";
-import { useForm, SubmitHandler, Controller, set } from "react-hook-form";
+import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form";
 
 type Props = {
   showDepositModal: boolean;
   setShowDepositModal: any;
   handleDepositModal: any;
+  handleWithdrawalModal: any;
+  investList: Investment[];
   // planList: Plan[];
   // stockList: Stocks[];
   selectedUser: UserInfoForAdmin | undefined;
@@ -15,33 +17,40 @@ type FormValues = {
   dateDeposit: string;
   totalDeposit: string;
   totalProfit: string;
+  submitType: string;
   // Add other fields as needed
 };
 const DepositModal = (props: Props) => {
   const {
     handleSubmit,
-    control,
+    control,register,
     watch,setValue,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const submitType = useWatch({control, name: 'submitType' });
+
+  const onSubmit: SubmitHandler<FormValues> = async (data)  => {
     if (props.selectedUser) {
-      const bodyInv = {
-        id: "",
+      const bodyReq = {
         userIdentityNumber: props.selectedUser.identityNumber,
-        dateDeposit: data.dateDeposit,
-        dateWithdrawal: null,
         totalDeposit: data.totalDeposit,
         totalProfit: data.totalProfit,
-        statusDeposit: "Done",
-        statusWithdrawal: "false",
-      };
+      }
+
+      if (submitType === 'deposit') {
+        // Handle deposit logic
+        props.handleDepositModal(bodyReq)
+        
+      } else if (submitType === 'withdrawal') {
+        // Handle withdrawal logic
+        props.handleWithdrawalModal(bodyReq)
+      }
       setValue("dateDeposit","")
       setValue("totalDeposit","")
       setValue("totalProfit","")
       props.setShowDepositModal(!props.showDepositModal);
-      props.handleDepositModal(bodyInv);
+      
     }
   };
 
@@ -99,7 +108,7 @@ const DepositModal = (props: Props) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="p-4 md:p-5">
             <div className="grid gap-4 mb-4 grid-cols-2">
-              <Controller
+              {/* <Controller
                 name="dateDeposit"
                 control={control}
                 defaultValue=""
@@ -123,7 +132,7 @@ const DepositModal = (props: Props) => {
                     </div>
                   </>
                 )}
-              />
+              /> */}
               <Controller
                 name="totalDeposit"
                 control={control}
@@ -198,9 +207,22 @@ const DepositModal = (props: Props) => {
             </div>
             <button
               type="submit"
+              
+              value="deposit"
+              {...register("submitType")}
+              onClick={()=>setValue('submitType',"deposit")}
               className="text-white inline-flex items-center bg-[#5A64C3] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#5A64C3] dark:focus:ring-blue-800"
             >
-              Add deposit
+              Deposit
+            </button>
+            <button
+              type="submit"
+              {...register("submitType")}
+              onClick={()=>setValue('submitType',"withdrawal")}
+              value="withdrawal"
+              className="ml-3 text-white inline-flex items-center bg-[#5A64C3] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#5A64C3] dark:focus:ring-blue-800"
+            >
+              Withdrawal
             </button>
           </form>
         </div>

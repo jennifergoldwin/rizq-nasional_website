@@ -165,14 +165,14 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const updateDeposit = async (data: Investment) => {
+  const updateDeposit = async (data: any) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
       if (token === "" || username === "") return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/update-deposit`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/deposit`,
         {
           method: "PUT",
           headers: {
@@ -194,14 +194,14 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const withdrawl = async (data: Investment) => {
+  const withdrawl = async (data: any) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
       if (token === "" || username === "") return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/withdrawl/${data.id}`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/withdrawl`,
         {
           method: "PUT",
           headers: {
@@ -279,6 +279,7 @@ const Page = () => {
     withdrawl(value);
   };
   const handleUpdateDepoModal = (value: any) =>{
+    // console.log(value)
     updateDeposit(value);
   }
 
@@ -326,8 +327,8 @@ const Page = () => {
           ]}
           tbList={filteredUserList}
           hideAction={role === roleType.masterAdmin ? true : false}
-          handleDeposit={handleDepositModal}
-          handleUpdateDeposit={handleUpdateDepoModal}
+          handleDeposit={handleUpdateDepoModal}
+          // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
         />
       </div>

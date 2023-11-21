@@ -30,7 +30,7 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
         slidesPerView={2}
         breakpoints={{
           1024: {
-            slidesPerView: 5,
+            slidesPerView: 4,
             spaceBetween: 20,
           },
           425:{
@@ -67,13 +67,13 @@ const UserDetails: React.FC<UserDetailProps> = ({ user, totalDeposit = 0, totalI
             <span>{`%${isNaN(parseFloat((totalProfit/totalDeposit*100).toFixed(2)))?"0":(totalProfit/totalDeposit*100).toFixed(2)}`}</span>
           </div>
         </SwiperSlide>
-        <SwiperSlide className="!h-auto">
+        {/* <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Investment</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{totalInvestment}</span>
           </div>
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
     </div>
   );
