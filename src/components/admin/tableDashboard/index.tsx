@@ -1,11 +1,12 @@
 "use client";
 import DepositModal from "@/components/modal/deposit";
 import WithdrawlModal from "@/components/modal/withdrawl";
-import { Investment, Plan, UserInfoForAdmin } from "@/utils/model";
-import React from "react";
+import { Investment, Plan, Statement, UserInfoForAdmin } from "@/utils/model";
+import React, { use } from "react";
 import Cookies from "js-cookie";
 import { cookiesAdmin } from "@/utils/constant";
-import UpdateDepositModal from "@/components/modal/updateDeposit";
+// import UpdateDepositModal from "@/components/modal/updateDeposit";
+import StatementModal from "@/components/modal/updateDeposit";
 
 type Props = {
   thList: string[];
@@ -14,17 +15,37 @@ type Props = {
   // stockList: Stocks[];
   handleDeposit: any;
   handleWithdrawl: any;
-  handleUpdateDeposit: any;
+  // handleUpdateDeposit: any;
   hideAction: boolean;
 };
+const fetchUserStatement = async (token: String, username: String) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASEURL}/statement-admin/${username}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
 
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
 const TableDashboard = (props: Props) => {
   const [showDepositModal, setShowDepositModal] = React.useState(false);
-  const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
-  const [showUpdateDepositModal, setShowUpdateDepositModal] =
+  // const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
+  const [showStatementModal, setShowStatementModal] =
     React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
+  const [statementList, setStatementList] = React.useState<Statement[]>([]);
+
   React.useEffect(() => {
     if (selectedUser) {
       const token = Cookies.get(cookiesAdmin.token) || "";
@@ -33,6 +54,18 @@ const TableDashboard = (props: Props) => {
       }
     }
   }, [selectedUser]);
+
+  React.useEffect(() => {
+    const token = Cookies.get(cookiesAdmin.token) || "";
+    const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token != "" || username!="") {
+        const fetchData = async () => {
+          const data = await fetchUserStatement(token, username);
+          setStatementList(data.result);
+        };
+        fetchData();
+      }
+  }, []);
 
   const fetchUserInvestment = async (
     token: String,
@@ -88,8 +121,8 @@ const TableDashboard = (props: Props) => {
               }`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 ${props.hideAction ? "hidden" : ""}`}>
-                <div className="flex gap-2">
-                  <button
+                <div className="flex items-center justify-center gap-2">
+                  {/* <button
                     onClick={() => {
                       setSelectedUser(tbItem);
                       setShowDepositModal(!showDepositModal);
@@ -111,21 +144,25 @@ const TableDashboard = (props: Props) => {
                     } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Withdrawl
+                  </button> */}
+                  <button
+                    onClick={() => {
+                      setSelectedUser(tbItem);
+                      setShowDepositModal(!showDepositModal);
+                    }}
+                    className={` text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  >
+                    Edit
                   </button>
                   <button
                     onClick={() => {
                       setSelectedUser(tbItem);
-                      setShowUpdateDepositModal(!showUpdateDepositModal);
+                      setShowStatementModal(!showStatementModal);
                     }}
-                    className={`${
-                      tbItem.totalDeposit < 1 ||
-                      tbItem.totalDeposit === undefined
-                        ? "hidden"
-                        : "flex"
-                    } text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={` text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
-                    Edit
-                  </button>
+                    Statement
+                  </button> 
                 </div>
               </td>
             </tr>
@@ -136,22 +173,24 @@ const TableDashboard = (props: Props) => {
       <DepositModal
         showDepositModal={showDepositModal}
         setShowDepositModal={setShowDepositModal}
+        handleWithdrawalModal={props.handleWithdrawl}
         handleDepositModal={props.handleDeposit}
         selectedUser={selectedUser}
+        investList={investList}
       />
 
-      <WithdrawlModal
+      {/* <WithdrawlModal
         investList={investList}
         handleWithdrawlModal={props.handleWithdrawl}
         showWithdrawModal={showWithdrawModal}
         setShowWithdrawlModal={setShowWithdrawlModal}
-      />
+      /> */}
 
-      <UpdateDepositModal
-        investList={investList}
-        handleUpdateDepositModal={props.handleUpdateDeposit}
-        showUpdateDepositModal={showUpdateDepositModal}
-        setShowUpdateDepositModal={setShowUpdateDepositModal}
+      <StatementModal
+        statementList={statementList||[]}
+        showStatementModal={showStatementModal}
+        setShowStatementModal={setShowStatementModal}
+        selectedUser={selectedUser}
       />
     </div>
   );
