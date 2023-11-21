@@ -79,7 +79,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
             </option>
             ))}
         </select> */}
-        <select
+        {/* <select
             className="py-1 px-5  rounded bg-[#2D3681]"
             value={selectedYear}
             onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
@@ -90,7 +90,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
                 {year}
             </option>
             ))}
-        </select>
+        </select> */}
       </div>
 
       {/* Chart component */}
