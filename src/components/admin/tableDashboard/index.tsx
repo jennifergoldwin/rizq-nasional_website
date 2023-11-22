@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { cookiesAdmin } from "@/utils/constant";
 // import UpdateDepositModal from "@/components/modal/updateDeposit";
 import StatementModal from "@/components/modal/updateDeposit";
+import AddStatementModal from "@/components/modal/addStatement";
 
 type Props = {
   thList: string[];
@@ -15,6 +16,7 @@ type Props = {
   // stockList: Stocks[];
   handleDeposit: any;
   handleWithdrawl: any;
+  handleAddStatement: any;
   // handleUpdateDeposit: any;
   hideAction: boolean;
 };
@@ -59,7 +61,8 @@ const TableDashboard = (props: Props) => {
   }, [selectedUser]);
 
   React.useEffect(() => {
-    const token = Cookies.get(cookiesAdmin.token) || "";
+    // if (showStatementModal){
+      const token = Cookies.get(cookiesAdmin.token) || "";
     const username = Cookies.get(cookiesAdmin.username) || "";
       if (token != "" || username!="") {
         const fetchData = async () => {
@@ -68,7 +71,8 @@ const TableDashboard = (props: Props) => {
         };
         fetchData();
       }
-  }, []);
+    // }
+  }, [showStatementModal]);
 
   const fetchUserInvestment = async (
     token: String,
@@ -151,7 +155,7 @@ const TableDashboard = (props: Props) => {
                 tbItem.totalDeposit !== undefined ? tbItem.totalDeposit : "0.0"
               }`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
-              <td className={`px-py-4 ${props.hideAction ? "hidden" : ""}`}>
+              <td className={`px-py-4 `}>
                 <div className="flex items-center justify-center gap-2">
                   {/* <button
                     onClick={() => {
@@ -181,7 +185,7 @@ const TableDashboard = (props: Props) => {
                       setSelectedUser(tbItem);
                       setShowDepositModal(!showDepositModal);
                     }}
-                    className={` text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={`${props.hideAction ? "hidden" : ""} text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit
                   </button>
@@ -190,9 +194,18 @@ const TableDashboard = (props: Props) => {
                       setSelectedUser(tbItem);
                       setShowStatementModal(!showStatementModal);
                     }}
-                    className={` text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={`${props.hideAction ? "hidden" : ""} text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Statement
+                  </button>
+                  <button
+                    onClick={() => {
+                      // setSelectedUser(tbItem);
+                      // setShowStatementModal(!showStatementModal);
+                    }}
+                    className={`text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  >
+                    Edit User
                   </button> 
                 </div>
               </td>
@@ -226,6 +239,11 @@ const TableDashboard = (props: Props) => {
         setShowStatementModal={setShowStatementModal}
         selectedUser={selectedUser}
       />
+
+      <AddStatementModal handleAddStatement={props.handleAddStatement} userList={props.tbList}
+       setShowAddStatementModal={setAddShowStatementModal} 
+      showAddStatementModal={showAddStatementModal} showStatementModal={showStatementModal}
+      setShowStatementModal={setShowStatementModal}/>
 
       
     </div>

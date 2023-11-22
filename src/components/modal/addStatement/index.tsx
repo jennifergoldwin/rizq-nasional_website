@@ -13,6 +13,8 @@ interface AddStatementForm {
 interface Props {
   showAddStatementModal: boolean;
   setShowAddStatementModal: any;
+  showStatementModal: boolean;
+  setShowStatementModal: any;
   userList: UserInfoForAdmin[];
   handleAddStatement: any;
 }
@@ -28,6 +30,10 @@ const AddStatementModal = (props: Props) => {
 
   const onSubmit = async (data: AddStatementForm) => {
     // console.log(data)
+    if (props.setShowStatementModal){
+      props.setShowStatementModal(!props.showStatementModal)
+    }
+    props.setShowAddStatementModal(!props.showAddStatementModal)
     props.handleAddStatement({
       id: "",
       userIdentityNumber: selectedUser,

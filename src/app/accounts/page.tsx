@@ -1,6 +1,6 @@
 "use client";
 import TableDashboard from "@/components/admin/tableDashboard";
-import { Investment, Plan, UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan, Statement, UserInfoForAdmin } from "@/utils/model";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -136,33 +136,33 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const deposit = async (data: any) => {
-    try {
-      const token = Cookies.get(cookiesAdmin.token) || "";
-      const username = Cookies.get(cookiesAdmin.username) || "";
-      if (token === "" || username === "") return;
+  // const deposit = async (data: any) => {
+  //   try {
+  //     const token = Cookies.get(cookiesAdmin.token) || "";
+  //     const username = Cookies.get(cookiesAdmin.username) || "";
+  //     if (token === "" || username === "") return;
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/deposit`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BASEURL}/deposit`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(data),
+  //       }
+  //     );
 
-      const { error, message, result } = await response.json();
+  //     const { error, message, result } = await response.json();
 
-      // showToast(message, !error);
+  //     // showToast(message, !error);
 
-      if (!error) {
-        fetchUser(username, token);
-      }
-    } catch (error: any) {}
-  };
+  //     if (!error) {
+  //       fetchUser(username, token);
+  //     }
+  //   } catch (error: any) {}
+  // };
 
   const updateDeposit = async (data: any) => {
     try {
@@ -267,10 +267,41 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  
 
-  const handleDepositModal = (value: any) => {
-    deposit(value);
+  // const handleDepositModal = (value: any) => {
+  //   deposit(value);
+  // };
+  const addStatement = async (data: Statement) => {
+    try {
+      console.log(data);
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const us = Cookies.get(cookiesAdmin.username) || "";
+      if (us === "" || token === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+      console.log(message);
+      // showToast(message, !error);
+      if (!error) {
+        // router.refresh()
+        // setShowAddStatementModal(!showAddStatementModal);
+        // setStatementList((prev) => [...prev, result]);
+      }
+    } catch (error: any) {}
+  };
+  const handleAddStatement = (value: Statement) => {
+    addStatement(value);
   };
   const handleWithdrawlModal = (value: any) => {
     withdrawl(value);
@@ -279,6 +310,8 @@ const Page = () => {
     // console.log(value)
     updateDeposit(value);
   };
+
+
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -335,6 +368,7 @@ const Page = () => {
           handleDeposit={handleUpdateDepoModal}
           // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
+          handleAddStatement={handleAddStatement}
         />
       </div>
 
