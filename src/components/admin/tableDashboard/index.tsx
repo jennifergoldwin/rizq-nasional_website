@@ -8,6 +8,7 @@ import { cookiesAdmin } from "@/utils/constant";
 // import UpdateDepositModal from "@/components/modal/updateDeposit";
 import StatementModal from "@/components/modal/updateDeposit";
 import AddStatementModal from "@/components/modal/addStatement";
+import EditUserModal from "@/components/modal/editUser";
 
 type Props = {
   thList: string[];
@@ -17,6 +18,7 @@ type Props = {
   handleDeposit: any;
   handleWithdrawl: any;
   handleAddStatement: any;
+  handleEditUser:any;
   // handleUpdateDeposit: any;
   hideAction: boolean;
 };
@@ -47,6 +49,7 @@ const TableDashboard = (props: Props) => {
     React.useState(false);
   const [showAddStatementModal, setAddShowStatementModal] =
     React.useState(false);
+  const [showEditUserModal, setShowEditUserModal] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
   const [statementList, setStatementList] = React.useState<Statement[]>([]);
@@ -200,7 +203,8 @@ const TableDashboard = (props: Props) => {
                   </button>
                   <button
                     onClick={() => {
-                      // setSelectedUser(tbItem);
+                      setSelectedUser(tbItem);
+                      setShowEditUserModal(!showEditUserModal)
                       // setShowStatementModal(!showStatementModal);
                     }}
                     className={`text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
@@ -222,6 +226,9 @@ const TableDashboard = (props: Props) => {
         selectedUser={selectedUser}
         investList={investList}
       />
+
+      <EditUserModal selectedUser={selectedUser} showEditUserModal={showEditUserModal}
+      setShowEditUserModal={setShowEditUserModal} handleEditUser={props.handleEditUser}/>
 
       {/* <WithdrawlModal
         investList={investList}

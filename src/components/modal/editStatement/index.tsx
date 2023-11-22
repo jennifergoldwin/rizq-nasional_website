@@ -128,7 +128,7 @@ const EditStatementModal = (props: Props) => {
                   {...register("date", { required: "Date is required" })}
                   type="date"
                   name="date"
-                  id="date"
+                  id="dateEdit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Date"
                   required
@@ -147,7 +147,7 @@ const EditStatementModal = (props: Props) => {
                   })}
                   type="text"
                   name="product"
-                  id="product"
+                  id="productEdit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Product"
                   required
@@ -166,7 +166,7 @@ const EditStatementModal = (props: Props) => {
                   })}
                   type="text"
                   name="leverage"
-                  id="leverage"
+                  id="leverageEdit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Leverage"
                   required
@@ -190,7 +190,7 @@ const EditStatementModal = (props: Props) => {
                   })}
                   type="number"
                   name="profitLoss"
-                  id="profitLoss"
+                  id="profitLossEdit"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Profit / Loss"
                   required

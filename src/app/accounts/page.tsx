@@ -267,6 +267,34 @@ const Page = () => {
     } catch (error: any) {}
   };
 
+  const updateUser = async (data: any) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token === "" || username === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-user`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      // showToast(message, !error);
+
+      if (!error) {
+        fetchUser(username, token);
+      }
+    } catch (error: any) {}
+  };
+
 
   // const handleDepositModal = (value: any) => {
   //   deposit(value);
@@ -300,6 +328,10 @@ const Page = () => {
       }
     } catch (error: any) {}
   };
+
+  const handleEditUser = (value : any) => {
+    updateUser(value);
+  }
   const handleAddStatement = (value: Statement) => {
     addStatement(value);
   };
@@ -366,6 +398,7 @@ const Page = () => {
           tbList={filteredUserList}
           hideAction={role === roleType.masterAdmin ? true : false}
           handleDeposit={handleUpdateDepoModal}
+          handleEditUser={handleEditUser}
           // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
           handleAddStatement={handleAddStatement}
