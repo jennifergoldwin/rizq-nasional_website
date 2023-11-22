@@ -1,6 +1,6 @@
 "use client";
 import TableDashboard from "@/components/admin/tableDashboard";
-import { Investment, Plan,  UserInfoForAdmin } from "@/utils/model";
+import { Investment, Plan, UserInfoForAdmin } from "@/utils/model";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -42,15 +42,15 @@ const Page = () => {
   const filterUserList = () => {
     return userList.filter((user) => {
       switch (selectedOption) {
-        case 'identityNumber':
+        case "identityNumber":
           return user.identityNumber.includes(searchKeyword);
-        case 'email':
+        case "email":
           return user.email.includes(searchKeyword);
-        case 'fullName':
+        case "fullName":
           return user.fullName.includes(searchKeyword);
-        case 'phoneNumber':
+        case "phoneNumber":
           return user.phoneNumber.includes(searchKeyword);
-        case 'createdby':
+        case "createdby":
           return user.createdby.includes(searchKeyword);
         default:
           return true; // No filter if no option is selected
@@ -137,7 +137,6 @@ const Page = () => {
   };
 
   const deposit = async (data: any) => {
-
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
@@ -185,7 +184,6 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
-      
       // showToast(message, !error);
 
       if (!error) {
@@ -214,7 +212,6 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
-      
       // showToast(message, !error);
 
       if (!error) {
@@ -255,22 +252,22 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      
+
       // showToast(message, !error);
-      
+
       if (!error) {
         setShowAddUserModal(!showAddUserModal);
         setUserList((prev) => [...prev, result]);
-      }else{
-        setError('identityNumber', {
-          type: 'manual',
+      } else {
+        setError("identityNumber", {
+          type: "manual",
           message: message,
         });
       }
-    } catch (error: any) {
-      
-    }
+    } catch (error: any) {}
   };
+
+  
 
   const handleDepositModal = (value: any) => {
     deposit(value);
@@ -278,34 +275,42 @@ const Page = () => {
   const handleWithdrawlModal = (value: any) => {
     withdrawl(value);
   };
-  const handleUpdateDepoModal = (value: any) =>{
+  const handleUpdateDepoModal = (value: any) => {
     // console.log(value)
     updateDeposit(value);
-  }
+  };
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
       <div className="max-w-full mx-auto h-full w-full">
         <div
-          className={`${
-            role === roleType.masterAdmin ? "hidden" : "flex"
-          } justify-between items-end lg:items-center lg:flex-row
+          className={`
+          
+          flex justify-between items-end lg:items-center lg:flex-row
            flex-col mx-2 lg:mx-8 py-4`}
         >
           <div className="flex gap-4 py-4">
-            <select className="text-sm bg-[#2D3681] rounded px-2 py-2" value={selectedOption} onChange={handleOptionChange}>
-                <option value="" disabled>Filter</option>
-                <option value="identityNumber">Identity Number</option>
-                <option value="email">Email</option>
-                <option value="fullName">Full Name</option>
-                <option value="phoneNumber">Phone Number</option>
-                <option value="createdby">Created By</option>
+            <select
+              className="text-sm bg-[#2D3681] rounded px-2 py-2"
+              value={selectedOption}
+              onChange={handleOptionChange}
+            >
+              <option value="" disabled>
+                Filter
+              </option>
+              <option value="identityNumber">Identity Number</option>
+              <option value="email">Email</option>
+              <option value="fullName">Full Name</option>
+              <option value="phoneNumber">Phone Number</option>
+              <option value="createdby">Created By</option>
             </select>
-            
-            <input className="bg-[#2D3681] rounded px-2 py-2 text-sm"
-                type="text"
-                value={searchKeyword} placeholder="Your keyword.."
-                onChange={handleKeywordChange}
+
+            <input
+              className="bg-[#2D3681] rounded px-2 py-2 text-sm"
+              type="text"
+              value={searchKeyword}
+              placeholder="Your keyword.."
+              onChange={handleKeywordChange}
             />
           </div>
           <button

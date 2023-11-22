@@ -1,16 +1,18 @@
 "use client";
 import Table from "@/components/table";
-import { Investment, Statement, UserInfoForAdmin} from "@/utils/model";
+import { Investment, Statement, UserInfoForAdmin } from "@/utils/model";
 import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 type Props = {
-  statementList: Statement[]
+  statementList: Statement[];
   showStatementModal: boolean;
-  setShowStatementModal:any;
+  showAddStatementModal: boolean;
+  setShowAddStatementModal: any;
+  setShowStatementModal: any;
   selectedUser: UserInfoForAdmin | undefined;
+  handleEditStatement: any;
 };
-
 
 const StatementModal = (props: Props) => {
   // const {
@@ -35,7 +37,7 @@ const StatementModal = (props: Props) => {
   //     props.setShowUpdateDepositModal(!props.showUpdateDepositModal);
   //     props.handleUpdateDepositModal(si);
   //   }
-    
+
   // };
 
   // React.useEffect(() => {
@@ -60,7 +62,6 @@ const StatementModal = (props: Props) => {
   //     setTotalValue(0)
   //   }
   // },[watch('totalDeposit'), watch('totalProfit')])
-
 
   return (
     <div
@@ -104,20 +105,35 @@ const StatementModal = (props: Props) => {
             </button>
           </div>
           <div className="pb-8">
+            <div className={`flex justify-between items-center mx-8 py-8`}>
+              <button
+                onClick={() => props.setShowAddStatementModal(!props.showAddStatementModal)}
+                className={`flex text-white text-xs bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center  `}
+              >
+                Add Statement
+              </button>
+            </div>
             <Table
-            handleEditStatement={null}
-            thList={["Date", "Product", "Leverage", "Profit / Loss"]}
-            tbList={ props.statementList.filter((st) => {
-              if (props.selectedUser){
-                return st.userIdentityNumber.toLowerCase().match(props.selectedUser.identityNumber);
-              }
-            })
-            }
-            type={""}
-          />
-
+              handleEditStatement={props.handleEditStatement}
+              thList={[
+                "Full Name",
+                "User IC",
+                "Date",
+                "Product",
+                "Leverage",
+                "Profit / Loss",
+                "Action",
+              ]}
+              tbList={props.statementList.filter((st) => {
+                if (props.selectedUser) {
+                  return st.userIdentityNumber
+                    .toLowerCase()
+                    .match(props.selectedUser.identityNumber);
+                }
+              })}
+              type={"admin"}
+            />
           </div>
-
         </div>
       </div>
     </div>

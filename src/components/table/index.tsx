@@ -49,7 +49,7 @@ const Table = (props: Props) => {
               <td className="px-py-4">{tbItem.product}</td>
               
               <td className="px-py-4">{tbItem.leverage}</td>
-              <td className="px-py-4">{tbItem.profitLoss}</td>
+              <td className={`${parseInt(tbItem.profitLoss)>0?'text-green-500':'text-red-500'} px-py-4`}>{parseInt(tbItem.profitLoss)>0?`+${tbItem.profitLoss}`:tbItem.profitLoss}</td>
               {props.type === "admin" && (
                 <td className="px-py-4">
                   <button

@@ -12,28 +12,28 @@ interface InvestmentChartProps {
 
 const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
   // const [selectedMonth, setSelectedMonth] = useState<number>(0);
-  const [selectedYear, setSelectedYear] = useState<number>(0);
+  // const [selectedYear, setSelectedYear] = useState<number>(0);
 
-  useEffect(() => {
-    if (data.length > 0 ) {
-      // setSelectedMonth(parseInt(data[0].month.split('-')[1], 10));
-      setSelectedYear(parseInt(data[0].month.split('-')[0], 10));
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data.length > 0 ) {
+  //     // setSelectedMonth(parseInt(data[0].month.split('-')[1], 10));
+  //     setSelectedYear(parseInt(data[0].month.split('-')[0], 10));
+  //   }
+  // }, [data]);
 
   // const uniqueMonths = Array.from(new Set(latestData.map((item) => item.month.split('-')[1]))).sort();
-  const uniqueYears = Array.from(new Set(data.map((item) => item.month.split('-')[0]))).sort();
+  // const uniqueYears = Array.from(new Set(data.map((item) => item.month.split('-')[0]))).sort();
 
-  const filteredData = data.filter(
-    (investmentData) =>
-      investmentData.month.startsWith(`${selectedYear}`)
-  );
+  // const filteredData = data.filter(
+  //   (investmentData) =>
+  //     investmentData.month.startsWith(`${selectedYear}`)
+  // );
 
   const chartData = {
-    labels: filteredData.map((investmentData) => investmentData.month),
+    labels: data.map((investmentData) => investmentData.month),
     datasets: [
       {
-        data: filteredData.map((investmentData) => investmentData.growth),
+        data: data.map((investmentData) => investmentData.growth),
         backgroundColor: (context: any) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
@@ -60,6 +60,10 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
     return gradient;
   };
 
+  React.useEffect(()=>{
+    console.log(data)
+  },[])
+
   return (
     <div className="mx-6 my-12 bg-[#01115E] px-8 py-6 rounded-xl">
       <h1 className="text-center text-xl font-semibold pb-8 pt-4">
@@ -79,7 +83,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
             </option>
             ))}
         </select> */}
-        <select
+        {/* <select
             className="py-1 px-5  rounded bg-[#2D3681]"
             value={selectedYear}
             onChange={(e) => setSelectedYear(parseInt(e.target.value, 10))}
@@ -90,7 +94,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
                 {year}
             </option>
             ))}
-        </select>
+        </select> */}
       </div>
 
       {/* Chart component */}

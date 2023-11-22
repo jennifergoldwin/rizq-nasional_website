@@ -1,57 +1,42 @@
 "use client";
+import SelectUser from "@/components/admin/select";
+import { useForm } from "react-hook-form";
 import React from "react";
-import { Statement } from "@/utils/model";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-type Props = {
-  showEditStatementModal: boolean;
-  setShowEditStatementModal: any;
-  handleEditStatement: any;
-  selectedStatement: Statement | undefined;
-};
-type EditStatementForm = {
+import { UserInfoForAdmin } from "@/utils/model";
+interface AddStatementForm {
   date: string;
   product: string;
   leverage: string;
   profitLoss: string;
-};
-const EditStatementModal = (props: Props) => {
+  password: string;
+}
+interface Props {
+  showAddStatementModal: boolean;
+  setShowAddStatementModal: any;
+  userList: UserInfoForAdmin[];
+  handleAddStatement: any;
+}
+const AddStatementModal = (props: Props) => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<AddStatementForm>();
 
-    const {
-        handleSubmit,
-        control,
-        register,
-        setValue,
-        watch,
-        formState: { errors },
-      } = useForm<EditStatementForm>();
+  const [selectedUser, setSelectedUser] = React.useState<string>("");
 
-  const onSubmit: SubmitHandler<EditStatementForm> = async (data) => {
-    if (props.selectedStatement){
-      const bodySt = {
-        id: props.selectedStatement.id,
-        userIdentityNumber : props.selectedStatement.userIdentityNumber,
-        date: data.date,
-        product : data.product,
-        leverage : data.leverage,
-        profitLoss : data.profitLoss 
-      }
-      props.setShowEditStatementModal(!props.showEditStatementModal);
-      props.handleEditStatement(bodySt);
-    }
-    // props.setShowEditStatementModal(!props.showEditStatementModal);
-    // props.handleWithdrawlModal(props.selectedStatement);
-
-  };
-
-  React.useEffect(()=>{
-    if (props.selectedStatement){
-      setValue("date",props.selectedStatement.date);
-      setValue("leverage",props.selectedStatement.leverage);
-      setValue("product",props.selectedStatement.product);
-      setValue("profitLoss",props.selectedStatement.profitLoss);
-    }
-  },[props.selectedStatement]);
-  
+  const onSubmit = async (data: AddStatementForm) => {
+    // console.log(data)
+    props.handleAddStatement({
+      id: "",
+      userIdentityNumber: selectedUser,
+      date: data.date.replace("T", " "),
+      product: data.product,
+      leverage: data.leverage,
+      profitLoss: data.profitLoss,
+    })
+  }
 
   return (
     <div
@@ -59,17 +44,19 @@ const EditStatementModal = (props: Props) => {
       tabIndex={-1}
       aria-hidden="true"
       className={`${
-        props.showEditStatementModal ? "flex" : "hidden"
+        props.showAddStatementModal ? "flex" : "hidden"
       } overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
     >
       <div className="relative p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Edit Statement
+              Create New Statement
             </h3>
             <button
-              onClick={() => props.setShowEditStatementModal(!props.showEditStatementModal)}
+              onClick={() =>
+                props.setShowAddStatementModal(!props.showAddStatementModal)
+              }
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="crud-modal"
@@ -101,21 +88,10 @@ const EditStatementModal = (props: Props) => {
                 >
                   Name
                 </label>
-                <input
-                  type="text"
-                  name="userName"
-                  id="userName"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Name"
-                  required
-                  readOnly
-                  value={
-                    props.selectedStatement
-                      ? props.selectedStatement.userName
-                      : ""
-                  }
+                <SelectUser
+                  setSelectedUser={setSelectedUser}
+                  userList={props.userList}
                 />
-                
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label
@@ -126,7 +102,7 @@ const EditStatementModal = (props: Props) => {
                 </label>
                 <input
                   {...register("date", { required: "Date is required" })}
-                  type="date"
+                  type="datetime-local"
                   name="date"
                   id="date"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -213,7 +189,7 @@ const EditStatementModal = (props: Props) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              Edit statement
+              Add new statement
             </button>
           </form>
         </div>
@@ -222,4 +198,4 @@ const EditStatementModal = (props: Props) => {
   );
 };
 
-export default EditStatementModal;
+export default AddStatementModal;

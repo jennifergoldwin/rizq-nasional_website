@@ -37,10 +37,13 @@ const fetchUserStatement = async (token: String, username: String) => {
     return null;
   }
 };
+
 const TableDashboard = (props: Props) => {
   const [showDepositModal, setShowDepositModal] = React.useState(false);
   // const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
   const [showStatementModal, setShowStatementModal] =
+    React.useState(false);
+  const [showAddStatementModal, setAddShowStatementModal] =
     React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
@@ -88,6 +91,34 @@ const TableDashboard = (props: Props) => {
       }
     } catch (error) {}
   };
+  const updateStatement = async (data: Statement) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      if (token === "") return;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/update-statement`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      if (!error) {
+        // setShowPriceModal(!showPriceModal);
+        setStatementList((prevList) => [...result]);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
+  const handleEditStatement = (value: Statement) => {
+    updateStatement(value);
+  }
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -187,11 +218,16 @@ const TableDashboard = (props: Props) => {
       /> */}
 
       <StatementModal
+        showAddStatementModal={showAddStatementModal}
+        setShowAddStatementModal={setAddShowStatementModal}
+        handleEditStatement={handleEditStatement}
         statementList={statementList||[]}
         showStatementModal={showStatementModal}
         setShowStatementModal={setShowStatementModal}
         selectedUser={selectedUser}
       />
+
+      
     </div>
   );
 };

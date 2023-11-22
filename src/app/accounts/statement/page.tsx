@@ -6,6 +6,7 @@ import { cookiesAdmin } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import SelectUser from "@/components/admin/select";
+import AddStatementModal from "@/components/modal/addStatement";
 
 interface AddStatementForm {
   date: string;
@@ -63,41 +64,41 @@ export default function Page() {
     }
   }, []);
 
-  const onSubmit = async (data: AddStatementForm) => {
-    try {
-      console.log(data)
-      const token = Cookies.get(cookiesAdmin.token) || "";
-      const us = Cookies.get(cookiesAdmin.username) || "";
-      if (us === "" || token === "") return;
+  // const onSubmit = async (data: AddStatementForm) => {
+  //   try {
+  //     console.log(data);
+  //     const token = Cookies.get(cookiesAdmin.token) || "";
+  //     const us = Cookies.get(cookiesAdmin.username) || "";
+  //     if (us === "" || token === "") return;
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: "",
-            userIdentityNumber: selectedUser,
-            date: data.date.replace("T"," "),
-            product: data.product,
-            leverage: data.leverage,
-            profitLoss: data.profitLoss,
-          }),
-        }
-      );
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           id: "",
+  //           userIdentityNumber: selectedUser,
+  //           date: data.date.replace("T", " "),
+  //           product: data.product,
+  //           leverage: data.leverage,
+  //           profitLoss: data.profitLoss,
+  //         }),
+  //       }
+  //     );
 
-      const { error, message, result } = await response.json();
-      console.log(result)
-      // showToast(message, !error);
-      if (!error) {
-        setShowAddStatementModal(!showAddStatementModal);
-        setStatementList((prev) => [...prev, result]);
-      }
-    } catch (error: any) {}
-  };
+  //     const { error, message, result } = await response.json();
+  //     console.log(result);
+  //     // showToast(message, !error);
+  //     if (!error) {
+  //       setShowAddStatementModal(!showAddStatementModal);
+  //       setStatementList((prev) => [...prev, result]);
+  //     }
+  //   } catch (error: any) {}
+  // };
 
   const fetchUser = async (username: string, token: string) => {
     try {
@@ -113,14 +114,41 @@ export default function Page() {
       );
 
       const { error, message, result } = await response.json();
-      
+
       if (!error) {
         setUserList((prev) => [...result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
   };
+  const addStatement = async (data: Statement) => {
+    try {
+      console.log(data);
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const us = Cookies.get(cookiesAdmin.username) || "";
+      if (us === "" || token === "") return;
 
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+      console.log(message);
+      // showToast(message, !error);
+      if (!error) {
+        setShowAddStatementModal(!showAddStatementModal);
+        setStatementList((prev) => [...prev, result]);
+      }
+    } catch (error: any) {}
+  };
   const updateStatement = async (data: Statement) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
@@ -138,7 +166,7 @@ export default function Page() {
       );
 
       const { error, message, result } = await response.json();
-  
+
       if (!error) {
         // setShowPriceModal(!showPriceModal);
         setStatementList((prevList) => [...result]);
@@ -153,7 +181,11 @@ export default function Page() {
 
   const handleEditStatement = (value: Statement) => {
     updateStatement(value);
-  }
+  };
+
+  const handleAddStatement = (value: Statement) => {
+    addStatement(value);
+  };
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -175,16 +207,31 @@ export default function Page() {
         </div>
         <Table
           handleEditStatement={handleEditStatement}
-          thList={["Name","IC Number","Date", "Product", "Leverage", "Profit / Loss", "Action"]}
-          tbList={searchKeyword!==""? statementList.filter((st) => {
-            return st.userName.toLowerCase().startsWith(searchKeyword.toLowerCase());
-          })
-          :statementList || []}
+          thList={[
+            "Name",
+            "IC Number",
+            "Date",
+            "Product",
+            "Leverage",
+            "Profit / Loss",
+            "Action",
+          ]}
+          tbList={
+            searchKeyword !== ""
+              ? statementList.filter((st) => {
+                  return st.userName
+                    .toLowerCase()
+                    .startsWith(searchKeyword.toLowerCase());
+                })
+              : statementList || []
+          }
           type={"admin"}
         />
       </div>
 
-      <div
+      <AddStatementModal setShowAddStatementModal={setShowAddStatementModal} showAddStatementModal={showAddStatementModal}
+      userList={userList} handleAddStatement={handleAddStatement}/>
+      {/* <div
         id="add-statement-modal"
         tabIndex={-1}
         aria-hidden="true"
@@ -231,18 +278,10 @@ export default function Page() {
                   >
                     Name
                   </label>
-                  <SelectUser setSelectedUser={setSelectedUser} userList={userList}/>
-                  {/* <input
-                    {...register("fullName", {
-                      required: "Full name is required",
-                    })}
-                    type="text"
-                    name="fullName"
-                    id="fullName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Full Name"
-                    required
-                  /> */}
+                  <SelectUser
+                    setSelectedUser={setSelectedUser}
+                    userList={userList}
+                  />
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                   <label
@@ -255,7 +294,7 @@ export default function Page() {
                     {...register("date", { required: "Date is required" })}
                     type="datetime-local"
                     name="date"
-                    id="date" 
+                    id="date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Date"
                     required
@@ -315,7 +354,7 @@ export default function Page() {
                     {...register("profitLoss", {
                       required: "Profit / Loss is required",
                     })}
-                    type="text"
+                    type="number"
                     name="profitLoss"
                     id="profitLoss"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -345,9 +384,7 @@ export default function Page() {
             </form>
           </div>
         </div>
-      </div>
-
-      
+      </div> */}
     </main>
   );
 }
