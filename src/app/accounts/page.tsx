@@ -328,6 +328,36 @@ const Page = () => {
     } catch (error: any) {}
   };
 
+  const deleteUser = async (data: string) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token === "" || username === "") return;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/auth/delete-user/${data}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          // body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      if (!error) {
+        // setShowPriceModal(!showPriceModal);
+        fetchUser(username, token);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
+
+  const handleDeleteUser = (value: any) => {
+    deleteUser(value);
+  };
   const handleEditUser = (value: any) => {
     updateUser(value);
   };
@@ -399,6 +429,7 @@ const Page = () => {
           // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
           handleAddStatement={handleAddStatement}
+          handleDeleteUser={handleDeleteUser}
         />
       </div>
 

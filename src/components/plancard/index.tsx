@@ -3,6 +3,7 @@ import basic from "../../../public/assets/icons/basic.png";
 import premium from "../../../public/assets/icons/premium.png";
 import standard from "../../../public/assets/icons/standard.png";
 import { Plan } from "@/utils/model";
+import { formatToMYR } from "@/utils/constant";
 type Props = {
   data: Plan;
 };
@@ -19,7 +20,9 @@ const PlanCard = (props: Props) => {
         }
         alt={props.data.planType}
       />
-      <h1 className="font-bold text-xl my-4 text-center">{props.data.planType}</h1>
+      <h1 className="font-bold text-xl my-4 text-center">
+        {props.data.planType}
+      </h1>
       <p className="text-white/[0.5] mb-4 text-center">{`${props.data.tenure} Days Holding Period`}</p>
 
       <div>
@@ -148,10 +151,11 @@ const PlanCard = (props: Props) => {
           <p>{`Withdrawl at any time`}</p>
         </div>
         <p className="text-[#4DC2E8] text-center">
-          RM<span className="text-3xl font-semibold">{props.data.price}</span>
+          <span className="text-3xl font-semibold">
+            {formatToMYR(props.data.price)}
+          </span>
         </p>
       </div>
-      
     </div>
   );
 };

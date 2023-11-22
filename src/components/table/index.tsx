@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { Statement } from "@/utils/model";
-import React from 'react'
+import React from "react";
 import EditStatementModal from "../modal/editStatement";
+import { formatToMYR } from "@/utils/constant";
 
 type Props = {
   thList: string[];
@@ -12,7 +13,8 @@ type Props = {
 
 const Table = (props: Props) => {
   const [selectedStatement, setSelectedStatement] = React.useState<Statement>();
-  const [showEditStatementModal, setShowEditStatementModal] = React.useState(false);
+  const [showEditStatementModal, setShowEditStatementModal] =
+    React.useState(false);
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -27,7 +29,10 @@ const Table = (props: Props) => {
         </thead>
         <tbody>
           {props.tbList.map((tbItem: Statement, idx: number) => (
-            <tr key={idx} className="text-center border-b-[1px] border-gray-500">
+            <tr
+              key={idx}
+              className="text-center border-b-[1px] border-gray-500"
+            >
               {props.type === "admin" && (
                 <td className="px-py-4">{tbItem.userName}</td>
               )}
@@ -44,12 +49,28 @@ const Table = (props: Props) => {
                 scope="row"
                 className="p-2 font-medium  whitespace-pre-line "
               >
-                {new Date(tbItem.date).toLocaleString('sv-SE',{year: 'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+                {new Date(tbItem.date).toLocaleString("sv-SE", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </th>
               <td className="px-py-4">{tbItem.product}</td>
-              
+
               <td className="px-py-4">{tbItem.leverage}</td>
-              <td className={`${parseInt(tbItem.profitLoss)>0?'text-green-500':'text-red-500'} px-py-4`}>{parseInt(tbItem.profitLoss)>0?`+${tbItem.profitLoss}`:tbItem.profitLoss}</td>
+              <td
+                className={`${
+                  parseInt(tbItem.profitLoss) > 0
+                    ? "text-green-500"
+                    : "text-red-500"
+                } px-py-4`}
+              >
+                {parseInt(tbItem.profitLoss) > 0
+                  ? `+${formatToMYR(parseInt(tbItem.profitLoss))}`
+                  : `${formatToMYR(parseInt(tbItem.profitLoss))}`}
+              </td>
               {props.type === "admin" && (
                 <td className="px-py-4">
                   <button
@@ -69,7 +90,12 @@ const Table = (props: Props) => {
         </tbody>
       </table>
 
-      <EditStatementModal handleEditStatement={props.handleEditStatement} selectedStatement={selectedStatement} setShowEditStatementModal={setShowEditStatementModal} showEditStatementModal={showEditStatementModal}/>
+      <EditStatementModal
+        handleEditStatement={props.handleEditStatement}
+        selectedStatement={selectedStatement}
+        setShowEditStatementModal={setShowEditStatementModal}
+        showEditStatementModal={showEditStatementModal}
+      />
     </div>
   );
 };

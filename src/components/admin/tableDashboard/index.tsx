@@ -4,7 +4,7 @@ import WithdrawlModal from "@/components/modal/withdrawl";
 import { Investment, Plan, Statement, UserInfoForAdmin } from "@/utils/model";
 import React, { use } from "react";
 import Cookies from "js-cookie";
-import { cookiesAdmin } from "@/utils/constant";
+import { cookiesAdmin, formatToMYR } from "@/utils/constant";
 // import UpdateDepositModal from "@/components/modal/updateDeposit";
 import StatementModal from "@/components/modal/updateDeposit";
 import AddStatementModal from "@/components/modal/addStatement";
@@ -19,6 +19,7 @@ type Props = {
   handleWithdrawl: any;
   handleAddStatement: any;
   handleEditUser: any;
+  handleDeleteUser: any;
   // handleUpdateDeposit: any;
   hideAction: boolean;
 };
@@ -132,7 +133,7 @@ const TableDashboard = (props: Props) => {
     updateStatement(value);
   };
   return (
-    <div className="relative overflow-x-auto">
+    <div className="relative overflow-x-auto max-w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-white/[0/5]">
           <tr className="text-center">
@@ -159,12 +160,14 @@ const TableDashboard = (props: Props) => {
               <td className="px-py-4">{tbItem.fullName}</td>
               <td className="px-py-4">{tbItem.email}</td>
               <td className="px-py-4">{tbItem.phoneNumber}</td>
-              <td className="px-py-4">{`RM${
-                tbItem.totalDeposit !== undefined ? tbItem.totalDeposit : "0.0"
+              <td className="px-py-4">{`${
+                tbItem.totalDeposit !== undefined
+                  ? formatToMYR(tbItem.totalDeposit)
+                  : formatToMYR(0)
               }`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 `}>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex  items-center justify-center gap-2">
                   {/* <button
                     onClick={() => {
                       setSelectedUser(tbItem);
@@ -195,7 +198,7 @@ const TableDashboard = (props: Props) => {
                     }}
                     className={`${
                       props.hideAction ? "hidden" : ""
-                    } text-xs text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    } text-xs text-white my-2 bg-[#4DC2E8] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit
                   </button>
@@ -219,6 +222,17 @@ const TableDashboard = (props: Props) => {
                     className={`text-xs text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit User
+                  </button>
+                  <button
+                    onClick={() => {
+                      // setSelectedUser(tbItem);
+                      props.handleDeleteUser(tbItem.identityNumber);
+                      // setShowEditUserModal(!showEditUserModal);
+                      // setShowStatementModal(!showStatementModal);
+                    }}
+                    className={`text-xs text-white my-2 bg-[#fe8c75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  >
+                    Delete User
                   </button>
                 </div>
               </td>
