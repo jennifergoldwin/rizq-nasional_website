@@ -274,7 +274,7 @@ const Page = () => {
       if (token === "" || username === "") return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/update-user`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/auth/update-user`,
         {
           method: "PUT",
           headers: {
