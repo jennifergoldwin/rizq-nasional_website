@@ -295,7 +295,6 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-
   // const handleDepositModal = (value: any) => {
   //   deposit(value);
   // };
@@ -329,9 +328,9 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const handleEditUser = (value : any) => {
+  const handleEditUser = (value: any) => {
     updateUser(value);
-  }
+  };
   const handleAddStatement = (value: Statement) => {
     addStatement(value);
   };
@@ -342,8 +341,6 @@ const Page = () => {
     // console.log(value)
     updateDeposit(value);
   };
-
-
 
   return (
     <main className="min-h-screen md:pl-64 w-full">
@@ -393,10 +390,10 @@ const Page = () => {
             "Phone Number",
             "Total Deposit",
             "Created by",
-            role === roleType.masterAdmin ? "" : "Action",
+            "Action",
           ]}
           tbList={filteredUserList}
-          hideAction={role === roleType.masterAdmin ? true : false}
+          hideAction={false}
           handleDeposit={handleUpdateDepoModal}
           handleEditUser={handleEditUser}
           // handleUpdateDeposit={handleUpdateDepoModal}
