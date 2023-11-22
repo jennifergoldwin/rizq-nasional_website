@@ -18,7 +18,7 @@ type Props = {
   handleDeposit: any;
   handleWithdrawl: any;
   handleAddStatement: any;
-  handleEditUser:any;
+  handleEditUser: any;
   // handleUpdateDeposit: any;
   hideAction: boolean;
 };
@@ -45,8 +45,7 @@ const fetchUserStatement = async (token: String, username: String) => {
 const TableDashboard = (props: Props) => {
   const [showDepositModal, setShowDepositModal] = React.useState(false);
   // const [showWithdrawModal, setShowWithdrawlModal] = React.useState(false);
-  const [showStatementModal, setShowStatementModal] =
-    React.useState(false);
+  const [showStatementModal, setShowStatementModal] = React.useState(false);
   const [showAddStatementModal, setAddShowStatementModal] =
     React.useState(false);
   const [showEditUserModal, setShowEditUserModal] = React.useState(false);
@@ -57,25 +56,31 @@ const TableDashboard = (props: Props) => {
   React.useEffect(() => {
     if (selectedUser) {
       const token = Cookies.get(cookiesAdmin.token) || "";
-      if (token != "") {
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token != "" || username != "") {
         fetchUserInvestment(token, selectedUser.identityNumber);
-      }
-    }
-  }, [selectedUser]);
-
-  React.useEffect(() => {
-    // if (showStatementModal){
-      const token = Cookies.get(cookiesAdmin.token) || "";
-    const username = Cookies.get(cookiesAdmin.username) || "";
-      if (token != "" || username!="") {
         const fetchData = async () => {
-          const data = await fetchUserStatement(token, username);
+          const data = await fetchUserStatement(token, selectedUser.createdby);
           setStatementList(data.result);
         };
         fetchData();
       }
-    // }
-  }, [showStatementModal]);
+    }
+  }, [selectedUser, showStatementModal]);
+
+  // React.useEffect(() => {
+  //   // if (showStatementModal){
+  //   const token = Cookies.get(cookiesAdmin.token) || "";
+  //   const username = Cookies.get(cookiesAdmin.username) || "";
+  //   if (token != "" || username != "") {
+  //     const fetchData = async () => {
+  //       const data = await fetchUserStatement(token, username);
+  //       setStatementList(data.result);
+  //     };
+  //     fetchData();
+  //   }
+  //   // }
+  // }, [showStatementModal]);
 
   const fetchUserInvestment = async (
     token: String,
@@ -125,7 +130,7 @@ const TableDashboard = (props: Props) => {
   };
   const handleEditStatement = (value: Statement) => {
     updateStatement(value);
-  }
+  };
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -188,7 +193,9 @@ const TableDashboard = (props: Props) => {
                       setSelectedUser(tbItem);
                       setShowDepositModal(!showDepositModal);
                     }}
-                    className={`${props.hideAction ? "hidden" : ""} text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={`${
+                      props.hideAction ? "hidden" : ""
+                    } text-xs text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit
                   </button>
@@ -197,20 +204,22 @@ const TableDashboard = (props: Props) => {
                       setSelectedUser(tbItem);
                       setShowStatementModal(!showStatementModal);
                     }}
-                    className={`${props.hideAction ? "hidden" : ""} text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={`${
+                      props.hideAction ? "hidden" : ""
+                    } text-xs text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Statement
                   </button>
                   <button
                     onClick={() => {
                       setSelectedUser(tbItem);
-                      setShowEditUserModal(!showEditUserModal)
+                      setShowEditUserModal(!showEditUserModal);
                       // setShowStatementModal(!showStatementModal);
                     }}
-                    className={`text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    className={`text-xs text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Edit User
-                  </button> 
+                  </button>
                 </div>
               </td>
             </tr>
@@ -227,8 +236,12 @@ const TableDashboard = (props: Props) => {
         investList={investList}
       />
 
-      <EditUserModal selectedUser={selectedUser} showEditUserModal={showEditUserModal}
-      setShowEditUserModal={setShowEditUserModal} handleEditUser={props.handleEditUser}/>
+      <EditUserModal
+        selectedUser={selectedUser}
+        showEditUserModal={showEditUserModal}
+        setShowEditUserModal={setShowEditUserModal}
+        handleEditUser={props.handleEditUser}
+      />
 
       {/* <WithdrawlModal
         investList={investList}
@@ -241,18 +254,20 @@ const TableDashboard = (props: Props) => {
         showAddStatementModal={showAddStatementModal}
         setShowAddStatementModal={setAddShowStatementModal}
         handleEditStatement={handleEditStatement}
-        statementList={statementList||[]}
+        statementList={statementList || []}
         showStatementModal={showStatementModal}
         setShowStatementModal={setShowStatementModal}
         selectedUser={selectedUser}
       />
 
-      <AddStatementModal handleAddStatement={props.handleAddStatement} userList={props.tbList}
-       setShowAddStatementModal={setAddShowStatementModal} 
-      showAddStatementModal={showAddStatementModal} showStatementModal={showStatementModal}
-      setShowStatementModal={setShowStatementModal}/>
-
-      
+      <AddStatementModal
+        handleAddStatement={props.handleAddStatement}
+        userList={props.tbList}
+        setShowAddStatementModal={setAddShowStatementModal}
+        showAddStatementModal={showAddStatementModal}
+        showStatementModal={showStatementModal}
+        setShowStatementModal={setShowStatementModal}
+      />
     </div>
   );
 };
