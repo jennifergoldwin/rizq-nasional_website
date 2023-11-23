@@ -1,28 +1,33 @@
 "use client";
 import Navbar from "@/components/navbar";
+// import {unstable_setRequestLocale} from 'next-intl/server';
+// import {locales} from '..';
 import Image from "next/image";
 import Link from "next/link";
-import robo from "../../public/assets/images/robo.svg";
-import robo2 from "../../public/assets/images/robo2.svg";
-import logo from "../../public/assets/images/logo.png";
-import map from "../../public/assets/images/map.svg";
-import family from "../../public/assets/images/family.png";
-import ic_reward from "../../public/assets/icons/ic_reward.png";
-import ic_withdrawl from "../../public/assets/icons/ic_withdrawl.png";
-import ic_invest from "../../public/assets/icons/ic_invest.png";
+import robo from "../../../public/assets/images/robo.svg";
+import robo2 from "../../../public/assets/images/robo2.svg";
+import logo from "../../../public/assets/images/logo.png";
+import map from "../../../public/assets/images/map.svg";
+import family from "../../../public/assets/images/family.png";
+import ic_reward from "../../../public/assets/icons/ic_reward.png";
+import ic_withdrawl from "../../../public/assets/icons/ic_withdrawl.png";
+import ic_invest from "../../../public/assets/icons/ic_invest.png";
 import React from "react";
 import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
 import { ROLE, User } from "@/utils/model";
+import {useTranslations} from 'next-intl';
 export default function Home() {
-
+  // unstable_setRequestLocale(locale);
+ 
   const [user, setUser] = React.useState<User | null>(null);
+  const t = useTranslations('Frontend');
 
   React.useEffect(()=>{
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
     const fullName = Cookies.get(cookies.fullName);
-
+    
     if (token && identityNumber && fullName) {
       const role = ROLE.ROLE_USER;
       setUser({ token, identityNumber, fullName,role });
@@ -44,16 +49,17 @@ export default function Home() {
             <div className=" flex md:flex-row flex-col h-full">
               <div className="w-full md:w-1/2 flex justify-center flex-col md:px-8 px-4">
                 <h1 className="text-5xl font-bold py-4">
-                  Investing Made Effortless
+                  {/* Investing Made Effortless */}
+                  {t('Landing.title')}
                 </h1>
                 <span className="pb-8 text-xl">
-                The Global Leader in online trading with AI robots
+                {t('Landing.slogan')}
                 </span>
                 <Link
                   href={user==null?"/login":"/overview"}
                   className={`w-fit flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-3 px-6  font-bold justify-center gap-2`}
                 >
-                  Join Us
+                  {t('Landing.button')}
                 </Link>
               </div>
 
@@ -88,9 +94,7 @@ export default function Home() {
               />
               <div className=" w-full lg:h-auto lg:w-2/5 flex justify-center lg:justify-end items-center md:px-8 px-4">
                 <p className="text-4xl lg:text-3xl font-bold italic lg:py-0 pb-16">
-                  “Pelaburan Anda,
-                  <br />
-                  Keutamaan Kami”
+                {`" ${t('Slogan.title').replace(",",",\n")} "`}
                 </p>
               </div>
             </div>
@@ -103,14 +107,10 @@ export default function Home() {
             <Image src={logo} alt="" />
             <div className="md:text-left text-center md:px-8 px-4">
               <h1 className="text-3xl font-bold pt-16 pb-8">
-                Investing globally
+                {t('Introduction.title')}
               </h1>
               <p className="text-xl ">
-                While the Rizq Nasional Portfolio’s asset allocation is constructed to
-                achieve an appropriate long-term balance of risk and return, the
-                geographical distribution of the portfolio is fluid and depends
-                primarily on market capacity, economic cycles and investment
-                opportunities.
+                {t('Introduction.desc')}
               </p>
             </div>
             <Image src={map} alt="" />
@@ -119,23 +119,23 @@ export default function Home() {
 
         <section id="total-assets-page" className="bg-[#01115e] py-16">
           <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto flex justify-center items-center flex-col">
-            <h1 className="text-3xl font-bold">RM108 Billion</h1>
+            <h1 className="text-3xl font-bold">{t('Assets.total')}</h1>
             <span className="text-xl mb-16 mt-8">
               {" "}
-              Assets Under Management{" "}
+              {t('Assets.title')}{" "}
             </span>
             <div className="grid grid-cols-1 gap-10 md:grid-cols-3 justify-items-center">
               <div className="text-center">
                 <h1 className="text-3xl font-bold">20,483</h1>
-                <span className="text-xl">Happy Clients</span>
+                <span className="text-xl">{t('Assets.client')}</span>
               </div>
               <div className="text-center">
                 <h1 className="text-3xl font-bold">89</h1>
-                <span className="text-xl">Funds Managers</span>
+                <span className="text-xl">{t('Assets.managers')}</span>
               </div>
               <div className="text-center">
                 <h1 className="text-3xl font-bold">{">15"}</h1>
-                <span className="text-xl">Years Experience</span>
+                <span className="text-xl">{t('Assets.experience')}</span>
               </div>
             </div>
           </div>
@@ -143,25 +143,25 @@ export default function Home() {
 
         <section id="why-should-invest-page" className="py-16">
           <div className="max-w-screen-2xl md:max-w-screen-xl mx-auto flex justify-center items-center flex-col">
-            <h1 className="text-3xl font-bold pb-8">Why Should Invest</h1>
+            <h1 className="text-3xl font-bold pb-8">{t('WhyUs.title')}</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 w-full justify-items-center gap-8">
               <div className="bg-[#5A64C3] rounded-3xl flex flex-col  items-center w-[200px] h-[250px] px-4 py-6">
                 <Image width={80} height={80} src={ic_invest} alt="" />
                 <div className="text-center h-full flex justify-center items-center">
-                  <span>Minimum investment as low as RM100</span>
+                  <span>{t('WhyUs.minimum')}</span>
                 </div>
               </div>
               <div className="bg-[#5A64C3] rounded-3xl flex flex-col  items-center w-[200px] h-[250px] px-4 py-6">
                 <Image width={80} height={80} src={ic_reward} alt="" />
                 <div className="text-center h-full flex justify-center items-center">
-                  <span>15 years of experience with guaranteed profits</span>
+                  <span>{t('WhyUs.profit')}</span>
                 </div>
               </div>
               <div className="bg-[#5A64C3] rounded-3xl flex flex-col  items-center w-[200px] h-[250px] px-4 py-6">
                 <Image width={80} height={80} src={ic_withdrawl} alt="" />
                 <div className="text-center h-full flex justify-center items-center">
-                  <span>Easy withdrawal</span>
+                  <span>{t('WhyUs.withdrawal')}</span>
                 </div>
               </div>
             </div>
@@ -175,16 +175,16 @@ export default function Home() {
             </div>
             <div className="w-full md:w-1/2 md:px-8 px-4">
               <h1 className="text-3xl font-bold pt-16 pb-8">
-                Who Are Eligible
+              {t('WhoEligible.who')}
               </h1>
               <ul>
                 <li className="inline-flex items-center custom-list-item">
-                  <p className="text-xl ">18 years old or above</p>
+                  <p className="text-xl ">{t('WhoEligible.age')}</p>
                 </li>
                 <hr className="border-t-2 border-[#5A64C3]/[0.5] mx-14 my-4" />
                 <li className="inline-flex items-center custom-list-item">
                   <p className="text-xl ">
-                    Malaysian or Permanent Resident (PR)
+                    {t('WhoEligible.race')}
                   </p>
                 </li>
               </ul>

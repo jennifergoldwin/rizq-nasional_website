@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
-import logo from "../../../public/assets/images/logo.png";
-import bg from "../../../public/assets/images/background_login.png";
+import logo from "../../../../public/assets/images/logo.png";
+import bg from "../../../../public/assets/images/background_login.png";
 import Image from "next/image";
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
-import Toast from '../../components/toast';
+import Toast from '../../../components/toast';
 import { cookies } from "@/utils/constant";
 
 interface LoginForm {

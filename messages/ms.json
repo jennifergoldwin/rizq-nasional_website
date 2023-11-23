@@ -1,0 +1,110 @@
+{
+    "Navbar": {
+      "about": "Tentang Kami",
+      "approach" : "Pendekatan Kami",
+      "login" : "Log Masuk"
+    },
+    "Frontend":{
+      "Landing": {
+        "title" : "Pelaburan Dibuat Tanpa Usaha",
+        "slogan": "Peneraju Global dalam Perdagangan dalam Talian dengan AI robot",
+        "button" : "Gabung dengan kami"
+      },
+      "Slogan":{
+        "title" : "Pelaburan Anda,\n\nKeutamaan Kami"
+      },
+      "Introduction":{
+        "title": "Melabur secara global",
+        "desc":"Walaupun peruntukan aset Portfolio Rizq Nasional dibina untuk mencapai keseimbangan jangka panjang risiko dan pulangan yang sesuai, pengagihan geografi portfolio adalah lancar dan bergantung terutamanya kepada kapasiti pasaran, kitaran ekonomi dan peluang pelaburan."
+      },
+      "Assets":{
+        "total" : "RM 108 Bilion",
+        "title":"Aset Di Bawah Pengurusan",
+        "client" :"Pelanggan yang gembira",
+        "managers" : "Pengurus Dana",
+        "experience" : "Pengalaman Tahun"
+      },
+      "WhyUs":{
+        "title" : "Kenapa perlu melabur",
+        "minimum" : "Pelaburan minimal serendah RM 100",
+        "profit" : "15 tahun pengalaman dengan keuntungan terjamin",
+        "withdrawal" : "Pengeluaran mudah"
+      },
+      "WhoEligible" : {
+        "who" : "Siapa Yang Layak",
+        "age" : "18 tahun ke atas",
+        "race" : "Rakyat Malaysia atau PR (Pemastautin Tetap)"
+      }
+      
+    },
+    "LoginPage":{
+      "title" : "Log Masuk ke Akun Anda",
+      "inputIC" : "Nombor Kad Pengenalan",
+      "tnc" : "Saya bersetuju dengan Dasar Privasi dan Syarat Terma Rizq-Nasional",
+      "button" : "Log Masuk"
+    },
+    "Overview":{
+      "Sidebar":{
+        "overview":"Gambaran Keseluruhan",
+        "investment":"Pelaburan",
+        "statement":"Kenyataan",
+        "account" :"Akun"
+      },
+      "AccountDetail":{
+        "currentValue" : "Nilai Semasa",
+        "deposit" : "Deposit Anda",
+        "profit" : "Jumlah Keuntungan",
+        "rate" : "Jumlah Kadar"
+      },
+      "InvestmentSummary":{
+        "title" : "Ringkasan Pelaburan",
+        "deposit" : "Jumlah Deposit",
+        "profit" : "Jumlah Keuntungan"
+      },
+      "AssetsAllocation" : {
+        "title" : "Peruntukan Aset",
+        "type" : "Jenis",
+        "allocation" : "Peruntukan"
+      },
+      "Geographical":{
+        "title": "Peruntukan Geograi"
+      },
+      "InvestmentGrowth":{
+        "title" : "Pertumbuhan Pelaburan"
+      },
+      "Plan":{
+        "title" : "Pilih Pelan Anda",
+        "desc" : "Sila hubungi Sokongan Pelanggan kami untuk mendapatkan maklumat lanjut tentang pelaburan.",
+        "warn" : "Semua pelaburan melibatkan risiko, termasuk kemungkinan kehilangan pelaburan asal."
+      },
+      "Statement":{
+        "date" : "Tarikh",
+        "product" : "Produk",
+        "leverage" : "Leverage",
+        "profitLoss" : "Untung / Rugi"
+      },
+      "Account":{
+        "ProfileDetails":{
+          "title" : "Butiran Profil",
+          "fullName" : "Nama Penuh",
+          "icNumber" : "Nombor Kad Pengenalan",
+          "phoneNumber" : "Nomor Telepon",
+          "email" : "Alamat Emel",
+          "state" : "Negeri",
+          "address" : "Alamat",
+          "postCode" : "Poskod",
+          "occupation" : "Pekerjaan",
+          "discard" : "Buang",
+          "save": "Simpan"
+        },
+        "BankDetails":{
+          "title" : "Butiran Bank",
+          "bankName" : "Nama Bank",
+          "accountNumber" : "Nomor Akaun",
+          "holderName" : "Nama Pemegang",
+          "discard" : "Buang",
+          "save": "Simpan"
+        }
+      }
+    }
+  }

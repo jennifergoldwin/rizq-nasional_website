@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import Toast from "../../components/toast";
+import Toast from "../../../components/toast";
 import { cookies, cookiesAdmin } from "@/utils/constant";
 
 interface LoginForm {

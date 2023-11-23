@@ -11,12 +11,15 @@ import { cookies } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import UserCard from "../usercard";
+import LanguageDropdown from "../dropdown/languageDropdown";
+import { useLocale, useTranslations } from "next-intl";
 
 const Navbar = () => {
   const [activeMenu, setActiveMenu] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState("false");
   const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
+  const locale = useLocale();
   React.useEffect(() => {
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
@@ -40,10 +43,12 @@ const Navbar = () => {
     // router.replace("/login");
   };
 
+  const t = useTranslations('Navbar');
+
   return (
     <nav className={` w-full z-[100] `}>
       <div className="max-w-screen-2xl md:max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-transparent ">
-        <Link href="/" className="flex items-center justify-center mr-6">
+        <Link href="/" locale={locale} className="flex items-center justify-center mr-6">
           <Image
             src={logo}
             width={100}
@@ -77,7 +82,7 @@ const Navbar = () => {
                 href="#introduction-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
-                About us
+                {t('about')}
               </Link>
             </li>
             <li>
@@ -85,10 +90,11 @@ const Navbar = () => {
                 href="#why-should-invest-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
-                Our Approach
+                {t('approach')}
               </Link>
             </li>
           </ul>
+          <LanguageDropdown/>
           {user ? (
             <UserCard
               hideOverviewPage
@@ -97,11 +103,11 @@ const Navbar = () => {
             />
           ) : (
             <Link
-              href="/login"
+              href={`/${locale}/login`} locale={false}
               onClick={() => setActiveMenu(false)}
               className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
             >
-              Login
+              {t('login')}
             </Link>
           )}
           {/* {isLogin === "true" ? (

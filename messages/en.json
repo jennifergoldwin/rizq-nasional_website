@@ -1,0 +1,110 @@
+{
+  "Navbar": {
+    "about": "About",
+    "approach" : "Our Approach",
+    "login" : "Login"
+  },
+  "Frontend":{
+    "Landing": {
+      "title" : "Investing Made Effortless",
+      "slogan": "The Global Leader in online trading with AI robots",
+      "button" : "Join Us"
+    },
+    "Slogan":{
+      "title" : "Your Investment,\nOur Priorities"
+    },
+    "Introduction":{
+      "title": "Investing Globally",
+      "desc":"While the Rizq Nasional Portfolio’s asset allocation is constructed to achieve an appropriate long-term balance of risk and return, the geographical distribution of the portfolio is fluid and depends primarily on market capacity, economic cycles and investment opportunities."
+    },
+    "Assets":{
+      "total" : "RM 108 Billion",
+      "title":"Assets Under Management",
+      "client" :"Happy Clients",
+      "managers" : "Funds Managers",
+      "experience" : "Years Experience"
+    },
+    "WhyUs":{
+      "title" : "Why Should Invest",
+      "minimum" : "Minimum investment as low as RM 100",
+      "profit" : "15 years of experience with guaranteed profits",
+      "withdrawal" : "Easy withdrawal"
+    },
+    "WhoEligible" : {
+      "who" : "Who Are Eligible",
+      "age" : "18 years old or above",
+      "race" : "Malaysian or Permanent Resident (PR)"
+    }
+    
+  },
+  "LoginPage":{
+    "title" : "Login to Your Account",
+    "inputIC" : "Identity Card Number",
+    "tnc" : "I agree with Rizq-Nasional Privacy Policy and Terms Conditions",
+    "button" : "Login"
+  },
+  "Overview":{
+    "Sidebar":{
+      "overview":"Overview",
+      "investment":"Investment",
+      "statement":"Statement",
+      "account" :"Account"
+    },
+    "AccountDetail":{
+      "currentValue" : "Current Value",
+      "deposit" : "Your Deposit",
+      "profit" : "Total Profit",
+      "rate" : "Total Rate"
+    },
+    "InvestmentSummary":{
+      "title" : "Investment Summary",
+      "deposit" : "Total Deposit",
+      "profit" : "Total Profit"
+    },
+    "AssetsAllocation" : {
+      "title" : "Assets Allocation",
+      "type" : "Type",
+      "allocation" : "Allocation"
+    },
+    "Geographical":{
+      "title": "Geographical Allocation"
+    },
+    "InvestmentGrowth":{
+      "title" : "Investment Growth"
+    },
+    "Plan":{
+      "title" : "Choose Your Plan",
+      "desc" : "Please contact our Customer Support for more information about the investment. ",
+      "warn" : "All investments involve risk, including the possibility of losing the original investment."
+    },
+    "Statement":{
+      "date" : "Date",
+      "product" : "Product",
+      "leverage" : "Leverage",
+      "profitLoss" : "Profit / Loss"
+    },
+    "Account":{
+      "ProfileDetails":{
+        "title" : "Profile Details",
+        "fullName" : "Full Name",
+        "icNumber" : "Identity Card Number",
+        "phoneNumber" : "Phone Number",
+        "email" : "Email",
+        "state" : "State",
+        "address" : "Address",
+        "postCode" : "Post Code",
+        "occupation" : "Occupation",
+        "discard" : "Discard",
+        "save": "Save"
+      },
+      "BankDetails":{
+        "title" : "Bank Details",
+        "bankName" : "Bank Name",
+        "accountNumber" : "Account Number",
+        "holderName" : "Holder Name",
+        "discard" : "Discard",
+        "save": "Save"
+      }
+    }
+  }
+}

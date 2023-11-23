@@ -10,6 +10,6 @@ const nextConfig = {
 
 // module.exports = nextConfig
 
-module.exports = withNextIntl({
+module.exports = withNextIntl(
    nextConfig
-  });
+);
