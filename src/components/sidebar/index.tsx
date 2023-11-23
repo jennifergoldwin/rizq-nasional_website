@@ -92,7 +92,7 @@ const Sidebar = () => {
           </div>
           <ul className="space-y-2 font-medium">
             {sidebarOptions.map((option) => (
-              <li key={option.name}>
+              <li key={option.name} onClick={() => setShowSidebar(!showSidebar)}>
                 <Link
                   href={option.href}
                   className={classNames(

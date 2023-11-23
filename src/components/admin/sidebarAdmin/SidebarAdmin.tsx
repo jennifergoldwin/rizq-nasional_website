@@ -107,7 +107,7 @@ const SidebarAdmin = () => {
           <ul className="space-y-2 font-medium">
             {sidebarOptions.map((option) =>
               option !== null ? (
-                <li key={option.name}>
+                <li key={option.name} onClick={() => setShowSidebar(!showSidebar)}>
                   <Link
                     href={option.href}
                     className={classNames(
