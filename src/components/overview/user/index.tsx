@@ -8,6 +8,7 @@ import graph from "../../../../public/assets/icons/graph.png";
 import Image from "next/image";
 import { User } from "@/utils/model";
 import { formatToMYR } from "@/utils/constant";
+import { useTranslations } from "next-intl";
 
 interface UserDetailProps {
   user: User | null;
@@ -21,6 +22,7 @@ const UserDetails: React.FC<UserDetailProps> = ({
   totalInvestment = 0,
   totalProfit = 0,
 }) => {
+  const t = useTranslations("Overview.AccountDetail");
   return (
     <div className="mx-6 bg-[#01115E] px-8 py-6 rounded-xl my-6">
       <div className="flex items-center gap-4">
@@ -28,7 +30,7 @@ const UserDetails: React.FC<UserDetailProps> = ({
           {user != null ? user.fullName : ""}
         </h1>
         <div className="text-[#AF80F4] border-[1px] border-[#AF80F4] px-3 rounded-lg">
-          Active
+          {t("status")}
         </div>
       </div>
       <p className="text-white/[0.5] mb-4">{`ID: ${
@@ -51,28 +53,28 @@ const UserDetails: React.FC<UserDetailProps> = ({
       >
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-2 py-3 rounded-lg text-center h-full">
-            <span>Current Value</span>
+            <span>{t("currentValue")}</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{`${formatToMYR(totalDeposit + totalProfit)}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
-            <span>Your Deposit</span>
+            <span>{t("deposit")}</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{`${formatToMYR(totalDeposit)}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
-            <span>Total Profits</span>
+            <span>{t("profit")}</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{`${formatToMYR(totalProfit)}`}</span>
           </div>
         </SwiperSlide>
         <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
-            <span>Total Rate</span>
+            <span>{t("rate")}</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{`%${
               isNaN(parseFloat(((totalProfit / totalDeposit) * 100).toFixed(2)))

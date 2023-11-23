@@ -2,13 +2,14 @@
 import BankDetails from "@/components/form/bank";
 import ProfileDetails from "@/components/form/profile";
 import { useEffect, useState } from "react";
-import React from 'react';
-import Cookies from 'js-cookie';
+import React from "react";
+import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { User } from "@/utils/model";
 import { ProfileData } from "@/interface/profiles";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
   const [data, setData] = useState<ProfileData>();
@@ -19,41 +20,49 @@ export default function Page() {
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
     const fullName = Cookies.get(cookies.fullName);
-    
+
     if (token && identityNumber && fullName) {
-      fetchUserData(token,identityNumber)
-    }
-    else{
-      toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      fetchUserData(token, identityNumber);
+    } else {
+      toast("Error occured, please login", {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: "error",
+      });
       // setTimeout(() => router.replace("/login"), 2000);
     }
   }, []);
 
-  const fetchUserData = async (token: String, identityNumber:String) => {
+  const fetchUserData = async (token: String, identityNumber: String) => {
     try {
-      if (token === "" || identityNumber==="") {
-        toast('Error occured, please login', { hideProgressBar: true, autoClose: 2000, type: 'error' })
+      if (token === "" || identityNumber === "") {
+        toast("Error occured, please login", {
+          hideProgressBar: true,
+          autoClose: 2000,
+          type: "error",
+        });
         // setTimeout(() => router.replace("/login"), 2000);
         return;
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/user/${identityNumber}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Access-Control-Allow-Origin' : '*'
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/auth/user/${identityNumber}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
 
-      const {error,message,result} = await response.json();
+      const { error, message, result } = await response.json();
 
-      if (!error){
+      if (!error) {
         setData(result);
       }
-     
-      
     } catch (error: any) {
-        router.refresh()
+      router.refresh();
     }
   };
 
@@ -77,7 +86,6 @@ export default function Page() {
 
       const { error, message, result } = await response.json();
 
-      
       // showToast(message, !error);
 
       if (!error) {
@@ -106,7 +114,6 @@ export default function Page() {
 
       const { error, message, result } = await response.json();
 
-      
       // showToast(message, !error);
 
       if (!error) {
@@ -115,18 +122,18 @@ export default function Page() {
     } catch (error: any) {}
   };
 
-  const handleUpdateBank = (value : any) => {
-    updateBank(value)
-  }
+  const handleUpdateBank = (value: any) => {
+    updateBank(value);
+  };
 
-  const handleUpdateProfile = (value : any) => {
-    updateProfile(value)
-  }
+  const handleUpdateProfile = (value: any) => {
+    updateProfile(value);
+  };
 
   return (
     <div className="min-h-screen md:pl-64 w-full">
-      <ProfileDetails profile={data} handleUpdate={handleUpdateProfile}/>
-      <BankDetails profile={data} handleUpdate={handleUpdateBank}/>
+      <ProfileDetails profile={data} handleUpdate={handleUpdateProfile} />
+      <BankDetails profile={data} handleUpdate={handleUpdateBank} />
     </div>
   );
 }

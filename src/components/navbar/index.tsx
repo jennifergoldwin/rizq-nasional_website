@@ -43,12 +43,16 @@ const Navbar = () => {
     // router.replace("/login");
   };
 
-  const t = useTranslations('Navbar');
+  const t = useTranslations("Navbar");
 
   return (
     <nav className={` w-full z-[100] `}>
       <div className="max-w-screen-2xl md:max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-transparent ">
-        <Link href="/" locale={locale} className="flex items-center justify-center mr-6">
+        <Link
+          href="/"
+          locale={locale}
+          className="flex items-center justify-center mr-6"
+        >
           <Image
             src={logo}
             width={100}
@@ -82,7 +86,7 @@ const Navbar = () => {
                 href="#introduction-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
-                {t('about')}
+                {t("about")}
               </Link>
             </li>
             <li>
@@ -90,24 +94,26 @@ const Navbar = () => {
                 href="#why-should-invest-page"
                 className={`block py-2 pl-3 pr-4 rounded md:p-0 `}
               >
-                {t('approach')}
+                {t("approach")}
               </Link>
             </li>
           </ul>
-          <LanguageDropdown/>
+          <LanguageDropdown />
           {user ? (
             <UserCard
               hideOverviewPage
+              locale={locale}
               name={user.fullName}
               handleLogout={handleLogout}
             />
           ) : (
             <Link
-              href={`/${locale}/login`} locale={false}
+              href={`/${locale}/login`}
+              locale={false}
               onClick={() => setActiveMenu(false)}
               className={`flex text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-4 md:mx-4 font-bold justify-center gap-2`}
             >
-              {t('login')}
+              {t("login")}
             </Link>
           )}
           {/* {isLogin === "true" ? (

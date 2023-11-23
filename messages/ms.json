@@ -40,7 +40,11 @@
     "LoginPage":{
       "title" : "Log Masuk ke Akun Anda",
       "inputIC" : "Nombor Kad Pengenalan",
-      "tnc" : "Saya bersetuju dengan Dasar Privasi dan Syarat Terma Rizq-Nasional",
+      "tnc1" : "Saya bersetuju dengan",
+      "tnc2": "Dasar Privasi" ,
+      "tnc3":"dan",
+      "tnc4":"Syarat Terma",
+      "tnc" : "Rizq-Nasional.",
       "button" : "Log Masuk"
     },
     "Overview":{
@@ -51,6 +55,7 @@
         "account" :"Akun"
       },
       "AccountDetail":{
+        "status":"Aktif",
         "currentValue" : "Nilai Semasa",
         "deposit" : "Deposit Anda",
         "profit" : "Jumlah Keuntungan",
@@ -74,7 +79,9 @@
       },
       "Plan":{
         "title" : "Pilih Pelan Anda",
-        "desc" : "Sila hubungi Sokongan Pelanggan kami untuk mendapatkan maklumat lanjut tentang pelaburan.",
+        "desc1" : "Sila hubungi Sokongan",
+        "desc2": "Pelanggan kami",
+        "desc3":"untuk mendapatkan maklumat lanjut tentang pelaburan.",
         "warn" : "Semua pelaburan melibatkan risiko, termasuk kemungkinan kehilangan pelaburan asal."
       },
       "Statement":{
@@ -91,6 +98,7 @@
           "phoneNumber" : "Nomor Telepon",
           "email" : "Alamat Emel",
           "state" : "Negeri",
+          "city": "Kota",
           "address" : "Alamat",
           "postCode" : "Poskod",
           "occupation" : "Pekerjaan",

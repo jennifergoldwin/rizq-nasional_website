@@ -5,6 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { cookies, cookiesAdmin } from "@/utils/constant";
+import { useLocale, useTranslations } from "next-intl";
 export default function Page() {
   const data = [
     {
@@ -31,30 +32,34 @@ export default function Page() {
   ];
   const [planList, setPlanList] = React.useState<Plan[]>([]);
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("Overview.Plan");
   React.useEffect(() => {
-    
     const token = Cookies.get(cookies.token) || "";
-   
+
     // const adminRole = Cookies.get(cookiesAdmin.role) || "";
     if (token != "") {
       fetchPlan(token);
     } else {
-      setTimeout(() => router.replace("/login"), 2000);
+      setTimeout(() => router.replace(`/${locale}/login`), 2000);
     }
   }, []);
 
   const fetchPlan = async (token: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/all-plan`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/all-plan`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const { error, message, result } = await response.json();
-  
+
       if (!error) {
         setPlanList((prev) => [...result]);
       }
@@ -67,14 +72,14 @@ export default function Page() {
         <div className="max-w-full mx-auto flex justify-center items-center h-full">
           <div className="bg-[#01115E] flex flex-col justify-center  px-8 py-8 rounded-3xl my-6 w-full mx-6">
             <h1 className="font-bold text-2xl text-center pb-4">
-              Choose Your Plan
+              {t("title")}
             </h1>
             <p className="text-center">
-              Please contact our{" "}
+              {t("desc1")}{" "}
               <a href="#" className="text-[#4DC2E8] underline">
-                Customer Support{" "}
+                {t("desc2")}{" "}
               </a>
-              for more information about the investment
+              {t("desc3")}
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 py-4 grid-cols-1 justify-items-center items-center">
@@ -82,10 +87,7 @@ export default function Page() {
                 <PlanCard data={item} key={item.id} />
               ))}
             </div>
-            <p className="text-white/[0.5] italic">
-              All investments involve risk, including the possibility of losing
-              the original investment.
-            </p>
+            <p className="text-center text-white/[0.5] italic">{t("warn")}</p>
           </div>
         </div>
       </main>

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import geo from "../../../../public/assets/images/geo.svg";
+import { useTranslations } from "next-intl";
 const GeoAllocation = () => {
+  const t = useTranslations("Overview.Geographical");
   return (
     <div className="mx-6 bg-[#01115E] px-8 py-6 rounded-xl my-6 ">
       <h1 className="text-center text-xl font-semibold pb-8 pt-4">
-        Geographical Allocation
+        {t("title")}
       </h1>
       <div className="flex lg:flex-row flex-col">
         <Image src={geo} alt="geo img" className="w-full lg:w-3/4" />

@@ -33,7 +33,7 @@ const Page = () => {
     if (username !== "" && token != "") {
       fetchAdmin(username, token);
     } else {
-      setTimeout(() => router.replace("/login-admin"), 2000);
+      setTimeout(() => router.replace("/admin"), 2000);
     }
   }, []);
 

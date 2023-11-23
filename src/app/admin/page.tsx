@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import Toast from "../../../components/toast";
+import Toast from "../../components/toast";
 import { cookies, cookiesAdmin } from "@/utils/constant";
 
 interface LoginForm {
@@ -33,7 +33,6 @@ export default function Page() {
   };
 
   const onSubmit = async (data: LoginForm) => {
-
     await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/auth/login-admin`, {
       method: "POST",
       headers: {
@@ -41,12 +40,11 @@ export default function Page() {
       },
       body: JSON.stringify({
         username: data.username,
-        password: data.password
+        password: data.password,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-  
         // Store the token in a cookie with a max age of 24 hours
         Cookies.set(cookiesAdmin.token, data.result.token, { expires: 1 });
         Cookies.set(cookiesAdmin.username, data.result.username, {
@@ -57,7 +55,7 @@ export default function Page() {
         });
         Cookies.set(cookiesAdmin.role, data.result.role, { expires: 1 });
         // Handle successful login, e.g., redirect to another page
-        router.push("/accounts");
+        router.push("/admin/accounts");
       })
       .catch((error) => {
         setError("password", {
@@ -72,7 +70,7 @@ export default function Page() {
     const username = Cookies.get(cookiesAdmin.username);
     const fullName = Cookies.get(cookiesAdmin.fullName);
     if (token && username && fullName) {
-      router.push("/accounts");
+      router.push("/admin/accounts");
     }
   }, []);
 

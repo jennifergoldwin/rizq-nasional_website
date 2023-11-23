@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 
 interface InvestmentGrowth {
   month: string;
@@ -28,7 +29,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
   //   (investmentData) =>
   //     investmentData.month.startsWith(`${selectedYear}`)
   // );
-
+  const t = useTranslations("Overview.InvestmentGrowth");
   const chartData = {
     labels: data.map((investmentData) => investmentData.month),
     datasets: [
@@ -60,14 +61,14 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
     return gradient;
   };
 
-  React.useEffect(()=>{
-    console.log(data)
-  },[])
+  React.useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <div className="mx-6 my-12 bg-[#01115E] px-8 py-6 rounded-xl">
       <h1 className="text-center text-xl font-semibold pb-8 pt-4">
-        Investment Growth
+        {t("title")}
       </h1>
 
       <div className="flex items-center justify-center mb-8">

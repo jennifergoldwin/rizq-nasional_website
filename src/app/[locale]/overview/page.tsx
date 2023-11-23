@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import { UserPortfolio } from "@/interface/portfolio";
 import InvestmentChart from "@/components/overview/investmentChart";
 import DoughnutChart from "@/components/doughnut";
+import { useLocale, useTranslations } from "next-intl";
 
 const fetchUserPortfolio = async () => {
   try {
@@ -32,7 +33,6 @@ const fetchUserPortfolio = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-
     return null;
   }
 };
@@ -40,10 +40,11 @@ const fetchUserPortfolio = async () => {
 const Page = () => {
   const [user, setUser] = React.useState<User | null>(null);
   const router = useRouter();
+  const locale = useLocale();
   const [userPortfolio, setUserPortfolio] = useState<UserPortfolio | null>(
     null
   );
-
+  const t = useTranslations("Overview");
   React.useEffect(() => {
     const token = Cookies.get(cookies.token);
     const identityNumber = Cookies.get(cookies.identityNumber);
@@ -55,7 +56,7 @@ const Page = () => {
 
       const fetchData = async () => {
         const data = await fetchUserPortfolio();
-       
+
         setUserPortfolio(data.result);
       };
 
@@ -66,7 +67,7 @@ const Page = () => {
         autoClose: 2000,
         type: "error",
       });
-      setTimeout(() => router.replace("/login"), 2000);
+      setTimeout(() => router.replace(`/${locale}/login`), 2000);
     }
   }, []);
 
@@ -83,7 +84,7 @@ const Page = () => {
           <div className="w-full lg:w-2/5">
             <div className="bg-[#01115E] px-8 py-6 rounded-xl ml-6 mt-6 mb-6 mr-6 lg:mr-4  flex flex-col justify-center items-center">
               <h1 className="text-center text-xl font-semibold pb-8 pt-4">
-                Investment Summary
+                {t("InvestmentSummary.title")}
               </h1>
               <DoughnutChart
                 totalDeposit={userPortfolio?.portfolio.total_deposit || 0}
@@ -150,71 +151,8 @@ const Page = () => {
                       </filter>
                     </defs>
                   </svg>
-                  <p>Total Profit</p>
+                  <p>{t("InvestmentSummary.profit")}</p>
                 </div>
-                {/* <div className="flex items-center">
-                  <svg
-                    width="45"
-                    height="45"
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="24" cy="24" r="9" fill="white" />
-                    <g filter="url(#filter0_f_97_79)">
-                      <circle cx="24" cy="24" r="9" fill="#4DC2E8" />
-                    </g>
-                    <g filter="url(#filter1_f_97_79)">
-                      <circle cx="24" cy="24" r="9" fill="#4DC2E8" />
-                    </g>
-                    <defs>
-                      <filter
-                        id="filter0_f_97_79"
-                        x="0"
-                        y="0"
-                        width="48"
-                        height="48"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          stdDeviation="7.5"
-                          result="effect1_foregroundBlur_97_79"
-                        />
-                      </filter>
-                      <filter
-                        id="filter1_f_97_79"
-                        x="0"
-                        y="0"
-                        width="48"
-                        height="48"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          stdDeviation="7.5"
-                          result="effect1_foregroundBlur_97_79"
-                        />
-                      </filter>
-                    </defs>
-                  </svg>
-
-                  <p>Diversified Funds</p>
-                </div> */}
                 <div className="flex items-center">
                   <svg
                     width="45"
@@ -276,7 +214,7 @@ const Page = () => {
                     </defs>
                   </svg>
 
-                  <p>Total Deposit</p>
+                  <p>{t("InvestmentSummary.deposit")}</p>
                 </div>
               </div>
             </div>

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { cookies } from "@/utils/constant";
 import { Statement } from "@/utils/model";
+import { useTranslations } from "next-intl";
 
 const fetchUserStatement = async (
   token: String,
@@ -21,17 +22,16 @@ const fetchUserStatement = async (
       }
     );
     const data = await response.json();
-  
+
     return data;
   } catch (error) {
-   
     return null;
   }
 };
 
 export default function Page() {
   const [statementList, setStatementList] = useState<Statement[]>([]);
-
+  const t = useTranslations("Overview.Statement");
   useEffect(() => {
     const userIdentityNumber = Cookies.get(cookies.identityNumber);
     const token = Cookies.get(cookies.token);
@@ -74,17 +74,21 @@ export default function Page() {
             </button>
           </div> */}
           <div className="ml-4 mr-8">
-            {statementList.length===0?<div className="text-center">No Data</div>:
-            <Table handleEditStatement={null}
-            thList={[
-              "Date",
-              "Product",
-              "Leverage",
-              "Profit / Loss",
-            ]}
-            tbList={statementList || []}
-            type={""}
-          />}
+            {statementList.length === 0 ? (
+              <div className="text-center">No Data</div>
+            ) : (
+              <Table
+                handleEditStatement={null}
+                thList={[
+                  t("date"),
+                  t("product"),
+                  t("leverage"),
+                  t("profitLoss"),
+                ]}
+                tbList={statementList || []}
+                type={""}
+              />
+            )}
             {/* {activeTable === 0 ? (
               <Table
                 thList={[

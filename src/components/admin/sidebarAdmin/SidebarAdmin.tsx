@@ -8,7 +8,6 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import logo from "../../../../public/assets/images/logo.png";
 import Cookies from "js-cookie";
-import { RiRefund2Line, RiPieChart2Fill, RiAdminFill } from "react-icons/ri";
 import { cookiesAdmin, roleType } from "@/utils/constant";
 import { ROLE } from "@/utils/model";
 function classNames(...classes: string[]) {
@@ -27,39 +26,37 @@ const SidebarAdmin = () => {
   const sidebarOptions = [
     {
       name: "Accounts",
-      href: "/accounts",
+      href: "/admin/accounts",
       icon: "/assets/icons/ic_profile.png",
       iconSelected: "/assets/icons/ic_profile_blue.png",
       current: !segment ? true : false,
     },
 
-    role === "ROLE_MASTER_ADMIN" ? 
-      {
+    role === "ROLE_MASTER_ADMIN"
+      ? {
           name: "Admins",
-          href: "/accounts/admin",
+          href: "/admin/accounts/admin",
           icon: "/assets/icons/ic_profile.png",
           iconSelected: "/assets/icons/ic_profile_blue.png",
           current: `/${segment}` === "/admin" ? true : false,
         }
-      : null
-      ,
+      : null,
     {
       name: "Plan",
-      href: "/accounts/plan",
+      href: "/admin/accounts/plan",
       icon: "/assets/icons/ic_investment.png",
       iconSelected: "/assets/icons/ic_investment_blue.png",
       current: `/${segment}` === "/plan" ? true : false,
     },
-    // role !== "ROLE_MASTER_ADMIN" ? 
+    // role !== "ROLE_MASTER_ADMIN" ?
     {
-          name: "Statement",
-          href: "/accounts/statement",
-          icon: "/assets/icons/ic_statements.png",
-          iconSelected: "/assets/icons/ic_statements_blue.png",
-          current: `/${segment}` === "/statement" ? true : false,
-        }
-      // : null
-      ,
+      name: "Statement",
+      href: "/admin/accounts/statement",
+      icon: "/assets/icons/ic_statements.png",
+      iconSelected: "/assets/icons/ic_statements_blue.png",
+      current: `/${segment}` === "/statement" ? true : false,
+    },
+    // : null
   ].filter(Boolean);
 
   return (
@@ -107,7 +104,10 @@ const SidebarAdmin = () => {
           <ul className="space-y-2 font-medium">
             {sidebarOptions.map((option) =>
               option !== null ? (
-                <li key={option.name} onClick={() => setShowSidebar(!showSidebar)}>
+                <li
+                  key={option.name}
+                  onClick={() => setShowSidebar(!showSidebar)}
+                >
                   <Link
                     href={option.href}
                     className={classNames(

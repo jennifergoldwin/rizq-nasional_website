@@ -40,7 +40,11 @@
   "LoginPage":{
     "title" : "Login to Your Account",
     "inputIC" : "Identity Card Number",
-    "tnc" : "I agree with Rizq-Nasional Privacy Policy and Terms Conditions",
+    "tnc1" : "I agree with Rizq-Nasional",
+    "tnc2": "Privacy Policy" ,
+    "tnc3":"and",
+    "tnc4":"Terms Conditions",
+    "tnc":".",
     "button" : "Login"
   },
   "Overview":{
@@ -51,6 +55,7 @@
       "account" :"Account"
     },
     "AccountDetail":{
+      "status":"Active",
       "currentValue" : "Current Value",
       "deposit" : "Your Deposit",
       "profit" : "Total Profit",
@@ -74,7 +79,9 @@
     },
     "Plan":{
       "title" : "Choose Your Plan",
-      "desc" : "Please contact our Customer Support for more information about the investment. ",
+      "desc1" : "Please contact our ",
+      "desc2": "Customer Support" ,
+      "desc3":"for more information about the investment. ",
       "warn" : "All investments involve risk, including the possibility of losing the original investment."
     },
     "Statement":{
@@ -91,6 +98,7 @@
         "phoneNumber" : "Phone Number",
         "email" : "Email",
         "state" : "State",
+        "city" : "City",
         "address" : "Address",
         "postCode" : "Post Code",
         "occupation" : "Occupation",

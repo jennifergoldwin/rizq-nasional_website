@@ -7,6 +7,7 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 import logo from "../../../public/assets/images/logo.png";
+import { useLocale, useTranslations } from "next-intl";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -14,32 +15,33 @@ function classNames(...classes: string[]) {
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = React.useState(false);
   const segment = useSelectedLayoutSegment();
-
+  const locale = useLocale();
+  const t = useTranslations("Overview.Sidebar");
   const sidebarOptions = [
     {
-      name: "Overview",
-      href: "/overview",
+      name: t("overview"),
+      href: `/${locale}/overview`,
       icon: "/assets/icons/ic_overview.png",
       iconSelected: "/assets/icons/ic_overview_blue.png",
       current: !segment ? true : false,
     },
     {
-      name: "Investment",
-      href: "/overview/investment",
+      name: t("investment"),
+      href: `/${locale}/overview/investment`,
       icon: "/assets/icons/ic_investment.png",
       iconSelected: "/assets/icons/ic_investment_blue.png",
       current: `/${segment}` === "/investment" ? true : false,
     },
     {
-      name: "Statement",
-      href: "/overview/statement",
+      name: t("statement"),
+      href: `/${locale}/overview/statement`,
       icon: "/assets/icons/ic_statements.png",
       iconSelected: "/assets/icons/ic_statements_blue.png",
       current: `/${segment}` === "/statement" ? true : false,
     },
     {
-      name: "Account",
-      href: "/overview/account",
+      name: t("account"),
+      href: `/${locale}/overview/account`,
       icon: "/assets/icons/ic_profile.png",
       iconSelected: "/assets/icons/ic_profile_blue.png",
       current: `/${segment}` === "/account" ? true : false,
@@ -92,7 +94,10 @@ const Sidebar = () => {
           </div>
           <ul className="space-y-2 font-medium">
             {sidebarOptions.map((option) => (
-              <li key={option.name} onClick={() => setShowSidebar(!showSidebar)}>
+              <li
+                key={option.name}
+                onClick={() => setShowSidebar(!showSidebar)}
+              >
                 <Link
                   href={option.href}
                   className={classNames(
