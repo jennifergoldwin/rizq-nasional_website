@@ -23,8 +23,6 @@ const Page = () => {
   } = useForm<AddUserForm>();
   const [showAddUserModal, setShowAddUserModal] = React.useState(false);
   const [userList, setUserList] = React.useState<UserInfoForAdmin[]>([]);
-  // const [planList, setPlanList] = React.useState<Plan[]>([]);
-  // const [stockList, setStockList] = React.useState<Stocks[]>([]);
   const [role, setRole] = React.useState("");
   const router = useRouter();
 
@@ -66,8 +64,6 @@ const Page = () => {
     const adminRole = Cookies.get(cookiesAdmin.role) || "";
     if (username !== "" && token != "" && adminRole != "") {
       fetchUser(username, token);
-      // fetchPlan(token);
-      // fetchStock(token);
       setRole(adminRole);
     } else {
       setTimeout(() => router.replace("/admin"), 2000);

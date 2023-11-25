@@ -3,11 +3,13 @@ import { Statement } from "@/utils/model";
 import React from "react";
 import EditStatementModal from "../modal/editStatement";
 import { formatToMYR } from "@/utils/constant";
+import DialogDelete from "../modal/delete";
 
 type Props = {
   thList: string[];
   tbList: Statement[];
   type: string;
+  handleDeleteStatement: any;
   handleEditStatement: any;
 };
 
@@ -15,6 +17,11 @@ const Table = (props: Props) => {
   const [selectedStatement, setSelectedStatement] = React.useState<Statement>();
   const [showEditStatementModal, setShowEditStatementModal] =
     React.useState(false);
+  const [isDialogOpen,setIsDialogOpen] = React.useState(false);
+
+  React.useEffect(()=>{
+    console.log(props.handleDeleteStatement)
+  })
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -73,16 +80,29 @@ const Table = (props: Props) => {
               </td>
               {props.type === "admin" && (
                 <td className="px-py-4">
-                  <button
-                    onClick={() => {
-                      setSelectedStatement(tbItem);
-                      // setSelectedUser(tbItem);
-                      setShowEditStatementModal(!showEditStatementModal);
-                    }}
-                    className={` text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Edit
-                  </button>
+                  <div className="flex gap-2 justify-center items-center">
+                    <button
+                      onClick={() => {
+                        setSelectedStatement(tbItem);
+                        // setSelectedUser(tbItem);
+                        setShowEditStatementModal(!showEditStatementModal);
+                      }}
+                      className={` text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedStatement(tbItem);
+                        setIsDialogOpen(!isDialogOpen);
+                        // setSelectedUser(tbItem);
+                        // setShowEditStatementModal(!showEditStatementModal);
+                      }}
+                      className={` text-white my-2 bg-[#fe8c75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               )}
             </tr>
@@ -96,6 +116,16 @@ const Table = (props: Props) => {
         setShowEditStatementModal={setShowEditStatementModal}
         showEditStatementModal={showEditStatementModal}
       />
+
+      <DialogDelete label="Are you sure you want to delete this statement?" isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} 
+      handleDelete={()=>{
+        if (selectedStatement){
+          props.handleDeleteStatement(selectedStatement)
+        }
+        setIsDialogOpen(!isDialogOpen)
+      }}/>
+
+
     </div>
   );
 };

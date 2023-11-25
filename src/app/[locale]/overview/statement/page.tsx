@@ -79,6 +79,7 @@ export default function Page() {
             ) : (
               <Table
                 handleEditStatement={null}
+                handleDeleteStatement={null}
                 thList={[
                   t("date"),
                   t("product"),

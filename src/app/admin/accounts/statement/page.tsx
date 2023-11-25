@@ -64,42 +64,6 @@ export default function Page() {
     }
   }, []);
 
-  // const onSubmit = async (data: AddStatementForm) => {
-  //   try {
-  //     console.log(data);
-  //     const token = Cookies.get(cookiesAdmin.token) || "";
-  //     const us = Cookies.get(cookiesAdmin.username) || "";
-  //     if (us === "" || token === "") return;
-
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           id: "",
-  //           userIdentityNumber: selectedUser,
-  //           date: data.date.replace("T", " "),
-  //           product: data.product,
-  //           leverage: data.leverage,
-  //           profitLoss: data.profitLoss,
-  //         }),
-  //       }
-  //     );
-
-  //     const { error, message, result } = await response.json();
-  //     console.log(result);
-  //     // showToast(message, !error);
-  //     if (!error) {
-  //       setShowAddStatementModal(!showAddStatementModal);
-  //       setStatementList((prev) => [...prev, result]);
-  //     }
-  //   } catch (error: any) {}
-  // };
-
   const fetchUser = async (username: string, token: string) => {
     try {
       const response = await fetch(
@@ -174,6 +138,33 @@ export default function Page() {
       //   showToast(message, !error);
     } catch (error: any) {}
   };
+  const deleteStatement = async (data: Statement) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token === "" || username === "") return;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/delete-statement`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      if (!error) {
+        // setShowPriceModal(!showPriceModal);
+        // setStatementList((prevList) => [...result]);
+        fetchUserStatement(token, username);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value);
@@ -185,6 +176,10 @@ export default function Page() {
 
   const handleAddStatement = (value: Statement) => {
     addStatement(value);
+  };
+
+  const handleDeleteStatement = (value: Statement) => {
+    deleteStatement(value);
   };
 
   return (
@@ -207,6 +202,7 @@ export default function Page() {
         </div>
         <Table
           handleEditStatement={handleEditStatement}
+          handleDeleteStatement={handleDeleteStatement}
           thList={[
             "Name",
             "IC Number",
@@ -226,6 +222,7 @@ export default function Page() {
               : statementList || []
           }
           type={"admin"}
+          
         />
       </div>
 

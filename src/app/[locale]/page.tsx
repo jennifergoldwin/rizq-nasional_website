@@ -92,8 +92,10 @@ export default function Home() {
                 className="w-full opacity-0 lg:hidden block"
               />
               <div className=" w-full lg:h-auto lg:w-2/5 flex justify-center lg:justify-end items-center md:px-8 px-4">
-                <p className="text-4xl lg:text-3xl font-bold italic lg:py-0 pb-16">
-                  {`" ${t("Slogan.title").replace(",", ",\n")} "`}
+                <p className="text-4xl lg:text-4xl font-bold italic lg:py-0 pb-16">
+                  {`" ${t("Slogan.title").split(",")[0]} `}
+                  {","}<br/>
+                  {`${t("Slogan.title").split(",")[1]} "`}
                 </p>
               </div>
             </div>

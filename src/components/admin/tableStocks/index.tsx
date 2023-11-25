@@ -1,5 +1,8 @@
+"use client";
+import React from "react";
 import { formatToMYR } from "@/utils/constant";
 import { Plan } from "@/utils/model";
+import DialogDelete from "@/components/modal/delete";
 
 type Props = {
   thList: string[];
@@ -8,6 +11,8 @@ type Props = {
 };
 
 const TableStocks = (props: Props) => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedPlan, setSelectedPlan] = React.useState<Plan>();
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -41,8 +46,11 @@ const TableStocks = (props: Props) => {
               <td className="px-py-4">{`${formatToMYR(tbItem.price)}`}</td>
               <td className="px-py-4 flex justify-center">
                 <button
-                  onClick={() => props.handleDelete(tbItem)}
-                  className={`flex my-2 text-white bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                  onClick={() => {
+                    setSelectedPlan(tbItem);
+                    setIsDialogOpen(!isDialogOpen);
+                  }}
+                  className={`flex my-2 text-white bg-[#fe8c75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                 >
                   Delete Plan
                 </button>
@@ -51,6 +59,16 @@ const TableStocks = (props: Props) => {
           ))}
         </tbody>
       </table>
+
+      <DialogDelete
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        label="Are you sure you want to delete this plan?"
+        handleDelete={() => {
+          props.handleDelete(selectedPlan);
+          setIsDialogOpen(!isDialogOpen);
+        }}
+      />
     </div>
   );
 };

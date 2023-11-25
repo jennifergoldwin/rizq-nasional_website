@@ -12,6 +12,7 @@ type Props = {
   setShowStatementModal: any;
   selectedUser: UserInfoForAdmin | undefined;
   handleEditStatement: any;
+  handleDeleteStatement: any;
 };
 
 const StatementModal = (props: Props) => {
@@ -117,6 +118,7 @@ const StatementModal = (props: Props) => {
               </button>
             </div>
             <Table
+              handleDeleteStatement={props.handleDeleteStatement}
               handleEditStatement={props.handleEditStatement}
               thList={[
                 "Full Name",

@@ -9,6 +9,7 @@ import { cookiesAdmin, formatToMYR } from "@/utils/constant";
 import StatementModal from "@/components/modal/updateDeposit";
 import AddStatementModal from "@/components/modal/addStatement";
 import EditUserModal from "@/components/modal/editUser";
+import DialogDelete from "@/components/modal/delete";
 
 type Props = {
   thList: string[];
@@ -53,6 +54,7 @@ const TableDashboard = (props: Props) => {
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
   const [statementList, setStatementList] = React.useState<Statement[]>([]);
+  const [isDialogOpen,setIsDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (selectedUser) {
@@ -68,20 +70,6 @@ const TableDashboard = (props: Props) => {
       }
     }
   }, [selectedUser, showStatementModal]);
-
-  // React.useEffect(() => {
-  //   // if (showStatementModal){
-  //   const token = Cookies.get(cookiesAdmin.token) || "";
-  //   const username = Cookies.get(cookiesAdmin.username) || "";
-  //   if (token != "" || username != "") {
-  //     const fetchData = async () => {
-  //       const data = await fetchUserStatement(token, username);
-  //       setStatementList(data.result);
-  //     };
-  //     fetchData();
-  //   }
-  //   // }
-  // }, [showStatementModal]);
 
   const fetchUserInvestment = async (
     token: String,
@@ -129,9 +117,41 @@ const TableDashboard = (props: Props) => {
       //   showToast(message, !error);
     } catch (error: any) {}
   };
+  const deleteStatement = async (data: Statement) => {
+    try {
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const username = Cookies.get(cookiesAdmin.username) || "";
+      if (token === "" || username === "") return;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/delete-statement`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+
+      if (!error) {
+        // setShowPriceModal(!showPriceModal);
+        // setStatementList((prevList) => [...result]);
+        fetchUserStatement(token, username);
+      }
+      //   showToast(message, !error);
+    } catch (error: any) {}
+  };
+
   const handleEditStatement = (value: Statement) => {
     updateStatement(value);
   };
+  const handleDeleteStatement = (value: Statement) => {
+    deleteStatement(value);
+  };
+
   return (
     <div className="relative overflow-x-auto max-w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -182,29 +202,6 @@ const TableDashboard = (props: Props) => {
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 `}>
                 <div className="flex  items-center justify-center gap-2">
-                  {/* <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setShowDepositModal(!showDepositModal);
-                    }}
-                    className={`flex my-2 text-white bg-[#5A64C3] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center `}
-                  >
-                    Deposit
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setShowWithdrawlModal(!showWithdrawModal);
-                    }}
-                    className={`${
-                      tbItem.totalDeposit < 1 ||
-                      tbItem.totalDeposit === undefined
-                        ? "hidden"
-                        : "flex"
-                    } text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Withdrawl
-                  </button> */}
                   <button
                     onClick={() => {
                       setSelectedUser(tbItem);
@@ -239,8 +236,9 @@ const TableDashboard = (props: Props) => {
                   </button>
                   <button
                     onClick={() => {
-                      // setSelectedUser(tbItem);
-                      props.handleDeleteUser(tbItem.identityNumber);
+                      setSelectedUser(tbItem);
+                      setIsDialogOpen(!isDialogOpen)
+                      
                       // setShowEditUserModal(!showEditUserModal);
                       // setShowStatementModal(!showStatementModal);
                     }}
@@ -255,6 +253,10 @@ const TableDashboard = (props: Props) => {
         </tbody>
       </table>
 
+      <DialogDelete label="Are you sure you want to delete this user?" isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} handleDelete={()=>{
+        props.handleDeleteUser(selectedUser?.identityNumber)
+        setIsDialogOpen(!isDialogOpen)
+      }}/>
       <DepositModal
         showDepositModal={showDepositModal}
         setShowDepositModal={setShowDepositModal}
@@ -282,6 +284,7 @@ const TableDashboard = (props: Props) => {
         showAddStatementModal={showAddStatementModal}
         setShowAddStatementModal={setAddShowStatementModal}
         handleEditStatement={handleEditStatement}
+        handleDeleteStatement={handleDeleteStatement}
         statementList={statementList || []}
         showStatementModal={showStatementModal}
         setShowStatementModal={setShowStatementModal}

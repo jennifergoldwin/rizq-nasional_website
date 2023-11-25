@@ -1,4 +1,5 @@
 "use client";
+import DialogDelete from "@/components/modal/delete";
 import { Admin } from "@/utils/model";
 import React from "react";
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
 };
 
 const TableAdmin = (props: Props) => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedAdmin, setSelectedAdmin] = React.useState<Admin>();
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -41,7 +44,10 @@ const TableAdmin = (props: Props) => {
                     Edit
                   </button>
                   <button
-                    onClick={() => props.handleDelete(tbItem)}
+                    onClick={() => {
+                      setSelectedAdmin(tbItem)
+                      setIsDialogOpen(!isDialogOpen);
+                    }}
                     className={` text-white my-2 bg-[#FE8C75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
                   >
                     Delete
@@ -52,6 +58,15 @@ const TableAdmin = (props: Props) => {
           ))}
         </tbody>
       </table>
+      <DialogDelete
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        label="Are you sure you want to delete this admin?"
+        handleDelete={() => {
+          props.handleDelete(selectedAdmin);
+          setIsDialogOpen(!isDialogOpen);
+        }}
+      />
     </div>
   );
 };
