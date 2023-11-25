@@ -165,6 +165,20 @@ const TableDashboard = (props: Props) => {
                   ? formatToMYR(tbItem.totalDeposit)
                   : formatToMYR(0)
               }`}</td>
+              <td className="px-py-4">{`${
+                tbItem.totalDeposit !== undefined
+                  ? formatToMYR(tbItem.totalProfit)
+                  : formatToMYR(0)
+              }`}</td>
+              <td className="px-py-4">{`${
+                tbItem.totalDeposit !== undefined &&
+                tbItem.totalProfit !== undefined
+                  ? formatToMYR(
+                      parseFloat(tbItem.totalDeposit.toString()) +
+                        parseFloat(tbItem.totalProfit.toString())
+                    )
+                  : formatToMYR(0)
+              }`}</td>
               <td className="px-py-4">{tbItem.createdby}</td>
               <td className={`px-py-4 `}>
                 <div className="flex  items-center justify-center gap-2">
@@ -277,6 +291,7 @@ const TableDashboard = (props: Props) => {
       <AddStatementModal
         handleAddStatement={props.handleAddStatement}
         userList={props.tbList}
+        selectedUser={selectedUser}
         setShowAddStatementModal={setAddShowStatementModal}
         showAddStatementModal={showAddStatementModal}
         showStatementModal={showStatementModal}

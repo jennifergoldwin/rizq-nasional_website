@@ -15,43 +15,40 @@ type EditStatementForm = {
   profitLoss: string;
 };
 const EditStatementModal = (props: Props) => {
-
-    const {
-        handleSubmit,
-        control,
-        register,
-        setValue,
-        watch,
-        formState: { errors },
-      } = useForm<EditStatementForm>();
+  const {
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<EditStatementForm>();
 
   const onSubmit: SubmitHandler<EditStatementForm> = async (data) => {
-    if (props.selectedStatement){
+    if (props.selectedStatement) {
       const bodySt = {
         id: props.selectedStatement.id,
-        userIdentityNumber : props.selectedStatement.userIdentityNumber,
+        userIdentityNumber: props.selectedStatement.userIdentityNumber,
         date: data.date,
-        product : data.product,
-        leverage : data.leverage,
-        profitLoss : data.profitLoss 
-      }
+        product: data.product,
+        leverage: data.leverage,
+        profitLoss: data.profitLoss,
+      };
       props.setShowEditStatementModal(!props.showEditStatementModal);
       props.handleEditStatement(bodySt);
     }
     // props.setShowEditStatementModal(!props.showEditStatementModal);
     // props.handleWithdrawlModal(props.selectedStatement);
-
   };
 
-  React.useEffect(()=>{
-    if (props.selectedStatement){
-      setValue("date",props.selectedStatement.date);
-      setValue("leverage",props.selectedStatement.leverage);
-      setValue("product",props.selectedStatement.product);
-      setValue("profitLoss",props.selectedStatement.profitLoss);
+  React.useEffect(() => {
+    if (props.selectedStatement) {
+      setValue("date", props.selectedStatement.date);
+      setValue("leverage", props.selectedStatement.leverage);
+      setValue("product", props.selectedStatement.product);
+      setValue("profitLoss", props.selectedStatement.profitLoss);
     }
-  },[props.selectedStatement]);
-  
+  }, [props.selectedStatement]);
 
   return (
     <div
@@ -69,7 +66,9 @@ const EditStatementModal = (props: Props) => {
               Edit Statement
             </h3>
             <button
-              onClick={() => props.setShowEditStatementModal(!props.showEditStatementModal)}
+              onClick={() =>
+                props.setShowEditStatementModal(!props.showEditStatementModal)
+              }
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="crud-modal"
@@ -115,7 +114,6 @@ const EditStatementModal = (props: Props) => {
                       : ""
                   }
                 />
-                
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label
@@ -126,9 +124,10 @@ const EditStatementModal = (props: Props) => {
                 </label>
                 <input
                   {...register("date", { required: "Date is required" })}
-                  type="date"
+                  type="datetime-local"
                   name="date"
                   id="dateEdit"
+                  // value={watch("date")}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Date"
                   required

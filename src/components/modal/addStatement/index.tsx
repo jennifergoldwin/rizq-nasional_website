@@ -17,6 +17,7 @@ interface Props {
   setShowStatementModal: any;
   userList: UserInfoForAdmin[];
   handleAddStatement: any;
+  selectedUser: UserInfoForAdmin | undefined;
 }
 const AddStatementModal = (props: Props) => {
   const {
@@ -30,10 +31,10 @@ const AddStatementModal = (props: Props) => {
 
   const onSubmit = async (data: AddStatementForm) => {
     // console.log(data)
-    if (props.setShowStatementModal){
-      props.setShowStatementModal(!props.showStatementModal)
+    if (props.setShowStatementModal) {
+      props.setShowStatementModal(!props.showStatementModal);
     }
-    props.setShowAddStatementModal(!props.showAddStatementModal)
+    props.setShowAddStatementModal(!props.showAddStatementModal);
     props.handleAddStatement({
       id: "",
       userIdentityNumber: selectedUser,
@@ -41,8 +42,17 @@ const AddStatementModal = (props: Props) => {
       product: data.product,
       leverage: data.leverage,
       profitLoss: data.profitLoss,
-    })
-  }
+    });
+  };
+
+  React.useEffect(() => {
+    console.log(`sele ${props.selectedUser}`);
+    if (props.selectedUser !== undefined) {
+      setSelectedUser(
+        props.selectedUser ? props.selectedUser.identityNumber : ""
+      );
+    }
+  }, [props.selectedUser]);
 
   return (
     <div
@@ -94,10 +104,24 @@ const AddStatementModal = (props: Props) => {
                 >
                   Name
                 </label>
-                <SelectUser
-                  setSelectedUser={setSelectedUser}
-                  userList={props.userList}
-                />
+                {props.selectedUser === undefined ? (
+                  <SelectUser
+                    setSelectedUser={setSelectedUser}
+                    userList={props.userList}
+                  />
+                ) : (
+                  <input
+                    // {...register("date", { required: "Date is required" })}
+                    type="text"
+                    name="date"
+                    id="userNameAdd"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Date"
+                    required
+                    readOnly
+                    value={props.selectedUser.fullName}
+                  />
+                )}
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <label

@@ -26,11 +26,13 @@ export interface Admin {
 }
 
 export interface UserInfoForAdmin {
+  id: string;
   identityNumber: string;
   fullName: string;
   email: string;
   phoneNumber: string;
   totalDeposit: number;
+  totalProfit: number;
   createdby: string;
 }
 

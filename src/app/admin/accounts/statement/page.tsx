@@ -229,8 +229,15 @@ export default function Page() {
         />
       </div>
 
-      <AddStatementModal setShowAddStatementModal={setShowAddStatementModal} showAddStatementModal={showAddStatementModal}
-      userList={userList} handleAddStatement={handleAddStatement} setShowStatementModal={null} showStatementModal={false}/>
+      <AddStatementModal
+        selectedUser={undefined}
+        setShowAddStatementModal={setShowAddStatementModal}
+        showAddStatementModal={showAddStatementModal}
+        userList={userList}
+        handleAddStatement={handleAddStatement}
+        setShowStatementModal={null}
+        showStatementModal={false}
+      />
       {/* <div
         id="add-statement-modal"
         tabIndex={-1}

@@ -74,47 +74,6 @@ const Page = () => {
     }
   }, []);
 
-  // const fetchStock = async (token: string) => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BASEURL}/all-stocks`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     const { error, message, result } = await response.json();
-
-  //     if (!error) {
-  //       setStockList((prevList) => [...result]);
-  //     }
-  //     //   showToast(message, !error);
-  //   } catch (error: any) {}
-  // };
-
-  // const fetchPlan = async (token: string) => {
-  //   try {
-  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/plan`, {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     const { error, message, result } = await response.json();
-
-  //     if (!error) {
-  //       setPlanList((prev) => [...result]);
-  //     }
-  //     //   showToast(message, !error);
-  //   } catch (error: any) {}
-  // };
-
   const fetchUser = async (username: string, token: string) => {
     try {
       const response = await fetch(
@@ -129,40 +88,13 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
+
       if (!error) {
         setUserList((prev) => [...result]);
       }
       //   showToast(message, !error);
     } catch (error: any) {}
   };
-
-  // const deposit = async (data: any) => {
-  //   try {
-  //     const token = Cookies.get(cookiesAdmin.token) || "";
-  //     const username = Cookies.get(cookiesAdmin.username) || "";
-  //     if (token === "" || username === "") return;
-
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BASEURL}/deposit`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(data),
-  //       }
-  //     );
-
-  //     const { error, message, result } = await response.json();
-
-  //     // showToast(message, !error);
-
-  //     if (!error) {
-  //       fetchUser(username, token);
-  //     }
-  //   } catch (error: any) {}
-  // };
 
   const updateDeposit = async (data: any) => {
     try {
@@ -268,6 +200,7 @@ const Page = () => {
   };
 
   const updateUser = async (data: any) => {
+    // console.log(data);
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
       const username = Cookies.get(cookiesAdmin.username) || "";
@@ -287,6 +220,7 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
+      // console.log(message);
       // showToast(message, !error);
 
       if (!error) {
@@ -295,12 +229,9 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  // const handleDepositModal = (value: any) => {
-  //   deposit(value);
-  // };
   const addStatement = async (data: Statement) => {
     try {
-      console.log(data);
+      // console.log(data);
       const token = Cookies.get(cookiesAdmin.token) || "";
       const us = Cookies.get(cookiesAdmin.username) || "";
       if (us === "" || token === "") return;
@@ -318,7 +249,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(message);
+      // console.log(message);
       // showToast(message, !error);
       if (!error) {
         // router.refresh()
@@ -419,6 +350,8 @@ const Page = () => {
             "Email",
             "Phone Number",
             "Total Deposit",
+            "Total Profit",
+            "Total Value",
             "Created by",
             "Action",
           ]}
