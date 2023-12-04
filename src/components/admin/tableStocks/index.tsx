@@ -60,7 +60,7 @@ const TableStocks = (props: Props) => {
         </tbody>
       </table>
 
-      <DialogDelete
+      <DialogDelete note={""}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         label="Are you sure you want to delete this plan?"

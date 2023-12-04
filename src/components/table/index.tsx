@@ -19,9 +19,7 @@ const Table = (props: Props) => {
     React.useState(false);
   const [isDialogOpen,setIsDialogOpen] = React.useState(false);
 
-  React.useEffect(()=>{
-    console.log(props.handleDeleteStatement)
-  })
+  
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -117,7 +115,7 @@ const Table = (props: Props) => {
         showEditStatementModal={showEditStatementModal}
       />
 
-      <DialogDelete label="Are you sure you want to delete this statement?" isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} 
+      <DialogDelete note={""} label="Are you sure you want to delete this statement?" isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} 
       handleDelete={()=>{
         if (selectedStatement){
           props.handleDeleteStatement(selectedStatement)

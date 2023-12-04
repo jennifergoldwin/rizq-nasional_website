@@ -5,6 +5,7 @@ interface Props {
   handleDelete: any;
   setIsDialogOpen: any;
   label:string;
+  note:String;
 }
 const DialogDelete = (props: Props) => {
   return (
@@ -56,16 +57,17 @@ const DialogDelete = (props: Props) => {
                 d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="text-lg font-normal text-gray-500 dark:text-gray-400">
               {props.label}
             </h3>
+            <p className="text-sm text-red-500 mb-5">{props.note}</p>
             <button
               onClick={props.handleDelete}
               data-modal-hide="popup-modal"
               type="button"
               className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2"
             >
-              Yes, I'm sure
+              {"Yes, I'm sure"}
             </button>
             <button
               onClick={() => props.setIsDialogOpen(!props.isDialogOpen)}

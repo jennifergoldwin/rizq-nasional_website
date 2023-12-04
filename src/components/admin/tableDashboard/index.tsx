@@ -10,7 +10,7 @@ import StatementModal from "@/components/modal/updateDeposit";
 import AddStatementModal from "@/components/modal/addStatement";
 import EditUserModal from "@/components/modal/editUser";
 import DialogDelete from "@/components/modal/delete";
-
+import { useRouter } from "next/navigation";
 type Props = {
   thList: string[];
   tbList: UserInfoForAdmin[];
@@ -18,7 +18,6 @@ type Props = {
   // stockList: Stocks[];
   handleDeposit: any;
   handleWithdrawl: any;
-  handleAddStatement: any;
   handleEditUser: any;
   handleDeleteUser: any;
   // handleUpdateDeposit: any;
@@ -55,6 +54,7 @@ const TableDashboard = (props: Props) => {
   const [investList, setInvestList] = React.useState<Investment[]>([]);
   const [statementList, setStatementList] = React.useState<Statement[]>([]);
   const [isDialogOpen,setIsDialogOpen] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     if (selectedUser) {
@@ -136,12 +136,55 @@ const TableDashboard = (props: Props) => {
 
       const { error, message, result } = await response.json();
 
+      // console.log(message)
       if (!error) {
         // setShowPriceModal(!showPriceModal);
         // setStatementList((prevList) => [...result]);
-        fetchUserStatement(token, username);
+        // fetchUserStatement(token, username);
+        if (selectedUser){
+          fetchUserInvestment(token, selectedUser.identityNumber);
+          const fetchData = async () => {
+            const data = await fetchUserStatement(token, selectedUser.createdby);
+            setStatementList(data.result);
+          };
+          fetchData();
+        }
       }
       //   showToast(message, !error);
+    } catch (error: any) {}
+  };
+  const addStatement = async (data: Statement) => {
+    try {
+      // console.log(data);
+      const token = Cookies.get(cookiesAdmin.token) || "";
+      const us = Cookies.get(cookiesAdmin.username) || "";
+      if (us === "" || token === "") return;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const { error, message, result } = await response.json();
+      console.log(message);
+      // showToast(message, !error);
+      if (!error) {
+        if (selectedUser){
+          fetchUserInvestment(token, selectedUser.identityNumber);
+          const fetchData = async () => {
+            const data = await fetchUserStatement(token, selectedUser.createdby);
+            setStatementList(data.result);
+          };
+          fetchData();
+        }
+      }
     } catch (error: any) {}
   };
 
@@ -150,6 +193,9 @@ const TableDashboard = (props: Props) => {
   };
   const handleDeleteStatement = (value: Statement) => {
     deleteStatement(value);
+  };
+  const handleAddStatement = (value: Statement) => {
+    addStatement(value);
   };
 
   return (
@@ -253,7 +299,7 @@ const TableDashboard = (props: Props) => {
         </tbody>
       </table>
 
-      <DialogDelete label="Are you sure you want to delete this user?" isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} handleDelete={()=>{
+      <DialogDelete note={"(All investment and statement history will be deleted)"} label="Are you sure you want to delete this user? " isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} handleDelete={()=>{
         props.handleDeleteUser(selectedUser?.identityNumber)
         setIsDialogOpen(!isDialogOpen)
       }}/>
@@ -292,7 +338,7 @@ const TableDashboard = (props: Props) => {
       />
 
       <AddStatementModal
-        handleAddStatement={props.handleAddStatement}
+        handleAddStatement={handleAddStatement}
         userList={props.tbList}
         selectedUser={selectedUser}
         setShowAddStatementModal={setAddShowStatementModal}

@@ -87,7 +87,7 @@ export default function Page() {
   };
   const addStatement = async (data: Statement) => {
     try {
-      console.log(data);
+      // console.log(data);
       const token = Cookies.get(cookiesAdmin.token) || "";
       const us = Cookies.get(cookiesAdmin.username) || "";
       if (us === "" || token === "") return;
@@ -105,7 +105,7 @@ export default function Page() {
       );
 
       const { error, message, result } = await response.json();
-      console.log(message);
+      // console.log(message);
       // showToast(message, !error);
       if (!error) {
         setShowAddStatementModal(!showAddStatementModal);

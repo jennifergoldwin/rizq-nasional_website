@@ -46,7 +46,7 @@ const AddStatementModal = (props: Props) => {
   };
 
   React.useEffect(() => {
-    console.log(`sele ${props.selectedUser}`);
+    // console.log(`sele ${props.selectedUser}`);
     if (props.selectedUser !== undefined) {
       setSelectedUser(
         props.selectedUser ? props.selectedUser.identityNumber : ""

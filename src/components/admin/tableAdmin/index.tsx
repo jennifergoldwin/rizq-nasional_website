@@ -59,7 +59,7 @@ const TableAdmin = (props: Props) => {
         </tbody>
       </table>
       <DialogDelete
-        isDialogOpen={isDialogOpen}
+        isDialogOpen={isDialogOpen} note={""}
         setIsDialogOpen={setIsDialogOpen}
         label="Are you sure you want to delete this admin?"
         handleDelete={() => {

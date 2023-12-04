@@ -104,7 +104,7 @@ const Page = () => {
       );
 
       const { error, message, result } = await response.json();
-      console.log(message);
+      
       if (!error) {
         // setShowPriceModal(!showPriceModal);
         setshowAddAdminModal(false);

@@ -61,10 +61,7 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ data }) => {
     return gradient;
   };
 
-  React.useEffect(() => {
-    console.log(data);
-  }, []);
-
+  
   return (
     <div className="mx-6 my-12 bg-[#01115E] px-8 py-6 rounded-xl">
       <h1 className="text-center text-xl font-semibold pb-8 pt-4">

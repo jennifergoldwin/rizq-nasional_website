@@ -225,35 +225,7 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  const addStatement = async (data: Statement) => {
-    try {
-      // console.log(data);
-      const token = Cookies.get(cookiesAdmin.token) || "";
-      const us = Cookies.get(cookiesAdmin.username) || "";
-      if (us === "" || token === "") return;
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASEURL}/add-statement`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      const { error, message, result } = await response.json();
-      // console.log(message);
-      // showToast(message, !error);
-      if (!error) {
-        // router.refresh()
-        // setShowAddStatementModal(!showAddStatementModal);
-        // setStatementList((prev) => [...prev, result]);
-      }
-    } catch (error: any) {}
-  };
+  
 
   const deleteUser = async (data: string) => {
     try {
@@ -288,9 +260,7 @@ const Page = () => {
   const handleEditUser = (value: any) => {
     updateUser(value);
   };
-  const handleAddStatement = (value: Statement) => {
-    addStatement(value);
-  };
+ 
   const handleWithdrawlModal = (value: any) => {
     withdrawl(value);
   };
@@ -357,7 +327,7 @@ const Page = () => {
           handleEditUser={handleEditUser}
           // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
-          handleAddStatement={handleAddStatement}
+          
           handleDeleteUser={handleDeleteUser}
         />
       </div>
