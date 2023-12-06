@@ -14,6 +14,8 @@ interface FormValues {
   email: string;
   identityNumber: string;
   password: string;
+  remark: string;
+  registrationDate: string;
 }
 const EditUserModal = (props: Props) => {
   const {
@@ -33,9 +35,19 @@ const EditUserModal = (props: Props) => {
       email: data.email,
       phoneNumber: data.phoneNumber,
       password: data.password,
+      remark: data.remark,
+      registrationDate: props.selectedUser?.registrationDate===null?data.registrationDate:props.selectedUser?.registrationDate
     };
     props.setShowEditUserModal(!props.showEditUserModal);
     props.handleEditUser(bodyUser);
+    console.log(data.registrationDate)
+    setValue("email", "");
+    setValue("fullName", "");
+    setValue("phoneNumber", "");
+    setValue("identityNumber", "");
+    setValue("password", "");
+    setValue("remark", "");
+    setValue("registrationDate", "");
   };
   React.useEffect(() => {
     if (props.selectedUser) {
@@ -43,6 +55,12 @@ const EditUserModal = (props: Props) => {
       setValue("fullName", props.selectedUser.fullName);
       setValue("phoneNumber", props.selectedUser.phoneNumber);
       setValue("identityNumber", props.selectedUser.identityNumber);
+      setValue("remark", props.selectedUser.remark);
+      if (props.selectedUser.registrationDate!==null){
+        setValue("registrationDate", props.selectedUser.registrationDate.replace("T"," "))
+      }else{
+        setValue("registrationDate","")
+      }
     }
   }, [props.selectedUser]);
   return (
@@ -152,9 +170,9 @@ const EditUserModal = (props: Props) => {
                   placeholder="Phone number"
                   required
                 />
-                {errors.password && (
+                {errors.phoneNumber && (
                   <p className="text-red-600 text-sm">
-                    {errors.password.message}
+                    {errors.phoneNumber.message}
                   </p>
                 )}
               </div>
@@ -203,6 +221,54 @@ const EditUserModal = (props: Props) => {
                 {errors.password && (
                   <p className="text-red-600 text-sm">
                     {errors.password.message}
+                  </p>
+                )}
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label
+                  htmlFor="remark"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Remark
+                </label>
+                <input
+                  {...register("remark", {
+                    required: "Remark is required",
+                  })}
+                  type="text"
+                  name="remark"
+                  id="remarkEdit"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Remark"
+                  required
+                />
+                {errors.remark && (
+                  <p className="text-red-600 text-sm">
+                    {errors.remark.message}
+                  </p>
+                )}
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label
+                  htmlFor="registrationDate"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Registration Date
+                </label>
+                <input
+                  {...register("registrationDate",{required:false})}
+                  type={props.selectedUser?.registrationDate!==null?"text":"datetime-local"}
+                  name="registrationDate"
+                  id="registrationDateEdit"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Registration Date"
+                  // required={props.selectedUser?.registrationDate===null}
+                  readOnly={props.selectedUser?.registrationDate!==null}
+                  
+                />
+                {errors.registrationDate && (
+                  <p className="text-red-600 text-sm">
+                    {errors.registrationDate.message}
                   </p>
                 )}
               </div>

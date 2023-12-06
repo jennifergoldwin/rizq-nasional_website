@@ -34,6 +34,8 @@ export interface UserInfoForAdmin {
   totalDeposit: number;
   totalProfit: number;
   createdby: string;
+  remark: string;
+  registrationDate: string;
 }
 
 export enum ROLE {

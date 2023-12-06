@@ -148,6 +148,22 @@ const Page = () => {
     } catch (error: any) {}
   };
 
+  const getCurrentDateTime = () => {
+    var date = new Date();
+    var dateStr =
+      date.getFullYear() +
+      "-" +
+      ("00" + (date.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("00" + date.getDate()).slice(-2) +
+      " " +
+      ("00" + date.getHours()).slice(-2) +
+      ":" +
+      ("00" + date.getMinutes()).slice(-2) +
+      ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    return dateStr;
+  };
   const onSubmit = async (data: AddUserForm) => {
     try {
       const us = Cookies.get(cookiesAdmin.username) || "";
@@ -175,6 +191,8 @@ const Page = () => {
             bankHolderName: "",
             role: "ROLE_USER",
             createdby: us,
+            remark: "",
+            registrationDate: getCurrentDateTime(),
           }),
         }
       );
@@ -225,8 +243,6 @@ const Page = () => {
     } catch (error: any) {}
   };
 
-  
-
   const deleteUser = async (data: string) => {
     try {
       const token = Cookies.get(cookiesAdmin.token) || "";
@@ -260,7 +276,6 @@ const Page = () => {
   const handleEditUser = (value: any) => {
     updateUser(value);
   };
- 
   const handleWithdrawlModal = (value: any) => {
     withdrawl(value);
   };
@@ -319,6 +334,8 @@ const Page = () => {
             "Total Profit",
             "Total Value",
             "Created by",
+            "Registration Date",
+            "Remark",
             "Action",
           ]}
           tbList={filteredUserList}
@@ -327,7 +344,6 @@ const Page = () => {
           handleEditUser={handleEditUser}
           // handleUpdateDeposit={handleUpdateDepoModal}
           handleWithdrawl={handleWithdrawlModal}
-          
           handleDeleteUser={handleDeleteUser}
         />
       </div>

@@ -53,7 +53,7 @@ const TableDashboard = (props: Props) => {
   const [selectedUser, setSelectedUser] = React.useState<UserInfoForAdmin>();
   const [investList, setInvestList] = React.useState<Investment[]>([]);
   const [statementList, setStatementList] = React.useState<Statement[]>([]);
-  const [isDialogOpen,setIsDialogOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -141,10 +141,13 @@ const TableDashboard = (props: Props) => {
         // setShowPriceModal(!showPriceModal);
         // setStatementList((prevList) => [...result]);
         // fetchUserStatement(token, username);
-        if (selectedUser){
+        if (selectedUser) {
           fetchUserInvestment(token, selectedUser.identityNumber);
           const fetchData = async () => {
-            const data = await fetchUserStatement(token, selectedUser.createdby);
+            const data = await fetchUserStatement(
+              token,
+              selectedUser.createdby
+            );
             setStatementList(data.result);
           };
           fetchData();
@@ -176,10 +179,13 @@ const TableDashboard = (props: Props) => {
       console.log(message);
       // showToast(message, !error);
       if (!error) {
-        if (selectedUser){
+        if (selectedUser) {
           fetchUserInvestment(token, selectedUser.identityNumber);
           const fetchData = async () => {
-            const data = await fetchUserStatement(token, selectedUser.createdby);
+            const data = await fetchUserStatement(
+              token,
+              selectedUser.createdby
+            );
             setStatementList(data.result);
           };
           fetchData();
@@ -211,98 +217,114 @@ const TableDashboard = (props: Props) => {
           </tr>
         </thead>
         <tbody>
-          {props.tbList.map((tbItem, idx) => (
-            <tr
-              key={idx}
-              className="text-center border-b-[1px] border-gray-600"
-            >
-              <th
+          {props.tbList
+            .sort((a, b) => {
+              const dateA = new Date(a.registrationDate).getTime();
+              const dateB = new Date(b.registrationDate).getTime();
+
+              // Compare in descending order
+              return dateB - dateA;
+            })
+            .map((tbItem, idx) => (
+              <tr
                 key={idx}
-                scope="row"
-                className="p-2 font-medium  whitespace-pre-line "
+                className="text-center border-b-[1px] border-gray-600"
               >
-                {tbItem.identityNumber}
-              </th>
-              <td className="px-py-4">{tbItem.fullName}</td>
-              <td className="px-py-4">{tbItem.email}</td>
-              <td className="px-py-4">{tbItem.phoneNumber}</td>
-              <td className="px-py-4">{`${
-                tbItem.totalDeposit !== undefined
-                  ? formatToMYR(tbItem.totalDeposit)
-                  : formatToMYR(0)
-              }`}</td>
-              <td className="px-py-4">{`${
-                tbItem.totalDeposit !== undefined
-                  ? formatToMYR(tbItem.totalProfit)
-                  : formatToMYR(0)
-              }`}</td>
-              <td className="px-py-4">{`${
-                tbItem.totalDeposit !== undefined &&
-                tbItem.totalProfit !== undefined
-                  ? formatToMYR(
-                      parseFloat(tbItem.totalDeposit.toString()) +
-                        parseFloat(tbItem.totalProfit.toString())
-                    )
-                  : formatToMYR(0)
-              }`}</td>
-              <td className="px-py-4">{tbItem.createdby}</td>
-              <td className={`px-py-4 `}>
-                <div className="flex  items-center justify-center gap-2">
-                  <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setShowDepositModal(!showDepositModal);
-                    }}
-                    className={`${
-                      props.hideAction ? "hidden" : ""
-                    } text-xs text-white my-2 bg-[#4DC2E8] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setShowStatementModal(!showStatementModal);
-                    }}
-                    className={`${
-                      props.hideAction ? "hidden" : ""
-                    } text-xs text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Statement
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setShowEditUserModal(!showEditUserModal);
-                      // setShowStatementModal(!showStatementModal);
-                    }}
-                    className={`text-xs text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Edit User
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedUser(tbItem);
-                      setIsDialogOpen(!isDialogOpen)
-                      
-                      // setShowEditUserModal(!showEditUserModal);
-                      // setShowStatementModal(!showStatementModal);
-                    }}
-                    className={`text-xs text-white my-2 bg-[#fe8c75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
-                  >
-                    Delete User
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
+                <th
+                  key={idx}
+                  scope="row"
+                  className="p-2 font-medium  whitespace-pre-line "
+                >
+                  {tbItem.identityNumber}
+                </th>
+                <td className="px-py-4">{tbItem.fullName}</td>
+                <td className="px-py-4">{tbItem.email}</td>
+                <td className="px-py-4">{tbItem.phoneNumber}</td>
+                <td className="px-py-4">{`${
+                  tbItem.totalDeposit !== undefined
+                    ? formatToMYR(tbItem.totalDeposit)
+                    : formatToMYR(0)
+                }`}</td>
+                <td className="px-py-4">{`${
+                  tbItem.totalDeposit !== undefined
+                    ? formatToMYR(tbItem.totalProfit)
+                    : formatToMYR(0)
+                }`}</td>
+                <td className="px-py-4">{`${
+                  tbItem.totalDeposit !== undefined &&
+                  tbItem.totalProfit !== undefined
+                    ? formatToMYR(
+                        parseFloat(tbItem.totalDeposit.toString()) +
+                          parseFloat(tbItem.totalProfit.toString())
+                      )
+                    : formatToMYR(0)
+                }`}</td>
+                <td className="px-py-4">{tbItem.createdby}</td>
+                <td className={`px-py-4`}>{tbItem.registrationDate}</td>
+                <td className="px-py-4">{tbItem.remark}</td>
+                <td className={`px-py-4 `}>
+                  <div className="flex  items-center justify-center gap-2">
+                    <button
+                      onClick={() => {
+                        setSelectedUser(tbItem);
+                        setShowDepositModal(!showDepositModal);
+                      }}
+                      className={`${
+                        props.hideAction ? "hidden" : ""
+                      } text-xs text-white my-2 bg-[#4DC2E8] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedUser(tbItem);
+                        setShowStatementModal(!showStatementModal);
+                      }}
+                      className={`${
+                        props.hideAction ? "hidden" : ""
+                      } text-xs text-white my-2 bg-[#53CF60] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Statement
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedUser(tbItem);
+                        setShowEditUserModal(!showEditUserModal);
+                        // setShowStatementModal(!showStatementModal);
+                      }}
+                      className={`text-xs text-white my-2 bg-[#AF80F4] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Edit User
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedUser(tbItem);
+                        setIsDialogOpen(!isDialogOpen);
+
+                        // setShowEditUserModal(!showEditUserModal);
+                        // setShowStatementModal(!showStatementModal);
+                      }}
+                      className={`text-xs text-white my-2 bg-[#fe8c75] border-white border-[1px] rounded-[4px] py-2 px-3  font-bold justify-center`}
+                    >
+                      Delete User
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
-      <DialogDelete note={"(All investment and statement history will be deleted)"} label="Are you sure you want to delete this user? " isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} handleDelete={()=>{
-        props.handleDeleteUser(selectedUser?.identityNumber)
-        setIsDialogOpen(!isDialogOpen)
-      }}/>
+      <DialogDelete
+        note={"(All investment and statement history will be deleted)"}
+        label="Are you sure you want to delete this user? "
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        handleDelete={() => {
+          props.handleDeleteUser(selectedUser?.identityNumber);
+          setIsDialogOpen(!isDialogOpen);
+        }}
+      />
       <DepositModal
         showDepositModal={showDepositModal}
         setShowDepositModal={setShowDepositModal}

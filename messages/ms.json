@@ -38,7 +38,7 @@
       
     },
     "LoginPage":{
-      "title" : "Log Masuk ke Akun Anda",
+      "title" : "Log Masuk ke Akaun Anda",
       "inputIC" : "Nombor Kad Pengenalan",
       "tnc1" : "Saya bersetuju dengan",
       "tnc2": "Dasar Privasi" ,
@@ -52,7 +52,7 @@
         "overview":"Gambaran Keseluruhan",
         "investment":"Pelaburan",
         "statement":"Kenyataan",
-        "account" :"Akun"
+        "account" :"Akaun"
       },
       "AccountDetail":{
         "status":"Aktif",

@@ -8,7 +8,6 @@ interface AddStatementForm {
   product: string;
   leverage: string;
   profitLoss: string;
-  password: string;
 }
 interface Props {
   showAddStatementModal: boolean;
@@ -23,7 +22,7 @@ const AddStatementModal = (props: Props) => {
   const {
     register,
     handleSubmit,
-    setError,
+    setError,setValue,
     formState: { errors },
   } = useForm<AddStatementForm>();
 
@@ -43,6 +42,10 @@ const AddStatementModal = (props: Props) => {
       leverage: data.leverage,
       profitLoss: data.profitLoss,
     });
+    setValue('date',"");
+    setValue('leverage',"");
+    setValue('profitLoss',"");
+    setValue('product',"");
   };
 
   React.useEffect(() => {
