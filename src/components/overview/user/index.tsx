@@ -37,7 +37,36 @@ const UserDetails: React.FC<UserDetailProps> = ({
         user !== null ? user.identityNumber : ""
       }`}</p>
 
-      <Swiper
+      <div className="grid md:grid-cols-4 gap-4 grid-cols-1">
+        <div className=" bg-[#2D3681] flex flex-col justify-center items-center px-2 py-3 rounded-lg text-center h-full">
+          <span>{t("currentValue")}</span>
+          <Image width={70} src={graph} alt="graph icon" />
+          <span>{`${formatToMYR(totalDeposit + totalProfit)}`}</span>
+        </div>
+
+        <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
+          <span>{t("deposit")}</span>
+          <Image width={70} src={graph} alt="graph icon" />
+          <span>{`${formatToMYR(totalDeposit)}`}</span>
+        </div>
+
+        <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
+          <span>{t("profit")}</span>
+          <Image width={70} src={graph} alt="graph icon" />
+          <span>{`${formatToMYR(totalProfit)}`}</span>
+        </div>
+
+        <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
+          <span>{t("rate")}</span>
+          <Image width={70} src={graph} alt="graph icon" />
+          <span>{`%${
+            isNaN(parseFloat(((totalProfit / totalDeposit) * 100).toFixed(2)))
+              ? "0"
+              : ((totalProfit / totalDeposit) * 100).toFixed(2)
+          }`}</span>
+        </div>
+      </div>
+      {/* <Swiper
         spaceBetween={20}
         slidesPerView={2}
         breakpoints={{
@@ -83,14 +112,14 @@ const UserDetails: React.FC<UserDetailProps> = ({
             }`}</span>
           </div>
         </SwiperSlide>
-        {/* <SwiperSlide className="!h-auto">
+        <SwiperSlide className="!h-auto">
           <div className="bg-[#2D3681] flex flex-col justify-center items-center px-4 py-3 rounded-lg text-center h-full">
             <span>Investment</span>
             <Image width={70} src={graph} alt="graph icon" />
             <span>{totalInvestment}</span>
           </div>
-        </SwiperSlide> */}
-      </Swiper>
+        </SwiperSlide>
+      </Swiper> */}
     </div>
   );
 };
