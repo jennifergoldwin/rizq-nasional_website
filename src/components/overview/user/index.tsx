@@ -67,7 +67,7 @@ const UserDetails: React.FC<UserDetailProps> = ({
           }`}</span>
         </div>
       </div>
-      <p>{`Last Updated: ${last_update}`}</p>
+      <p className="pt-4">{`Last Updated: ${last_update}`}</p>
       {/* <Swiper
         spaceBetween={20}
         slidesPerView={2}
