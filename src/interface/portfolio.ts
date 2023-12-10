@@ -2,6 +2,7 @@ interface Portfolio {
     total_investment: number;
     total_deposit: number;
     total_profit: number;
+    last_update: string;
   }
   
   // interface StockPurchased {

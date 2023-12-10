@@ -79,6 +79,7 @@ const Page = () => {
           totalDeposit={userPortfolio?.portfolio.total_deposit || 0}
           totalInvestment={userPortfolio?.portfolio.total_investment || 0}
           totalProfit={userPortfolio?.portfolio.total_profit || 0}
+          last_update={userPortfolio?.portfolio.last_update||'0'}
         />
         <div className="flex lg:flex-row flex-col w-full ">
           <div className="w-full lg:w-2/5">

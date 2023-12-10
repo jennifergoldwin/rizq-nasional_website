@@ -15,12 +15,13 @@ interface UserDetailProps {
   totalDeposit: number;
   totalProfit: number;
   totalInvestment: number;
+  last_update: string;
 }
 const UserDetails: React.FC<UserDetailProps> = ({
   user,
   totalDeposit = 0,
   totalInvestment = 0,
-  totalProfit = 0,
+  totalProfit = 0, last_update
 }) => {
   const t = useTranslations("Overview.AccountDetail");
   return (
@@ -66,6 +67,7 @@ const UserDetails: React.FC<UserDetailProps> = ({
           }`}</span>
         </div>
       </div>
+      <p>{`Last Updated: ${last_update}`}</p>
       {/* <Swiper
         spaceBetween={20}
         slidesPerView={2}
