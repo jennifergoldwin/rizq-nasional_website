@@ -56,7 +56,7 @@ const Page = () => {
 
       const fetchData = async () => {
         const data = await fetchUserPortfolio();
-
+        console.log(data.message)
         setUserPortfolio(data.result);
       };
 
