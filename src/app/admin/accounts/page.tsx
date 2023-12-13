@@ -2,7 +2,7 @@
 import TableDashboard from "@/components/admin/tableDashboard";
 import { Investment, Plan, Statement, UserInfoForAdmin } from "@/utils/model";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import { cookiesAdmin, roleType } from "@/utils/constant";
@@ -25,6 +25,7 @@ const Page = () => {
   const [userList, setUserList] = React.useState<UserInfoForAdmin[]>([]);
   const [role, setRole] = React.useState("");
   const router = useRouter();
+  const [loading,setLoading] = React.useState(true);
 
   const [selectedOption, setSelectedOption] = React.useState<string>("");
   const [searchKeyword, setSearchKeyword] = React.useState<string>("");
@@ -72,6 +73,7 @@ const Page = () => {
 
   const fetchUser = async (username: string, token: string) => {
     try {
+      setLoading(true)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASEURL}/auth/listuser/${username}`,
         {
@@ -88,6 +90,7 @@ const Page = () => {
       if (!error) {
         setUserList((prev) => [...result]);
       }
+      setLoading(false)
       //   showToast(message, !error);
     } catch (error: any) {}
   };
@@ -234,7 +237,7 @@ const Page = () => {
 
       const { error, message, result } = await response.json();
 
-      // console.log(message);
+      console.log(message);
       // showToast(message, !error);
 
       if (!error) {
@@ -324,28 +327,30 @@ const Page = () => {
             Add User
           </button>
         </div>
-        <TableDashboard
-          thList={[
-            "User IC",
-            "Full Name",
-            "Email",
-            "Phone Number",
-            "Total Deposit",
-            "Total Profit",
-            "Total Value",
-            "Created by",
-            "Registration Date",
-            "Remark",
-            "Action",
-          ]}
-          tbList={filteredUserList}
-          hideAction={false}
-          handleDeposit={handleUpdateDepoModal}
-          handleEditUser={handleEditUser}
-          // handleUpdateDeposit={handleUpdateDepoModal}
-          handleWithdrawl={handleWithdrawlModal}
-          handleDeleteUser={handleDeleteUser}
-        />
+        {loading? 
+        <div className="w-full h-full justify-center items-center"><p className="text-center">Loading, please wait...</p></div>
+         :<TableDashboard
+            thList={[
+              "User IC",
+              "Full Name",
+              "Email",
+              "Phone Number",
+              "Total Deposit",
+              "Total Profit",
+              "Total Value",
+              "Created by",
+              "Registration Date",
+              "Remark",
+              "Action",
+            ]}
+            tbList={filteredUserList}
+            hideAction={false}
+            handleDeposit={handleUpdateDepoModal}
+            handleEditUser={handleEditUser}
+            // handleUpdateDeposit={handleUpdateDepoModal}
+            handleWithdrawl={handleWithdrawlModal}
+            handleDeleteUser={handleDeleteUser}
+          />} 
       </div>
 
       <div

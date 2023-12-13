@@ -36,7 +36,7 @@ const EditUserModal = (props: Props) => {
       phoneNumber: data.phoneNumber,
       password: data.password,
       remark: data.remark,
-      registrationDate: props.selectedUser?.registrationDate===null?data.registrationDate:props.selectedUser?.registrationDate
+      registrationDate: props.selectedUser?.registrationDate===null?data.registrationDate===""?null:data.registrationDate:props.selectedUser?.registrationDate
     };
     props.setShowEditUserModal(!props.showEditUserModal);
     props.handleEditUser(bodyUser);
